@@ -1,0 +1,28 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "mw-skills",
+  "owner": {
+    "name": "MARWIX",
+    "email": "hello@marwix.dev"
+  },
+  "description": "Portable Claude Code skills that take their rules from the host project's docs and stop rather than guess.",
+  "version": "1.0.0",
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "mw-image",
+      "source": "./plugins/mw-image",
+      "displayName": "MW Image Skills",
+      "description": "Skills for AI image work: turning a vague ask into a locked brief, the brief into a prompt, and the prompt into an approved render.",
+      "version": "1.0.0",
+      "author": {
+        "name": "MARWIX",
+        "email": "hello@marwix.dev"
+      },
+      "license": "MIT",
+      "keywords": ["image-generation", "image-prompt", "fal.ai", "prompt-engineering"]
+    }
+  ]
+}
