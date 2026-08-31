@@ -19,10 +19,36 @@ It is portable: no project facts, no credentials, no default sizes.
    count, and estimated cost (unit price from [references/endpoints.md](references/endpoints.md);
    for megapixel-priced models compute from the exact locked dimensions). Wait for the
    user's go-ahead. One approval covers one stated batch, not the session.
-3. **The key stays in the environment.** The script reads `FAL_KEY` from env itself.
-   Never ask for the key, accept it as an argument, echo it, or write it to any file.
-   If the user pastes a key into chat, tell them to store it as an env var instead and
-   note that a pasted key lives in the transcript and should be rotated.
+3. **The key stays in the environment, and this skill runs locally.** The script reads
+   `FAL_KEY` from env itself. Never ask for the key, accept it as an argument, echo it,
+   or write it to any file. If the user pastes a key into chat, tell them to store it as
+   an env var instead, and that a pasted key now lives in that conversation's history and
+   should be rotated at once.
+   **In a hosted chat interface with no local environment** — a web or mobile client
+   where the only way to supply a key would be to type it into the conversation - do not
+   proceed. Say that generation belongs on their own machine, that pasting a key into a
+   hosted chat puts it somewhere they cannot retract it, and offer the prompt-writing
+   half instead. Never accept a key as a workaround for a missing environment.
+
+## First run — setting up the key
+
+If `FAL_KEY` is missing, walk the user through this instead of stopping at the error.
+Never carry out step 2 for them, and never ask them to paste the key into the chat.
+
+1. **Create a key** at `https://fal.ai/dashboard/keys`. `API` scope is enough; `ADMIN`
+   is not needed and should not be used here.
+2. **Put it in the environment**, never in a file this skill can read:
+   - Windows: `setx FAL_KEY "<key>"`
+   - macOS/Linux: add `export FAL_KEY="<key>"` to `~/.zshrc` or `~/.bashrc`
+   Then open a new terminal, or restart the app. A process that is already running keeps
+   the environment it started with, so an in-place edit will not reach it.
+3. **Fund it small.** fal bills prepaid credits and has no spend-cap setting, so the
+   credit balance is the only hard ceiling that exists. Say this plainly: gate 2 above
+   is an instruction this skill follows; the balance is the part that cannot be argued
+   with. When credits run out the account locks and requests are rejected.
+4. **Confirm it is set without revealing it.** `node -e "process.exit(process.env.FAL_KEY?0:1)"`
+   exits 0 when present. Report set/not-set only — never echo the value, not even
+   truncated.
 
 ## Procedure
 
@@ -81,7 +107,7 @@ sidecar only hurts months later. Run this before telling the user the batch is d
 
 | Symptom | Meaning | Fix |
 |---|---|---|
-| `FAL_KEY is not set` | env var missing in this process | user sets it (`setx FAL_KEY "..."` on Windows) and restarts the terminal/app; already-set vars need the restart too |
+| `FAL_KEY is not set` | env var missing in this process | walk them through **First run — setting up the key** above; a var set in another window needs a restart to reach this one |
 | `401` | key invalid or revoked | user checks/rotates the key in the fal dashboard |
 | `422` + validation detail | wrong params for this endpoint family | check the endpoint's row and family rule in [references/endpoints.md](references/endpoints.md) |
 | `404` | endpoint id wrong | re-verify the id with the probe procedure in endpoints.md |
@@ -93,5 +119,5 @@ sidecar only hurts months later. Run this before telling the user the batch is d
 The host provides: the routing law (which engine and size per asset, typically via an
 `mw-image-prompt` deliverable grounded in the project's art-direction docs), the output
 location for masters and converted files, and the conversion spec (formats,
-qualities, naming). `FAL_KEY` must exist in the environment with a spend cap set at
-the provider. If any of these are missing, stop and say which one.
+qualities, naming). `FAL_KEY` must exist in the environment, funded at a level the user
+chose deliberately. If any of these are missing, stop and say which one.
