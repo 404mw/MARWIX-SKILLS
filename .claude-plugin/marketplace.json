@@ -22,7 +22,34 @@
         "email": "hello@marwix.dev"
       },
       "license": "MIT",
-      "keywords": ["image-generation", "image-prompt", "fal.ai", "prompt-engineering"]
+      "keywords": [
+        "image-generation",
+        "image-prompt",
+        "fal.ai",
+        "prompt-engineering"
+      ]
+    },
+    {
+      "name": "mw-query",
+      "source": "./plugins/mw-query",
+      "displayName": "MW Query Skills",
+      "description": "Postgres query diagnosis that runs on EXPLAIN evidence instead of guesswork, with ORM adapters for Prisma and Medusa.",
+      "version": "1.0.0",
+      "author": {
+        "name": "MARWIX",
+        "email": "hello@marwix.dev"
+      },
+      "license": "MIT",
+      "keywords": [
+        "postgres",
+        "sql",
+        "query-optimization",
+        "explain",
+        "n+1",
+        "indexing",
+        "prisma",
+        "medusa"
+      ]
     }
   ]
 }

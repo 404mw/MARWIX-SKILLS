@@ -1,0 +1,21 @@
+{
+  "name": "mw-query",
+  "displayName": "MW Query Skills",
+  "version": "1.0.0",
+  "description": "Postgres query diagnosis that runs on EXPLAIN evidence instead of guesswork, with ORM adapters for Prisma and Medusa.",
+  "author": {
+    "name": "MARWIX",
+    "email": "hello@marwix.dev"
+  },
+  "license": "MIT",
+  "keywords": [
+    "postgres",
+    "sql",
+    "query-optimization",
+    "explain",
+    "n+1",
+    "indexing",
+    "prisma",
+    "medusa"
+  ]
+}

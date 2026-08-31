@@ -2,23 +2,24 @@
 
 **Whatever you don't decide, the model decides.**
 
-Claude can't make images, and no agent arrives with taste. These two skills add both.
+Claude can't make images. No agent arrives with taste. And an agent asked why a query is
+slow will answer without ever looking at the plan.
 
-I have been using these on my own work for months — this is that pair, hardened for
-release rather than written for it. They work your project's way instead of the model's:
-each one reads your project's own docs for the rules, shows you every decision it made and
-where it came from, and stops to ask rather than filling a blank with something
-plausible. One install, nothing to configure. Free, MIT, no paid
-version held back.
+These skills add the missing half. I have been using them on my own work for months —
+hardened for release rather than written for it. They work your project's way instead of
+the model's: each one reads your project's own docs for the rules, shows you every decision
+it made and where it came from, and stops to ask rather than filling a blank with something
+plausible. Free, MIT, no paid version held back.
 
 ## Skills
 
-| Skill | What it's for |
-|---|---|
-| [`mw-image-prompt`](plugins/mw-image/README.md#mw-image-prompt) | **Gives your agent art direction.** Turns "something for the launch post" into a locked brief — subject, style, camera, palette, banned elements — then the prompt that follows from it. Writes prompts; never generates. |
-| [`mw-image-gen`](plugins/mw-image/README.md#mw-image-gen) | **Gives your agent the ability to generate images.** Runs a prompt against fal.ai, saves each result with the settings that made it, converts approved masters to web formats. Decides nothing creative. |
+| Skill | Plugin | What it's for |
+|---|---|---|
+| [`mw-image-prompt`](plugins/mw-image/README.md#mw-image-prompt) | `mw-image` | **Gives your agent art direction.** Turns "something for the launch post" into a locked brief — subject, style, camera, palette, banned elements — then the prompt that follows from it. Writes prompts; never generates. |
+| [`mw-image-gen`](plugins/mw-image/README.md#mw-image-gen) | `mw-image` | **Gives your agent the ability to generate images.** Runs a prompt against fal.ai, saves each result with the settings that made it, converts approved masters to web formats. Decides nothing creative. |
+| [`mw-query-plan`](plugins/mw-query/README.md#mw-query-plan) | `mw-query` | **Makes your agent prove a query is slow before telling you how to fix it.** Diagnoses Postgres queries from the actual EXPLAIN plan — indexes, N+1, joins, keyset pagination — and marks the finding *provisional* when it hasn't got one. Postgres only; adapters for Prisma and Medusa. |
 
-Both ship together in one plugin, `mw-image`.
+Install a plugin, get its skills. Neither depends on the other.
 
 ## Install
 
@@ -27,21 +28,24 @@ Both ship together in one plugin, `mw-image`.
 ```
 /plugin marketplace add 404mw/MARWIX-SKILLS
 /plugin install mw-image@mw-skills
+/plugin install mw-query@mw-skills
 ```
 
-`/plugin marketplace update` picks up changes later.
+Install either, or both. `/plugin marketplace update` picks up changes later.
 
 ### Every other CLI and IDE
 
 These are plain Agent Skills, so any client that reads the format runs them. Clone once,
-then link both skills into whichever directory your client reads:
+then link the skills into whichever directory your client reads:
 
 ```bash
 git clone https://github.com/404mw/MARWIX-SKILLS ~/.marwix-skills
-S=~/.marwix-skills/plugins/mw-image/skills
 mkdir -p ~/.agents/skills                        # <- your client's path, from the table
-ln -s $S/mw-image-prompt $S/mw-image-gen ~/.agents/skills/
+ln -s ~/.marwix-skills/plugins/*/skills/* ~/.agents/skills/
 ```
+
+That links all of them. For one skill, name it instead:
+`ln -s ~/.marwix-skills/plugins/mw-query/skills/mw-query-plan ~/.agents/skills/`
 
 | Directory | Clients that read it |
 |---|---|
@@ -72,12 +76,11 @@ approval before executing them.
 Or paste this to any agent with file access and let it do the whole thing:
 
 > Clone `https://github.com/404mw/MARWIX-SKILLS` to `~/.marwix-skills` — if that
-> directory already exists, `git pull` there instead. Then symlink
-> `plugins/mw-image/skills/mw-image-prompt` and `plugins/mw-image/skills/mw-image-gen`
-> into the skills directory this client reads, creating it if needed. Copy instead if
-> symlinks aren't available here. Change nothing inside the folders, and tell me before
-> overwriting anything already installed. Then say what you installed, where, and how to
-> update it.
+> directory already exists, `git pull` there instead. Then symlink every skill folder
+> under `plugins/*/skills/` into the skills directory this client reads, creating it if
+> needed. Copy instead if symlinks aren't available here. Change nothing inside the
+> folders, and tell me before overwriting anything already installed. Then say what you
+> installed, where, and how to update it.
 
 ### Claude.ai, Claude Desktop, mobile
 
@@ -85,12 +88,15 @@ Download a skill and upload it at **Settings → Skills**:
 
 - [**`mw-image-prompt.zip`**](https://github.com/404mw/MARWIX-SKILLS/releases/latest/download/mw-image-prompt.zip)
 - [**`mw-image-gen.zip`**](https://github.com/404mw/MARWIX-SKILLS/releases/latest/download/mw-image-gen.zip)
+- [**`mw-query-plan.zip`**](https://github.com/404mw/MARWIX-SKILLS/releases/latest/download/mw-query-plan.zip)
 
 Those links always serve the newest release; [Releases](https://github.com/404mw/MARWIX-SKILLS/releases)
 lists every version.
 
-`mw-image-prompt` is the one to use here. **Don't run `mw-image-gen` from a hosted chat**
-— it would mean pasting your fal key into it; see [the key warning](#never-paste-keys-into-a-chat).
+`mw-image-prompt` and `mw-query-plan` both work here — neither needs anything but the
+conversation, and you can paste a query and a plan straight in. **Don't run `mw-image-gen`
+from a hosted chat** — it would mean pasting your fal key into it; see
+[the key warning](#never-paste-keys-into-a-chat).
 
 ### ChatGPT
 
@@ -98,18 +104,23 @@ Skills are a **workspace** feature — Business, Enterprise, Edu and Healthcare.
 Plus and Pro don't have them; there, paste a `SKILL.md`'s contents into a project's
 custom instructions and invoke it by hand.
 
-Where you do have them: **Skills → Create → Upload**, and pick the `.zip` above or the
-unzipped folder. Invoke with `@mw-image-prompt`.
+Where you do have them: **Skills → Create → Upload**, and pick a `.zip` above or the
+unzipped folder. Invoke with `@mw-image-prompt` or `@mw-query-plan`.
 
-Use `mw-image-prompt` there — it needs nothing but the conversation. **Don't run
-`mw-image-gen` from a hosted chat.** Doing so means putting your fal key into someone
-else's interface; see [the key warning](#never-paste-keys-into-a-chat). Generate
-locally.
+Those two are the ones to use there. **Don't run `mw-image-gen` from a hosted chat.**
+Doing so means putting your fal key into someone else's interface; see
+[the key warning](#never-paste-keys-into-a-chat). Generate locally.
 
 ## Requirements
 
 `mw-image-prompt` has none. It is plain Markdown and runs anywhere an agent can read
-instructions. These are `mw-image-gen`'s:
+instructions.
+
+`mw-query-plan` needs no install either — but it needs **a Postgres database you can run
+`EXPLAIN` against**, and it is Postgres-only by design. On MySQL, SQLite or SQL Server it
+says so and stops rather than translating advice that doesn't transfer.
+
+These are `mw-image-gen`'s:
 
 | Requirement | What to do |
 |---|---|
@@ -163,8 +174,25 @@ command in Claude Code directly, or use `//mw-image-prompt`.
 
 ## What they actually do
 
-The full write-up lives in [the plugin's own README](plugins/mw-image/README.md) so that it travels with the
-plugin when that is installed on its own. Straight to a section:
+Each plugin's full write-up lives in its own README, so it travels with the plugin when
+that one is installed alone. Straight to a section:
+
+### `mw-query` — [full write-up](plugins/mw-query/README.md)
+
+- [**`mw-query-plan`**](plugins/mw-query/README.md#mw-query-plan) — the access-pattern
+  questions it asks first, the cheap-to-expensive optimization ladder, and the four
+  refusals that stop a guess reaching you dressed as a diagnosis.
+- [**What changes in practice**](plugins/mw-query/README.md#what-changes-in-practice) — the
+  same "why did this get slow?" answered with and without a plan, including the real
+  EXPLAIN output that turns a plausible answer into a proven one.
+- [**ORM adapters**](plugins/mw-query/README.md#orm-adapters) — what it knows about Prisma
+  and Medusa, and what it deliberately refuses to claim about the ORMs it has no adapter for.
+- [**Scope — Postgres only**](plugins/mw-query/README.md#scope--postgres-only) — why it stops
+  at MySQL instead of translating.
+- [**Host-project contract**](plugins/mw-query/README.md#host-project-contract) — the five
+  things it needs from your repo, and what it does when each one is missing.
+
+### `mw-image` — [full write-up](plugins/mw-image/README.md)
 
 - [**`mw-image-prompt`**](plugins/mw-image/README.md#mw-image-prompt) — what a locked brief contains, why the
   skill brings no style of its own, and what it does when your project documents nothing.
