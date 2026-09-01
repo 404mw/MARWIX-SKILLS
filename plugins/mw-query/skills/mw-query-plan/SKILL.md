@@ -68,7 +68,7 @@ Get `EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)` for the real query against realist
 - **Never connect to a production database from this skill.** Ask the user to run the EXPLAIN and paste it, or suggest `auto_explain` so slow plans land in the server log — see [references/plans.md](references/plans.md).
 - **A local or test database is for shape checks, not timings.** A plan over fifty rows proves an index is used; it proves nothing about production latency. Say which of the two you have.
 - **Going through an ORM?** Capture the emitted SQL first — the adapter says how. EXPLAIN what the ORM actually sends, never a hand-written "equivalent"; they optimize differently.
-- **No plan at all?** Say so, mark the diagnosis **provisional**, and name the one command that would confirm it. Do not fake certainty.
+- **No plan at all?** Say so, mark the diagnosis **provisional**, and give the command that would confirm it. Then name **two or three candidate causes from different families** — predicate shape or column type, index presence or column order, planner statistics, plan shape — each with the line of plan output that would confirm or kill it. Three variations on "missing index" is one guess wearing three hats, and marking it provisional does not license backing a single family. **Without the schema, ask for the type of every column in the predicate**: a numeric literal bound against a text column defeats every index on it, costs nothing to rule out, and is invisible in the query text.
 
 ### 3. Apply the optimization ladder, cheap to expensive — stop at the rung that works
 
@@ -87,7 +87,7 @@ a guess wearing a result's clothes.
 
 ## Non-negotiable rules
 
-- **Never present a diagnosis as confirmed without plan evidence.** Provisional is an honest answer; confident and unverified is not.
+- **Never present a diagnosis as confirmed without plan evidence,** and never let a provisional one rest on a single cause. Provisional is an honest answer; confident and unverified is not.
 - **Never connect to a production database.** Ask for the plan.
 - **Never recommend `SELECT *`**, or full-entity hydration, in a production code path.
 - **Never use `OFFSET` pagination** beyond roughly 1000 rows, and avoid an ORM's built-in cursor helper on hot paths — see [references/pagination.md](references/pagination.md).

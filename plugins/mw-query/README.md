@@ -55,32 +55,54 @@ inline for review.
 
 ## What changes in practice
 
-**"This endpoint got slow. Why?"**
+**"This endpoint got slow after we added tenants. Why?"**
 
-Without the skill, you get a confident, well-formatted answer immediately: add a composite index
-on `(tenant_id, created_at)`, switch `include` to `select`, consider caching. Some of it is
-probably right. None of it is evidence, and you cannot tell which part is which.
-
-With it, the first move is to ask what you have. If you can produce a plan, the answer arrives
-anchored to a line of it:
-
-```
-### Diagnosis
-The tenant filter is not being used as an index seek — the bind parameter is a
-number and the column is VarChar, so the cast lands on the column and the index is
-skipped.
-
-### Plan evidence
-  Seq Scan on events  (cost=0.00..184232.11 rows=1 width=88)
-                      (actual time=0.05..1284.66 rows=1 loops=1)
-    Filter: ((tenant_id)::text = '4471'::text)
-    Rows Removed by Filter: 2841903
+```sql
+SELECT * FROM events WHERE tenant_id = 4471 ORDER BY created_at DESC LIMIT 50;
 ```
 
-That is a different kind of sentence. It names a cause, and the proof is quotable.
+The obvious answer is a composite index on `(tenant_id, created_at)`. It is the answer most
+agents give, immediately and well-formatted, and here it is **wrong** — `tenant_id` is a text
+column, the literal is numeric, and the cast lands on the column. No index on `tenant_id` can be
+used at all. You would have paid write throughput for nothing and still had a slow endpoint.
 
-If you cannot produce a plan, it says so and gives you the command — rather than picking the
-most likely-sounding of five possible causes and presenting it as the answer.
+Both excerpts below are real output from this skill on **Sonnet**, given that query.
+
+**Asked with no plan available**, it will not pick a cause. It names candidates from different
+families and tells you which line of plan output separates them:
+
+> ### Diagnosis (provisional)
+> … Without a plan I can't say which of the following it is, so treat this as unconfirmed.
+>
+> **3. `tenant_id` is a type mismatch against the literal** (e.g. column is `text`/`uuid` and
+> `4471` gets cast, or vice versa) — this silently defeats any index on the column regardless
+> of #1/#2.
+> *Confirms if plan shows:* a `Filter` with an implicit cast (e.g. `(tenant_id)::text =
+> '4471'::text`) instead of a plain index condition …
+
+It asks for `\d+ events` too, noting *"the column types matter here, not just the index list."*
+
+**Given the plan, it commits** — and the proof is a line you can check yourself:
+
+> ### Plan evidence
+> ```
+> Seq Scan on events  (cost=0.00..184232.10 rows=1 width=88) (actual time=0.05..1284.31 rows=1 loops=1)
+>   Filter: ((tenant_id)::text = '4471'::text)
+>   Rows Removed by Filter: 2841903
+> ```
+> The `(tenant_id)::text = '4471'::text` cast is the smoking gun — the planner rewrote the
+> predicate to compare as text, which is not an indexable form unless there's a functional
+> index on `(tenant_id::text)`.
+
+Then it splits the cause into the two cases that need different fixes — an integer column with a
+text-bound parameter is an application fix, a text column with an unquoted literal is not — and
+declines to write the `CREATE INDEX` until it has seen what indexes exist:
+
+> I'll hold off writing the exact `CREATE INDEX` until I see the current index list — no point
+> proposing a duplicate.
+
+The distance between those two answers is the point. One is provisional and says so; the other
+is proven. Neither is the confident wrong answer you get by default.
 
 ## ORM adapters
 
