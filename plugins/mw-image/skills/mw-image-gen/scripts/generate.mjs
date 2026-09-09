@@ -6,7 +6,7 @@
 // Usage:
 //   node generate.mjs --model <fal-endpoint-id> --prompt-file <path> --out <dir-or-file>
 //                     (--size WxH | --aspect W:H --resolution 0.5K|1K|2K|4K)   # family-dependent, see endpoints.md
-//                     [--count N] [--seed N] [--quality auto|low|medium|high]
+//                     [--count N] [--seed N] [--quality auto|low|medium|high|xhigh|max]
 //                     [--steps N] [--negative-file <path>] [--image <path-or-url>]...
 //
 // --image marks edit mode (use the endpoint's /edit id); local files are inlined
