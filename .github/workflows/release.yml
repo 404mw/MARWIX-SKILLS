@@ -1,0 +1,50 @@
+name: Release skill bundles
+
+# The README points Claude.ai and ChatGPT users at the latest release's zips,
+# so those assets are the install path for every client without a marketplace.
+# Building them here keeps them from drifting behind the repo, which is what
+# happened when they were uploaded by hand.
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches the marketplace version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          marketplace=$(jq -r .version .claude-plugin/marketplace.json)
+          if [ "$tag" != "$marketplace" ]; then
+            echo "::error::tag v$tag does not match marketplace.json version $marketplace"
+            exit 1
+          fi
+          echo "releasing v$tag"
+
+      - name: Build one zip per skill
+        run: |
+          mkdir -p dist
+          for skill in plugins/*/skills/*/; do
+            name=$(basename "$skill")
+            # Zip from the skills/ directory so the archive root is the skill
+            # folder itself — that is the layout Settings → Skills expects.
+            (cd "$(dirname "$skill")" && zip -qr - "$name") > "dist/$name.zip"
+            echo "packed $name.zip"
+          done
+          ls -l dist/
+
+      - name: Publish the release with the bundles attached
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
