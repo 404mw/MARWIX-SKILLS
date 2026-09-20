@@ -24,6 +24,27 @@ itself. "Use the reference's framing" is how selfie geometry ends up in a final.
 - **Deny the leak explicitly**, then state the replacements: "Do not import the
   reference photos' background, clothing, lighting, or phone-selfie perspective" +
   positive camera, pose, lighting, wardrobe, and background clauses.
+- **A reference role other than identity must be named, and only some families take
+  one.** GPT-Image-2.5 accepts an input assigned as style, clothing or background —
+  OpenAI's own instruction is to *"identify each input by number and purpose"* and then
+  say how they combine. That is a capability of that family, not a default: on any
+  engine, an unnamed reference is an identity reference, and a role the prompt does not
+  state is a role the engine invents. Per-family mechanics: engines.md.
+
+## The reference you may not use
+
+**A reference you do not own never goes to an engine.** A found image — someone else's
+photograph, a frame from a film, an artist's work pulled off a feed — may be *described
+in words* and generated from text. It is not uploaded, not in an `image_urls` array, not
+attached "just as a mood reference".
+
+This is a rule, not a judgement call, and it is easy to break by accident because a mood
+board is exactly the thing that feels harmless to attach. Describe it instead: what the
+light does, how the frame is composed, what the palette is. The description is the
+deliverable; the file stays out.
+
+A person's photo carries a second permission on top of the first: ask how their likeness
+may be used before writing anything that generates it.
 
 ## The clean-reference builder
 

@@ -27,6 +27,7 @@ the engine per asset; the executor never chooses.
 - Model roster (read off the fal model pages, 2026-09-09)
 - Routing
 - Cached price lookups — filesystem only
+- **Prompt construction per engine family** — what does *not* transfer
 - Negative constraints — phrasing is engine-specific
 - Nano Banana 2 specifics
 - GPT-Image-2.5 specifics — Flare and Sunburst
@@ -139,6 +140,59 @@ truth, and it decays from its own fetch date onward. Two rules keep that honest:
 If the host project's docs name a different location for generated artifacts, put the
 cache there instead — the host contract wins over the default path.
 
+## Prompt construction per engine family — what does *not* transfer
+
+SKILL.md's shared craft holds everywhere. **This is the layer that does not.** A prompt
+that works is a brief plus a family-specific encoding of it; moving it to another family
+keeps the brief and rewrites the encoding. OpenAI states this of its own models —
+do not assume *"older prompt patterns transfer unchanged"* — and it is true in every
+direction, not just theirs.
+
+| | Diffusion / flux-class | Nano Banana 2 / Pro | GPT-Image-2.5 (Flare, Sunburst) |
+|---|---|---|---|
+| **Prompt format** | keyword-and-phrase weighting still works | **full sentences; keyword soup degrades results** | **format-agnostic** — paragraphs, labeled sections, tags and JSON-like structures all work. For complex briefs OpenAI recommends labeled sections: *scene, subject, details, constraints* |
+| **Exclusions** | real `negative_prompt` channel — state the negation | no negative channel — positive restatement only | direct exclusions are supported (*"state exclusions such as unwanted text"*), but positive restatement still works better for invented objects |
+| **Reference roles** | style/structure conditioning | identity anchors; name each reference | roles assignable beyond identity: *"identify each input by number and purpose: subject, style, clothing, or background"*, then say how they combine |
+| **Lighting** | responds to adjectives and film-stock shorthand | responds to described intent | **mood words alone are unreliable** — OpenAI: for wide, cinematic, low-light, rainy or neon scenes, *"specify scale, atmosphere, and color instead of relying on mood words alone"* |
+| **Camera** | lens/aperture shorthand reads as style | composition planned before render | camera specs are *"cues for appearance, not a guarantee of exact physical simulation"* — state the resulting framing too, not only the lens |
+| **Photorealism** | implied by style tokens | implied by description | **ask for it explicitly** — *"request 'photorealistic' or 'real photograph' when that is the goal"* |
+
+**Ordering, concretely.** Reasoning and diffusion families weight early tokens heavier,
+so the pieces run front-loaded in one flowing block:
+
+> style/medium → subject (+ expression) → the one action → setting → composition
+> (camera height and angle, subject distance or lens feel, framing, focal point,
+> reserved negative space) → exact text in quotes → constraints → ratio and resolution
+
+GPT-Image-2.5 takes the same pieces but does not need that order. For anything complex,
+OpenAI recommends labeled sections instead — **scene, subject, details, constraints** —
+and the labels help more than the ordering does. Either way the *content* is the brief's
+decision set, unchanged; only the packaging moves.
+
+**The failure this table exists to prevent.** A night scene tuned on Nano Banana 2 —
+dark, cold, warm light contained to one shelter — was carried word-for-word to
+GPT-Image-2.5 and came back nearly gold: every source blown out, the cold gone, the
+whole frame warm. Both Flare and Sunburst did it, so it is a family trait, not a
+variant's quirk. The words describing light had not changed; only the family had.
+Recovering it took three passes in opposite directions, the first overshooting into a
+frame too dark to read a face in.
+
+What finally transferred was not an adjective but a measurement: *"the exposure is set a
+little above the night sky, so about half the picture sits in soft shadow"*, with the
+light strips described as *"a clean bright line with a defined edge"* and the warm pool
+extended to a named distance. **Write lighting that way from the start whenever the
+engine might change**, and treat three recovery passes as the cost of switching if it
+was not.
+
+Vocabulary that summons what you did not ask for: **`halation`, `glowing` and `neon`
+bring bloom** on every family, and on a brief that wants restraint they undo it. "A
+clean bright line with a defined edge" is the phrasing that holds.
+
+**Say that in-scene content stays inside its frame.** Art shown on a screen, poster or
+sign inside the scene escapes its edges and floats on whatever is beside it — observed
+across three passes and two providers. One clause fixes it: name the surface and say
+the content stops at its border.
+
 ## Negative constraints — phrasing is engine-specific
 
 **Scope: this section governs *banned content* only** - things that must not appear in
@@ -154,6 +208,15 @@ family, and getting it backwards summons the thing you excluded.**
 |---|---|---|
 | Diffusion / flux-class | a real negative-prompt input the sampler steers away from | State the negation directly: "no lens flare, no text" |
 | Reasoning / multimodal (NB2, NB Pro, GPT-2) | **none — there is no subtractable reverse vector** | Restate each exclusion as the positive state that excludes it |
+| GPT-Image-2.5 (Flare, Sunburst) | no negative-prompt parameter, but OpenAI's guidance explicitly allows stated exclusions in the prompt text | Either works; **prefer the positive restatement** — see the note below |
+
+**On 2.5 the two approaches are not equally reliable.** OpenAI sanctions direct
+exclusions (*"state exclusions such as unwanted text"*), and for text they work. For
+*objects the model invented on its own*, positive restatement is what actually removes
+them: a real sportswear logo kept appearing on shoes nobody had described, and "plain
+unbranded white sneakers" cleared it where naming the brand to exclude it would have
+put the brand back in context. Default to the positive state; reach for a direct
+exclusion only when no positive phrasing exists, and keep it short and last.
 
 For a reasoning engine, write the world you want rather than the one you don't:
 
@@ -188,22 +251,42 @@ last, where it carries least weight.
 
 ## GPT-Image-2.5 specifics — Flare and Sunburst
 
+> **These models are reachable two ways, and the facts below differ by path.** Every
+> price and parameter here was read off **fal**. Reached through OpenAI's own API
+> instead, the model id is hyphenated (`gpt-image-2.5-flare`), billing is per token
+> rather than per image, and `quality` defaults to `auto` rather than `high`. The size
+> limits are identical on both. The comparison table and the direct-API facts live in
+> mw-image-gen's `references/endpoints.md`; never state a price without knowing which
+> path it came from.
+>
+> **Prompt-craft for this family is in *Prompt construction per engine family* above.**
+> That section is the one that stops a working prompt breaking here.
+
 - **Two modes, one price table.** *Flare* is the small, speed-optimised model —
   OpenAI's default, quality comparable to GPT-Image-2. *Sunburst* is the base model,
   optimised for quality and for edits that must follow a reference closely, at the
   cost of longer renders. fal publishes the **same per-image price** for both, so the
   choice is latency and fidelity, not budget. Four endpoints: `flare/text-to-image`,
   `flare/edit`, `sunburst/text-to-image`, `sunburst/edit`.
-- **The quality enum grew:** `auto | low | medium | high | xhigh | max`, defaulting to
-  `high`. `xhigh` and `max` run roughly 2× and 4× the `high` price — spend there only
-  when a print-size crop demands it.
+- **The quality enum grew:** `auto | low | medium | high | xhigh | max`. **The default
+  differs by path — `high` on fal, `auto` on OpenAI direct — and `auto` re-picks the
+  tier per request.** Always name a tier explicitly: output tokens track the tier, so
+  on the token-billed path an unset `quality` makes identical requests vary in cost by
+  up to 8× (roughly 160 output tokens at `low`, ~340 at `medium`, ~1,370 at `high` for
+  a portrait render). `xhigh` and `max` run roughly 2× and 4× the `high` price — spend
+  there only when a print-size crop demands it.
 - **No `seed`, no `negative_prompt`, no `input_fidelity`.** Each call varies on its
   own; exclusions must be written as positive states (above); reference images are
   always processed at high fidelity now, so there is no fidelity dial to reach for.
 - **Sizes:** presets `square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3,
   landscape_16_9, auto`, or custom dimensions in multiples of 16 — max edge 3840px,
   aspect ≤3:1, total pixels 655,360–8,294,400. `background` takes
-  `auto | transparent | opaque`.
+  `auto | transparent | opaque`. **Re-verified 2026-09-20 on both paths, including a
+  live 4:5 render at 1024×1280 through OpenAI's own edits endpoint.** The three sizes
+  OpenAI calls "recommended" (`1024x1024`, `1536x1024`, `1024x1536`) are a
+  recommendation, not an enum — **4:5 and other custom ratios are available, so no
+  Instagram-feed asset needs cropping from 2:3.** Above 2560×1440 is documented as
+  experimental.
 - **Editing:** `/edit` takes `image_urls` (up to **16** images) plus an optional
   `mask_url` for true inpainting — the mask is the only way to scope an edit to an
   exact region.

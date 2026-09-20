@@ -186,18 +186,23 @@ at thumbnail size:
 2. **Hands, limbs, duplicates.** Count fingers and arms; scan edges for half-formed
    objects and phantom background text.
 3. **Logo fidelity** at 200% zoom against the official file.
-4. **The zoom-out test:** thumbnail-size, phone-distance — subject readable, pull
+4. **Brand marks nobody asked for.** Separate from the check above, which verifies a
+   logo you *placed*. Engines add real trademarks to plain objects unprompted — a
+   sportswear swoosh on shoes that were never described. Scan clothing, shoes, devices,
+   cups, signage and screens. The prompt saying nothing about brands is not evidence;
+   only looking at the output is. Anything going public needs this pass.
+5. **The zoom-out test:** thumbnail-size, phone-distance — subject readable, pull
    felt, in under a second?
-5. **The slop check:** would this image look at home in every other AI account's
+6. **The slop check:** would this image look at home in every other AI account's
    feed? Glowy gradients, generic palettes, over-detailed everything. If it doesn't
    look like *the brand kit*, it doesn't post.
-6. **The honesty check:** does the post fully pay off what the image promises?
-7. **Crop safety:** subject and text inside the platform's safe zones.
-8. **The accent:** the brand's signature accent present, at the frequency the brand
+7. **The honesty check:** does the post fully pay off what the image promises?
+8. **Crop safety:** subject and text inside the platform's safe zones.
+9. **The accent:** the brand's signature accent present, at the frequency the brand
    docs prescribe (typically once or twice — everywhere is noise, once is a signature).
-9. **The dark-mode check:** thumbnail against both a light and a dark feed. If the
+10. **The dark-mode check:** thumbnail against both a light and a dark feed. If the
    image vanishes on one, raise the subject's contrast, not the background's.
-10. **Alt text written.** Describe subject, action, and any rendered text verbatim;
+11. **Alt text written.** Describe subject, action, and any rendered text verbatim;
     accessibility first, personality second.
 
 ## Failure modes
@@ -205,8 +210,10 @@ at thumbnail size:
 1. **House-style drift (slop).** Without the brand's standing style block, engines
    regress to their generic look. The style block is the guardrail; every prompt
    carries it.
-2. **Keyword-soup prompting.** Comma tags and "8k, trending" actively degrade
-   reasoning-model engines.
+2. **Keyword-soup prompting.** Comma tags and "8k, trending" actively degrade Nano
+   Banana and other reasoning engines. GPT-Image-2.5 is format-agnostic and takes
+   labeled sections or tags happily — but quality-token padding is noise on every
+   family. Per-family formats: engines.md.
 3. **Re-rolling instead of editing.** Fixing one detail by regenerating re-rolls
    everything that was right.
 4. **Text overload.** More than ~4 words on a cover measurably drops click-through.

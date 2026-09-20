@@ -16,7 +16,7 @@ plausible. Free, MIT, no paid version held back.
 | Skill | Plugin | What it's for |
 |---|---|---|
 | [`mw-image-prompt`](plugins/mw-image/README.md#mw-image-prompt) | `mw-image` | **Gives your agent art direction.** Turns "something for the launch post" into a locked brief — subject, style, camera, palette, banned elements — then the prompt that follows from it. Writes prompts; never generates. |
-| [`mw-image-gen`](plugins/mw-image/README.md#mw-image-gen) | `mw-image` | **Gives your agent the ability to generate images.** Runs a prompt against fal.ai, saves each result with the settings that made it, converts approved masters to web formats. Decides nothing creative. |
+| [`mw-image-gen`](plugins/mw-image/README.md#mw-image-gen) | `mw-image` | **Gives your agent the ability to generate images.** Runs a prompt against fal.ai or OpenAI, saves each result with the settings that made it, converts approved masters to web formats. Decides nothing creative. |
 | [`mw-query-plan`](plugins/mw-query/README.md#mw-query-plan) | `mw-query` | **Makes your agent prove a query is slow before telling you how to fix it.** Diagnoses Postgres queries from the actual EXPLAIN plan — indexes, N+1, joins, keyset pagination — and marks the finding *provisional* when it hasn't got one. Postgres only; adapters for Prisma and Medusa. |
 
 Install a plugin, get its skills. Neither depends on the other.
@@ -95,7 +95,7 @@ lists every version.
 
 `mw-image-prompt` and `mw-query-plan` both work here — neither needs anything but the
 conversation, and you can paste a query and a plan straight in. **Don't run `mw-image-gen`
-from a hosted chat** — it would mean pasting your fal key into it; see
+from a hosted chat** — it would mean pasting a provider key into it; see
 [the key warning](#never-paste-keys-into-a-chat).
 
 ### ChatGPT
@@ -108,7 +108,7 @@ Where you do have them: **Skills → Create → Upload**, and pick a `.zip` abov
 unzipped folder. Invoke with `@mw-image-prompt` or `@mw-query-plan`.
 
 Those two are the ones to use there. **Don't run `mw-image-gen` from a hosted chat.**
-Doing so means putting your fal key into someone else's interface; see
+Doing so means putting a provider key into someone else's interface; see
 [the key warning](#never-paste-keys-into-a-chat). Generate locally.
 
 ## Requirements
@@ -124,29 +124,42 @@ These are `mw-image-gen`'s:
 
 | Requirement | What to do |
 |---|---|
+**Set at least one provider key after installing.** `mw-image-gen` reaches most of the
+roster through fal, and the GPT-Image models either through fal or through OpenAI
+directly. One key is enough to start — `FAL_KEY` covers every engine; `OPENAI_API_KEY`
+only adds the direct path to GPT-Image.
+
+| Requirement | What to do |
+|---|---|
 | **`FAL_KEY` in your environment** | Create a key at [fal.ai/dashboard/keys](https://fal.ai/dashboard/keys) — `API` scope is enough. Windows: `setx FAL_KEY "<key>"`. macOS/Linux: add `export FAL_KEY="<key>"` to `~/.zshrc` or `~/.bashrc`. Open a new terminal afterwards; a running process keeps the environment it started with. The script reads the key from the environment and refuses it as an argument. |
-| **A small credit balance** | fal bills prepaid credits and has no spend-cap setting, so the balance *is* your ceiling. Fund it with what you'd be willing to lose to one bad batch. |
-| Node.js 18+ | The generation script uses native `fetch`; no npm dependencies. |
+| **`OPENAI_API_KEY`** *(optional)* | Only needed for `--provider openai`, which reaches GPT-Image-2.5 through OpenAI's own API instead of fal's hosted copy. Create a project key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys), then `setx OPENAI_API_KEY "<key>"` or `export OPENAI_API_KEY="<key>"`. Skip it entirely if you're happy on fal. |
+| **A spend ceiling on whichever you use** | **fal** bills prepaid credits and has no spend-cap setting, so the balance *is* your ceiling — fund it with what you'd be willing to lose to one bad batch. **OpenAI** bills postpaid against a card, so an unset limit is no ceiling at all: set a monthly budget under *Settings → Limits* before the first run. An empty fal balance stops by itself; an OpenAI account doesn't. |
+| Node.js 18+ | The generation script uses native `fetch`, `FormData` and `Blob`; no npm dependencies. |
 | [`uv`](https://docs.astral.sh/uv/) | Runs the WebP/AVIF conversion; resolves Python 3.10+ and Pillow automatically. |
 
 ### Never paste keys into a chat
 
-`mw-image-gen` runs **locally**. The key lives in your operating system's environment, the
-script reads it from there, and it goes to fal.ai and nowhere else — the skill never asks
-for it, echoes it, or writes it to a file.
+`mw-image-gen` runs **locally**. Keys live in your operating system's environment, the
+script reads them from there, and each one goes to its own provider and nowhere else — the
+skill never asks for a key, echoes it, or writes it to a file.
 
 Anything typed into a hosted chat — ChatGPT, Claude.ai, any web interface — becomes part of
-that conversation's stored history. That goes for every secret, not just this one. If you
-do it anyway, rotate at [fal.ai/dashboard/keys](https://fal.ai/dashboard/keys) straight
-away.
+that conversation's stored history. That goes for every secret, not just these. If you do
+it anyway, rotate immediately at [fal.ai/dashboard/keys](https://fal.ai/dashboard/keys) or
+[platform.openai.com/api-keys](https://platform.openai.com/api-keys).
 
 ```bash
-setx FAL_KEY "<key>"        # Windows — then open a new terminal
-export FAL_KEY="<key>"      # macOS/Linux — add to ~/.zshrc or ~/.bashrc
+# Windows — then open a new terminal
+setx FAL_KEY "<key>"
+setx OPENAI_API_KEY "<key>"          # only for --provider openai
+
+# macOS/Linux — add to ~/.zshrc or ~/.bashrc
+export FAL_KEY="<key>"
+export OPENAI_API_KEY="<key>"        # only for --provider openai
 ```
 
-Better still, keep it in your OS credential store or a secrets manager — Windows Credential
-Manager, macOS Keychain, `pass`, 1Password CLI, `direnv` — and export `FAL_KEY` from there.
+Better still, keep them in your OS credential store or a secrets manager — Windows
+Credential Manager, macOS Keychain, `pass`, 1Password CLI, `direnv` — and export from there.
 
 Your keys are yours to manage; this project can't do it for you and doesn't try.
 

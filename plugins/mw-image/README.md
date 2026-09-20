@@ -13,7 +13,7 @@ Install, requirements, the key warning and the chat-UI bundles:
 ## Contents
 
 - [`mw-image-prompt`](#mw-image-prompt) — decides what the image is, then writes the prompt
-- [`mw-image-gen`](#mw-image-gen) — runs the prompt against fal.ai
+- [`mw-image-gen`](#mw-image-gen) — runs the prompt against fal.ai or OpenAI
 - [Using them](#using-them) — invocation per client
 - [Examples — from four words to a full brief](#examples--from-four-words-to-a-full-brief)
   - [Most vague — a message, not a picture](#most-vague--a-message-not-a-picture)
@@ -44,19 +44,21 @@ It writes prompts and never generates.
 
 ## `mw-image-gen`
 
-*Runs the prompt against fal.ai.*
+*Runs the prompt against fal.ai or OpenAI.*
 
 Takes a finished prompt, calls the endpoint it names, saves every image beside a JSON
 sidecar recording model, settings, seed and request id, then converts approved masters
 to WebP/AVIF. It chooses nothing — engine, size and prompt all arrive from upstream.
 
-Generation spends your money, so it runs only on an explicit request and states model,
-size, count and estimated cost before each batch. If something it needs is missing, it
-stops and names it rather than substituting a default and billing you for the guess.
+Generation spends your money, so it runs only on an explicit request and states provider,
+model, size, count and estimated cost before each batch. If something it needs is missing,
+it stops and names it rather than substituting a default and billing you for the guess.
 
 > **One honest note.** That cost gate is an instruction the agent follows, not a lock in
-> the code — the script has no spending check of its own. fal bills prepaid credits and
-> has no spend-cap setting, so your balance is the real ceiling. Keep it small.
+> the code — the script has no spending check of its own. On fal, prepaid credits with no
+> spend-cap setting mean your balance is the real ceiling; keep it small. On OpenAI there
+> is no such backstop — billing is postpaid against a card — so set a monthly limit in
+> your account before the first run. That limit is the ceiling there, and nothing else is.
 
 
 ## Using them
@@ -159,19 +161,31 @@ Writes WebP/AVIF beside the masters. The originals stay.
 
 `mw-image-prompt` has none — plain Markdown, runs anywhere an agent reads instructions.
 
-`mw-image-gen` runs **locally** and needs `FAL_KEY` in the environment, Node.js 18+, and
-[`uv`](https://docs.astral.sh/uv/) for the WebP/AVIF conversion. Create the key at
-[fal.ai/dashboard/keys](https://fal.ai/dashboard/keys) (`API` scope), set it with `setx
-FAL_KEY "<key>"` on Windows or `export FAL_KEY="<key>"` in your shell profile, then open
-a new terminal — a running process keeps the environment it started with. Fund the
-account with a small credit balance; fal is prepaid and has no spend-cap setting, so
-that balance is your ceiling.
+`mw-image-gen` runs **locally** and needs Node.js 18+, [`uv`](https://docs.astral.sh/uv/)
+for the WebP/AVIF conversion, and **at least one provider key in the environment.**
 
-**Never paste the key into a hosted chat** — ChatGPT, Claude.ai, any web interface. It
+- **`FAL_KEY`** — covers the whole roster. Create it at
+  [fal.ai/dashboard/keys](https://fal.ai/dashboard/keys) (`API` scope), then `setx FAL_KEY
+  "<key>"` on Windows or `export FAL_KEY="<key>"` in your shell profile.
+- **`OPENAI_API_KEY`** *(optional)* — only for `--provider openai`, which reaches
+  GPT-Image-2.5 through OpenAI's own API rather than fal's hosted copy. Create a project
+  key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys) and set it
+  the same way. Skip it if you're happy generating on fal.
+
+Open a new terminal afterwards — a running process keeps the environment it started with.
+
+**Cap the spend, and note the two differ.** fal is prepaid with no spend-cap setting, so
+the credit balance is your ceiling; fund it with what you'd lose to one bad batch. OpenAI
+is postpaid against a card, so an unset limit is no ceiling at all — set a monthly budget
+under *Settings → Limits* first. An empty fal balance stops by itself; an OpenAI account
+does not.
+
+**Never paste a key into a hosted chat** — ChatGPT, Claude.ai, any web interface. It
 becomes part of that conversation's stored history and you cannot retract it; rotate at
-[fal.ai/dashboard/keys](https://fal.ai/dashboard/keys) if you ever do. Keep it in your OS
-credential store or a secrets manager and export `FAL_KEY` from there. This project takes
-no responsibility for keys exposed by pasting them into a third-party interface.
+[fal.ai/dashboard/keys](https://fal.ai/dashboard/keys) or
+[platform.openai.com/api-keys](https://platform.openai.com/api-keys) if you ever do. Keep
+keys in your OS credential store or a secrets manager and export from there. This project
+takes no responsibility for keys exposed by pasting them into a third-party interface.
 
 ## Layout
 
