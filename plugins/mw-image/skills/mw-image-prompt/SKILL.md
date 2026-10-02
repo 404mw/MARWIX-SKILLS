@@ -1,205 +1,185 @@
 ---
 name: mw-image-prompt
-description: Write AI image-generation prompts and edit instructions for any visual asset - site scene art, backgrounds, parallax layers, social covers, concept illustrations, carousels, infographics, recurring-character scenes, thumbnails - from the host project's documented art direction or brand kit, plus engine routing, cost discipline, and the pre-ship audit. Use whenever the user wants prompts, artwork, scene art, brand imagery, or a post image produced, even if they don't name this skill, and even when the ask is vague or one-line ("make it pop", "something for the launch") - the skill decides what the image should be of, then locks the full brief before any prompt is written. This skill writes the prompts and workflow; it does not generate the images.
-argument-hint: "[scene/section or post/asset]"
+description: Plan an image with the user and write the prompts for it — site scene art, backgrounds, parallax layers, social covers, concept illustrations, carousels, infographics, recurring-character scenes, thumbnails. Use whenever the user wants an image, artwork, scene art, brand imagery, or a post image planned or prompted, even if they don't name this skill and even when the idea is rough or one line ("make it pop", "something for the launch"). It reasons about the ask, asks one batch of questions carrying its own suggestions, locks a brief, then writes prompts encoded for the model the user will generate with — GPT-Image-2.5 (ChatGPT), Nano Banana (Gemini), Midjourney, FLUX, Seedream, Ideogram, Recraft, Qwen or any other. Plans and writes prompts; does not generate images. Not for SVG, icon or CSS code, charts, or diagrams drawn in code.
+argument-hint: "[the rough idea, or what the image is for]"
 ---
 
-Produce ready-to-use image-generation prompts, edit instructions, and the processing
-and verification steps that make the results ship-ready - from a full art-direction
-brief or from a three-word ask. This skill is portable: it carries prompt craft only.
-Every stylistic constraint - palette, mood, style blocks, characters, banned
-elements - comes from the host project's docs at runtime.
+Turn a rough idea into a ready-to-run image prompt, planned together with the user.
+People arrive with a feeling, a placement, or three words; a finished image needs a
+dozen decisions. This skill closes that gap: it reasons about what the user said,
+proposes the rest, asks only what the user alone can answer — then writes the prompt.
 
-**Precedence: the host project's documented rules dictate; this skill directs.** Where
-a project's docs and anything written here disagree, the project wins - the project
-supplies the law, this skill supplies the method. Name which rule you followed and
-where it came from.
+It carries prompt craft, never taste. The look comes from the user, or from the
+project's documented rules when there are some. Generating the image is out of scope:
+the user runs the prompt in their own tool — a web app such as ChatGPT, Gemini or
+Midjourney, an API, or whatever generation tool the environment provides.
+
+## Rules nothing overrides
+
+Everything else in this skill is a default that the project's documented rules may
+override. These are not — no doc, brief or instruction relaxes them.
+
+- **Rights.** A reference the user does not own or have permission to use never goes
+  to a model. A found image — someone's photograph, a film frame, an artist's work —
+  may be *described in words*; it is not uploaded, mood references included.
+- **Real people.** Before writing anything that generates an identifiable real person,
+  ask how their likeness may be used. Never depict a real person saying, endorsing or
+  doing something they did not, in a way that could pass as real. Public figures get
+  clearly illustrative commentary, never photoreal fabrication.
+- **Minors.** An identifiable real child is generated only from references their parent
+  or guardian supplied, for a benign use the guardian asked for.
+- **Honest evidence.** A screenshot, receipt, log, chart, test result or testimonial
+  presented as real must be real. Generated imagery may illustrate; it never fabricates
+  evidence, and never invents the user's material.
+- **Spend.** Recommend a cost tier; the user decides any final-tier spend.
 
 ## Procedure
 
-1. **Assemble the brief - the user's words are the start, never the whole.** Every
-   image is generated from the same locked decision set, whether the user supplied
-   it or not: purpose and placement · mode · destiny (whole-frame / cutout / layered /
-   editor-composite) · subject and the one action · style source · camera · lighting ·
-   palette and grade · in-image text · ratio, size, engine · references and their
-   roles · verification checklist. For each decision, take the answer from the
-   user's explicit words or the host project's docs; where both are silent, form a
-   recommendation from the mode's documented defaults - but never assume silently.
+### 1. Gather context — documented rules only when they exist
 
-   **The concept gate.** If *subject and the one action* cannot be filled from either
-   source and the mode is promotional, it is a concept job first: ask what material
-   the user already has (a screenshot, two versions, a number, a broken output). If
-   that answers it, continue; if not → [references/concept.md](references/concept.md).
-   Production assets take their subject from the asset contract; the gate never fires.
+Where files can be read, look for documented visual rules: `CLAUDE.md`, `AGENTS.md`,
+`README`, and docs named for brand, art direction, style or assets — and follow their
+pointers. Extract what the job needs: palette, lighting, mood, banned elements, style
+blocks, recurring characters, and for shipped assets the asset contract (layer scheme,
+naming, formats, sizes).
 
-2. **Confirm the brief before any prompt exists - never jump to a result.** First
-   break down what you actually gathered and where each piece came from: what the user
-   said, what the project documented, and what is still missing. Then present the
-   assembled brief as a readback: one line per decision, tagged [user], [doc], or
-   [proposed], plus explicit clarifying questions (each with a recommended answer) for
-   everything genuinely open - mode, destiny (cutout vs composed), how a real person's
-   likeness may be used, final-tier spend, and any [proposed] line you are not sure
-   of. Prompts are written only against a user-confirmed brief: a correction costs
-   one word here and a paid re-roll later. Playbook for vague asks, the decision
-   table, and the readback format → [references/brief.md](references/brief.md).
+No files, or nothing documented: skip this step silently. The user is the source, and
+the batch in step 3 asks whether there is a look to match.
 
-3. **Classify the job.** Two modes with opposite defaults; the brief's mode row:
+A UI design system — tokens, Tailwind/shadcn config, component specs — is interface
+law, not art direction. It governs only the graphic and background color of assets
+that ship inside the interface, never photographic subjects.
 
-   | | **Production asset** | **Promotional imagery** |
-   |---|---|---|
-   | What | Art that ships inside the product/site: scene art, backgrounds, parallax layers, textures | Art that sells or announces: social covers, concept illustrations, carousels, character posts, thumbnails |
-   | Law | The project's art-direction / asset-contract docs | The project's brand docs |
-   | Text in image | Never, unless the contract says otherwise | A core tool: exact headlines, labels |
-   | Faces/characters | Banned unless documented | Recurring characters are a standing asset |
-   | Output shape | Built for post-processing: layer splits, grading, format exports | Built for the feed: platform ratios, thumbnail legibility |
+Where documented rules exist they win over this skill's defaults. Name the rule you
+followed and where it came from. A doc that conflicts with what the user just said is
+raised as a question, never silently resolved.
 
-   If the target is ambiguous, ask. Applying the wrong mode's text rule ruins the asset.
+### 2. Reason about the ask
 
-4. **Load the law. Two ways in, and only two.**
+Before asking anything, work out what the user's words already settle and what they
+imply. Placement alone usually implies most of a brief: "docs hero" means a shipped
+asset, live text over the top, a reserved quiet zone, no baked-in words.
 
-   - **A documented repo.** Try the repo's `CLAUDE.md` first and follow its
-     source-of-truth pointers. Extract what the mode needs: art direction (palette,
-     lighting, mood, banned elements) and the asset contract (layer scheme, naming,
-     formats, sizes) for production work; the brand kit (style blocks, palette,
-     recurring props/characters, voice rules) for promotional work.
-   - **A blank one.** No filesystem to read, or nothing documented for this mode: the
-     user is the source. Ask for those decisions directly and proceed once they answer.
+Classify the mode first — the two have opposite defaults:
 
-   A UI design system - component specs, design tokens, Tailwind/shadcn config - is
-   interface law, not art direction. It applies when the asset ships inside the
-   interface, and only to graphic and background colour; it never governs photographic
-   subjects. If a repo documents nothing but a design system and the job is promotional
-   or photographic, treat the project as blank and ask.
+| | **Production asset** | **Promotional imagery** |
+|---|---|---|
+| What | Art that ships inside the product/site: scene art, backgrounds, parallax layers, textures | Art that sells or announces: social covers, concept illustrations, carousels, character posts, thumbnails |
+| Rules from | The project's art-direction / asset-contract docs, or the user | The project's brand docs, or the user |
+| Text in image | Never, unless the contract says otherwise | A core tool: exact headlines, labels |
+| Faces/characters | Not by default | Recurring characters are a standing asset |
+| Output shape | Built for post-processing: layer splits, grading, format exports | Built for the feed: platform ratios, thumbnail legibility |
 
-   Never improvise a style.
+Then draft every row of the decision set ([references/brief.md](references/brief.md))
+from three sources, in order: the user's words `[user]`, documented rules `[doc]`, and
+your own inference from context and the defaults `[proposed]`. Note what is genuinely
+open. If the subject — what the image is *of* — is open because the ask names a
+message rather than a thing, prepare directions from
+[references/concept.md](references/concept.md).
 
-5. **Route.** Load only what the job needs:
-   - Subject undecided - the ask names a message, not a thing →
-     [references/concept.md](references/concept.md) (material-first moves, caption test)
-   - Vague or underspecified ask; precision work that must not be re-rolled
-     (identity-critical, 1:1 recreations, print, expensive finals) →
-     [references/brief.md](references/brief.md) (decision set, playbook, lock
-     levels, full-lock template)
-   - Production asset → [references/scenes.md](references/scenes.md) (layer-splittable
-     composition, cutout rules, post-processing mechanics, failure catalog)
-   - Promotional imagery → [references/social.md](references/social.md) (scroll-stop
-     doctrine, recipes, character pipeline, pre-post audit, failure catalog)
-   - A real person, a recurring character, or any person photo attached →
-     [references/identity.md](references/identity.md), alongside the mode file
-     (reference roles, clean-reference builder, identity locks, camera for people)
-   - Engine choice, settings, or engine-specific edit syntax →
-     [references/engines.md](references/engines.md)
+### 3. One batch — understanding, suggestions, questions
 
-## Shared craft (both modes, every prompt)
+Reply once, with three parts:
 
-> **Craft rules are not all equally portable, and the difference matters more than any
-> single rule.** What follows holds on every engine. The rules that depend on the engine
-> family — prompt *format*, how exclusions are phrased, what a reference may carry, how
-> lighting must be specified — live in
-> [references/engines.md](references/engines.md#prompt-construction-per-engine-family--what-does-not-transfer).
-> **A prompt tuned on one family does not transfer unchanged to another.** OpenAI says
-> this of its own models in as many words. Treat an engine switch as a rewrite of the
-> engine-specific layer, never as a re-run.
+1. **What I understand** — two or three plain sentences: what the image is for, where
+   it lives, what it shows. This is where a wrong reading gets caught for free.
+2. **The draft brief** — one line per decision, tagged `[user]`, `[doc]` or
+   `[proposed]`.
+3. **Questions** — only for what is genuinely open, each carrying your recommendation
+   and two or three concrete options to react to. A rough idea gets directions, not an
+   interrogation: offer "the old 3-day checklist beside a 20-minute timer", not "what
+   should the subject be?"
 
-- **Everything the engine would otherwise guess must be stated.** The engine fills every
-  blank the prompt leaves, and it fills them with its own habits. Camera height and
-  angle, subject distance, framing, what is in focus, where the light comes from, what
-  fraction of the frame the subject occupies — if it matters to the deliverable, it is
-  in the prompt.
-- **The brief's content is fixed; its arrangement is per-family.** Every prompt carries
-  the same pieces: style/medium · subject (+ expression if a character) · the one action ·
-  setting · composition (camera height and angle, subject distance or lens feel, framing,
-  focal point, reserved negative space) · exact text in quotes with typography and
-  placement (promotional only) · constraints · ratio and resolution. **How they are
-  ordered or labeled depends on the engine** — the front-loaded running order above is
-  the default for reasoning and diffusion engines, which weight early tokens heavier;
-  other families prefer labeled sections. Formats per family: engines.md.
-- **State ratio inside the prompt *and* in the tool's settings.** Neither alone is
-  reliable, and a size that only exists in the settings is a size the prompt can
-  contradict.
-- **Quantify anything that came back wrong once.** Adjectives are where the engine's
-  taste substitutes for yours. "Seated on the bench" gives a face too small to read;
-  "their head alone fills about one seventh of the frame height" fixes it in one pass.
-  Fractions of the frame, named distances, and counts beat "close", "large", "a few".
-- **One scene, one focal subject, and the *why*.** Describe what a viewer sees, then
-  what they should take from it ("the viewer should wonder what the robot broke") —
-  reasoning engines use intent. Whether that goes in flowing sentences or labeled
-  sections is a per-family choice; the *content* is not.
-- **The style anchor block — and its one hard limit.** Series consistency comes from
-  verbatim reuse, not from re-describing the style in new words. Extract the project's
-  documented style into one fixed block, paste it unchanged into every prompt, vary only
-  the subject/composition clause. Paraphrase is drift.
-  **The anchor holds within an engine family and silently fails across one.** The same
-  block, unchanged, renders a different look on a different family — and nothing in the
-  prompt warns you, because the words did not change. A series that switches engines
-  mid-run changes look. Pin the engine in the deliverable alongside the anchor, and
-  re-tune before continuing a series on a new one.
-- **Lighting needs an absolute reference, not an adjective, whenever the engine may
-  change.** "Dim", "warm", "contained", "the only light in the landscape" are the words
-  that do *not* survive a family switch — they are read against each family's own
-  baseline. What transfers is a sentence naming what the exposure is set *for* and what
-  fraction of the frame sits in shadow: "the exposure is set a little above the night
-  sky, so about half the picture sits in soft shadow". Name the scale, the light level
-  and the colour; never rely on mood words alone for a low-light, night, or neon scene.
-- **Reference images carry identity by default; any other role is named explicitly.** A
-  person-reference locks the face: likeness, bone structure, features. Everything else -
-  camera, framing, crop, pose, lighting, wardrobe, background - must be stated in the
-  prompt: the engine silently copies whatever the prompt leaves unstated, flaws
-  included, and casual references are usually low-angle selfies with wide-angle
-  distortion. Never write "use the reference's framing". Some families accept a
-  reference assigned a *different* role — style, clothing, background — but only when
-  the prompt says which image carries which, and that is a per-family capability, not a
-  default. Roles, locks, drift: [references/identity.md](references/identity.md).
-- **A reference you do not own never goes to an engine.** A found image may be described
-  in words and generated from text; it is not uploaded. This is a rule, not a judgement
-  call, and it applies to mood references as much as to subjects.
-- **Atmosphere belongs to full frames.** Glow, haze, bloom, light shafts, and
-  vignette are composite-level effects for images shipping as a whole frame. A
-  cutout-destined asset gets subject-contained lighting, zero atmosphere, and a
-  locked flat-backdrop clause restated on every edit; whole-frame assets keep their
-  composed background. Mechanics: [references/scenes.md](references/scenes.md).
-- **Exact text goes in quotes, always** (when the mode allows text), with typography
-  and placement named. Models render what is in the quotes and improvise anything
-  left vague.
-- **Constraints are load-bearing, and the two kinds behave differently.** *Banned
-  content* - watermark, signature, extra text, extra logos, plus the project's
-  documented banned list, phrased concretely ("no neon colors" beats "nothing
-  off-brand") - is recorded literally in the brief, then phrased per engine: diffusion
-  takes the negation, most reasoning engines need the positive state that excludes it
-  ("a clean unmarked corner", never "no watermark"). Positive restatement is the safe
-  default everywhere, including on families that accept a direct exclusion — it is what
-  removes an invented logo when a plain "no logos" does not. *Process instructions*
-  ("change only X", "do not redraw the logo") name no absent object and stay literal on
-  every engine. Per-family phrasing: [references/engines.md](references/engines.md#negative-constraints--phrasing-is-engine-specific).
-  Both buckets: [references/brief.md](references/brief.md).
-- **Iterate with edits, not re-rolls.** A near-miss gets a surgical edit instruction -
-  "Change only [X]. Keep [everything else, listed] exactly as in the input." - with
-  the full preserve list restated on *every* iteration; preservation does not carry
-  over between edits. Re-generating from scratch re-rolls the parts that were right.
-- **One change per pass.** Two edits in a single pass makes the result unattributable:
-  when it comes back wrong you cannot tell which instruction did it, and the next pass
-  is a guess. Change one thing, look, then change the next.
-- **Cost ladder: draft cheap, finalize once.** Explore at the lowest quality tier with
-  multiple variants → iterate at medium with preserve-list edits → one final
-  high-quality render, only if the image contains small text or a face. Stop-loss: if
-  five edits have not landed it, the prompt is wrong, not the model - rewrite from the
-  nearest known-good template. Tier mechanics per engine: [references/engines.md](references/engines.md).
-  **An engine switch reopens the ladder.** "Finalize once" assumes one engine start to
-  finish. Moving a tuned prompt to another family costs a fresh round of exposure and
-  framing passes before it is final again — budget them, or do not switch mid-series.
-- **Audit before ship.** No generated image ships without the mode's verification
-  pass (processing checklist for production, pre-post audit for promotional). Fresh
-  eyes, 100% zoom, then thumbnail size. **Check for brand marks nobody asked for** —
-  engines add real logos to plain objects unprompted, and the prompt is not evidence
-  they stayed out. Look at the output.
+Always ask — even with a strong recommendation — about the decisions that change the
+whole job: mode, destiny (whole-frame / cutout / layered / text overlay), where the
+user will generate (which tool or model they have), how a real person's likeness may
+be used, and final-tier spend. Never drip questions one at a time; a second batch only
+when the answers opened something new.
+
+**Fast lane.** When no work-changing line is `[proposed]`, or the user says to go
+ahead, show the brief and continue straight to prompts in the same reply.
+
+Format and the vague-ask playbook: [references/brief.md](references/brief.md). A
+worked batch and deliverable: [references/examples.md](references/examples.md).
+
+### 4. Write the prompts
+
+Load what the job needs:
+
+- Production asset → [references/scenes.md](references/scenes.md)
+- Promotional imagery → [references/social.md](references/social.md)
+- A real person, a recurring character, or any person photo attached →
+  [references/identity.md](references/identity.md), alongside the mode file
+- Which model, its limits, where it runs, rough cost →
+  [references/roster.md](references/roster.md)
+- How to encode the prompt for that model's family →
+  [references/engines.md](references/engines.md) — every prompt, every time
+- Identity-critical work, 1:1 recreations, print, expensive finals → the full-lock
+  template in [references/brief.md](references/brief.md#the-full-lock-template-l3)
+
+### 5. After generation — iterate
+
+When the user comes back with a result, diagnose it before touching the prompt, then
+write one edit: [references/iterate.md](references/iterate.md).
+
+## Shared craft (every model)
+
+Each rule has one home; the link is where its detail lives.
+
+- **State everything the model would otherwise guess.** Camera height and angle,
+  subject distance, framing, what is in focus, where the light comes from, what share
+  of the frame the subject fills. The model fills every blank with its own habits.
+- **The brief's content is fixed; its encoding is per family.** Ordering, labels,
+  parameters, exclusion phrasing and reference syntax differ by model family. Moving a
+  prompt to another family is a rewrite, never a re-run.
+  [engines.md](references/engines.md)
+- **Ratio in the prompt *and* in the tool's settings.** On surfaces with no setting —
+  most chat apps — the prompt is the only place it can go.
+- **Quantify anything that came back wrong once.** "Their head alone fills about one
+  seventh of the frame height" beats "closer". Fractions, distances and counts beat
+  adjectives.
+- **One scene, one focal subject, and the *why*** — what the viewer should take from
+  it. Reasoning models use intent.
+- **The style anchor block.** Series consistency comes from one fixed style block
+  pasted verbatim into every prompt; paraphrase is drift. It holds only within the
+  model family it was tuned on — stamp it with that family.
+- **Lighting by measurement when the model may change.** Name what the exposure is set
+  for and how much of the frame sits in shadow; mood words do not survive a family
+  switch. [engines.md](references/engines.md#lighting-transfers-as-a-measurement-not-a-mood)
+- **References carry identity by default.** Any other role — style, clothing,
+  background — is named explicitly, and only where the model supports it.
+  [identity.md](references/identity.md)
+- **Atmosphere belongs to whole frames.** Cutout-destined assets get subject-contained
+  light and the flat-backdrop clause. [scenes.md](references/scenes.md#cutout-destined-assets-subjects-that-will-be-background-removed)
+- **Exact text in quotes**, with typography and placement named, whenever the mode
+  allows text.
+- **Constraints come in two buckets.** Banned content is phrased per family; process
+  instructions ("change only X") stay literal everywhere.
+  [brief.md](references/brief.md#constraints--the-exclusion-list)
+- **Edit, don't re-roll — one change per pass, preserve list restated every pass.**
+  [iterate.md](references/iterate.md)
+- **Draft cheap, finalize once.** A model switch reopens the ladder.
+  [engines.md](references/engines.md#the-cost-ladder--draft-cheap-finalize-once)
+- **Audit before ship** — the mode's checklist, at 100% zoom and then thumbnail size,
+  including brand marks nobody asked for. The prompt is not evidence; the output is.
 
 ## Deliverable
 
-Open with the **confirmed brief**: step 2's readback with the user's corrections
-applied, every line tagged [user], [doc], or [proposed]. Then per target asset: the
-file name or placement, the primary prompt (anchor block + scene clause), the negative
-constraints, generation size/ratio and engine, 1-2 labeled variations (composition or
-camera only - never style), and the mode's checklist instantiated. Close with any doc
-ambiguity you interpreted, flagged for review, and the anchor block to reuse next —
-**stamped with the engine family it was tuned on**, because the block is only valid
-there. A series continued on another engine needs the anchor re-tuned, not re-pasted.
+Open with the **confirmed brief**, every line tagged. Then, per asset:
+
+1. **File name or placement.**
+2. **Where to generate** — model and surface: "GPT-Image-2.5 in ChatGPT",
+   "Midjourney V8.2 on the web app", "FLUX.2 pro via API".
+3. **The prompt**, in one copyable code block, encoded for that family: anchor block
+   plus scene clause; parameters inline where the model takes them (Midjourney).
+4. **Settings outside the prompt** — ratio or size, quality tier, count, each
+   reference with its role — only the ones that surface actually has.
+5. **Constraints**, as phrased for that family.
+6. **One or two labeled variations** — composition or camera only, never style.
+7. **The mode's checklist**, instantiated.
+
+Close with any doc ambiguity you interpreted, flagged for review, and the anchor block
+to reuse next — stamped with the model family it was tuned on.
+
+Where files can be written, offer to save the prompts (where the project's docs say,
+or beside the asset); never create files unasked.

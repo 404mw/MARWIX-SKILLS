@@ -1,6 +1,6 @@
 name: Release skill bundles
 
-# The README points Claude.ai and ChatGPT users at the latest release's zips,
+# The README points Claude.ai, Desktop and mobile users at the latest release's zips,
 # so those assets are the install path for every client without a marketplace.
 # Building them here keeps them from drifting behind the repo, which is what
 # happened when they were uploaded by hand.

@@ -79,9 +79,12 @@ never ask them to paste a key into the chat.
 1. **Assemble the locked inputs.** From the prompt deliverable (preferred) or the
    user: provider, exact endpoint id, generation size (pixel `WxH`, or aspect + resolution
    for the nano-banana family), full prompt text including negative constraints,
-   count, and output location. Missing engine or size means routing wasn't finished:
-   if a prompt-writing skill exists, complete its deliverable first; otherwise ask.
-   Never substitute a default size or a "probably fine" model.
+   count, and output location. A deliverable names a *model* ("FLUX.2 pro",
+   "GPT-Image-2.5 Flare"), not an endpoint: map it to its id in
+   [references/endpoints.md](references/endpoints.md), and if the model has no row
+   there, say so rather than picking a neighbour. Missing model or size means routing
+   wasn't finished: if a prompt-writing skill exists, complete its deliverable first;
+   otherwise ask. Never substitute a default size or a "probably fine" model.
 2. **State the cost and get approval** (gate 2).
 3. **Write the prompt to a file** (scratchpad or the output dir), then run:
 

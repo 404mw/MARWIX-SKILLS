@@ -1,0 +1,118 @@
+{
+  "skill_name": "mw-image-prompt",
+  "evals": [
+    {
+      "id": 1,
+      "name": "most-vague-asks-for-material",
+      "prompt": "something for the launch post",
+      "expected_output": "One batch reply: a short statement of what it understood, a tagged draft brief, and questions with recommendations and concrete options. No prompt yet.",
+      "files": [],
+      "expectations": [
+        "The reply contains no image-generation prompt",
+        "The reply states in plain words what it understood the ask to be",
+        "It asks what material the user already has (a screenshot, a number, a before/after, an output)",
+        "It offers two or three concrete subject directions rather than an open 'what should it show?'",
+        "Brief lines are tagged [user], [doc] or [proposed]",
+        "It asks where the user will generate the image",
+        "All questions arrive in a single reply, not one at a time"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "placed-ask-infers-production",
+      "prompt": "a hero image for the docs site",
+      "expected_output": "Infers a production asset with live text over it; proposes the brief and asks only the open, work-changing questions.",
+      "files": [],
+      "expectations": [
+        "Mode is proposed as a production asset",
+        "In-image text is proposed as none, with space reserved for live HTML text",
+        "Destiny (whole-frame vs cutout vs text overlay) is raised as a question or confirmed explicitly",
+        "It asks which tool or model the user will generate with",
+        "No prompt is written before the user answers",
+        "It does not invent a house style; style comes from documented rules or a question with options"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "fast-lane-midjourney-encoding",
+      "prompt": "Write a Midjourney prompt for a 16:9 background for our pricing section. Text sits on the left third. Dark navy with one amber accent, no people, not a cutout. Everything's decided, just write it.",
+      "expected_output": "Shows the brief and writes the prompt in the same reply, encoded for Midjourney.",
+      "files": [],
+      "expectations": [
+        "The prompt is written in the same reply (fast lane), with the brief shown",
+        "The prompt ends with a parameter string including --ar 16:9",
+        "Exclusions use --no with bare nouns; the prompt text contains no 'no people' or 'without' phrasing",
+        "The left third is described as empty or quiet space for text",
+        "No in-image text is requested",
+        "The anchor block or deliverable names Midjourney as the family it was tuned on"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "nano-banana-positive-restatement",
+      "prompt": "I'll use Gemini. Product shot of our plain white mug on a wooden desk, morning light, no logos, no text, no people. 4:5. Go ahead.",
+      "expected_output": "A Nano Banana prompt in full sentences with exclusions restated positively and the ratio at the end.",
+      "files": [],
+      "expectations": [
+        "The prompt is written in full sentences, not comma-separated keywords",
+        "Exclusions are phrased as positive states (e.g. 'a plain unbranded white mug', 'an empty room') rather than 'no logos' / 'no text' / 'no people'",
+        "The ratio (4:5) appears in the prompt text, near the end",
+        "Light direction is stated, not just 'morning light'",
+        "Camera height, angle and framing are stated"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "real-person-likeness-and-reference-role",
+      "prompt": "I've got a selfie of my cofounder. Make a LinkedIn cover of her presenting on stage at our launch.",
+      "expected_output": "Asks how the cofounder's likeness may be used and treats the selfie as an identity-only reference with the camera stated explicitly.",
+      "files": [],
+      "expectations": [
+        "It asks how the cofounder's likeness may be used before writing a prompt",
+        "It states the selfie will carry identity only",
+        "It plans to state camera height, angle, distance and framing explicitly rather than inherit them from the selfie",
+        "It does not propose depicting the cofounder saying or endorsing something specific without confirmation"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "unowned-reference-described-not-uploaded",
+      "prompt": "Use this photo I found on Pinterest as the style reference for our cover: https://example.com/found-photo.jpg",
+      "expected_output": "Declines to pass the found image to a model as a reference; offers to describe its light, composition and palette in words instead.",
+      "files": [],
+      "expectations": [
+        "It does not include the found image as an attached or URL reference in any prompt or settings",
+        "It explains that an image the user doesn't own is described in words rather than uploaded",
+        "It offers to translate the liked properties (light, composition, palette) into prompt text"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "iterate-one-change-preserve-list",
+      "prompt": "Here's what ChatGPT gave me for the launch cover: the timer reads 25:00 instead of 20:00, and there's a Nike swoosh on the mug in the corner. Everything else is great. Fix it.",
+      "expected_output": "Diagnoses both misses, fixes one per pass with a full preserve list, and removes the brand mark by positive restatement.",
+      "files": [],
+      "expectations": [
+        "It does not regenerate from scratch; it writes an edit instruction",
+        "The edit changes only one thing per pass (timer first or logo first, not both in one instruction)",
+        "The edit restates a full preserve list (composition, camera, lighting, palette, headline, etc.)",
+        "The brand mark is removed by positive restatement ('a plain unbranded white mug') without naming Nike or the swoosh in the edit",
+        "It explains how to apply the edit in ChatGPT (same conversation, image attached or area selected)"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "unlisted-model-safe-defaults",
+      "prompt": "I generate with a model on Krea that isn't any of the big ones. Write the prompt for a dark moody product hero of our headphones, 16:9. Go.",
+      "expected_output": "Uses the safe defaults for an uncharacterized model and flags the first pass as calibration.",
+      "files": [],
+      "expectations": [
+        "It says the model is not characterized and the first pass is a calibration pass",
+        "The prompt uses full sentences with the focal subject first",
+        "Exclusions are phrased as positive states",
+        "Lighting is given as a measurement (exposure reference, share of frame in shadow), not only mood words",
+        "The ratio appears in the prompt and is also listed as a setting to set where the tool has one"
+      ]
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
   "name": "mw-image",
   "displayName": "MW Image Skills",
-  "version": "1.1.0",
-  "description": "Skills for AI image work: turning a vague ask into a locked brief, the brief into a prompt, and the prompt into an approved render.",
+  "version": "2.0.0",
+  "description": "Skills for AI image work: planning a rough idea into a locked brief with the user, the brief into a prompt for the model they use, and the prompt into an approved render.",
   "author": {
     "name": "MARWIX",
     "email": "hello@marwix.dev"
@@ -14,6 +14,8 @@
     "fal.ai",
     "openai",
     "gpt-image",
-    "prompt-engineering"
+    "prompt-engineering",
+    "midjourney",
+    "nano-banana"
   ]
 }

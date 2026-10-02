@@ -11,15 +11,15 @@ attached or a recurring character is in frame, alongside the mode reference.
 
 An attached photo of a person locks **identity**: face geometry, hair, beard and
 mustache, glasses, skin tone. Nothing else. The engine silently copies every
-property the prompt leaves unstated - camera angle, distance distortion, crop,
-lighting, wardrobe, background, even expression - so the prompt states all of them
+property the prompt leaves unstated — camera angle, distance distortion, crop,
+lighting, wardrobe, background, even expression — so the prompt states all of them
 itself. "Use the reference's framing" is how selfie geometry ends up in a final.
 
 - **Audit each reference before writing**: where was the camera? how close? what
   light? A casual photo is usually a below-eye-level phone selfie with close
-  wide-angle distortion and a color cast - all of it leaks unless overridden.
-- **Name every reference and its role in the prompt text**: "Image 1, front view -
-  identity only", "Image 2, left profile - 3D head shape only, never framing".
+  wide-angle distortion and a color cast — all of it leaks unless overridden.
+- **Name every reference and its role in the prompt text**: "Image 1, front view —
+  identity only", "Image 2, left profile — 3D head shape only, never framing".
   Per-engine multi-reference mechanics: engines.md.
 - **Deny the leak explicitly**, then state the replacements: "Do not import the
   reference photos' background, clothing, lighting, or phone-selfie perspective" +
@@ -27,29 +27,30 @@ itself. "Use the reference's framing" is how selfie geometry ends up in a final.
 - **A reference role other than identity must be named, and only some families take
   one.** GPT-Image-2.5 accepts an input assigned as style, clothing or background —
   OpenAI's own instruction is to *"identify each input by number and purpose"* and then
-  say how they combine. That is a capability of that family, not a default: on any
-  engine, an unnamed reference is an identity reference, and a role the prompt does not
-  state is a role the engine invents. Per-family mechanics: engines.md.
+  say how they combine. Midjourney splits roles by syntax instead: `--sref` carries
+  style only, and on V8.1/V8.2 the Edit model takes up to four references for subjects
+  (it replaced Omni and Character Reference). These are capabilities of those families,
+  not defaults: on any model, an unnamed reference is an identity reference, and a role
+  the prompt does not state is a role the model invents. Per-family mechanics:
+  engines.md.
 
-## The reference you may not use
+## The reference you may not use, and the people you may not fake
 
-**A reference you do not own never goes to an engine.** A found image — someone else's
-photograph, a frame from a film, an artist's work pulled off a feed — may be *described
-in words* and generated from text. It is not uploaded, not in an `image_urls` array, not
-attached "just as a mood reference".
+The rights, real-people and minors rules in SKILL.md (*Rules nothing overrides*) bind
+here more than anywhere. Two ways they get broken by accident:
 
-This is a rule, not a judgement call, and it is easy to break by accident because a mood
-board is exactly the thing that feels harmless to attach. Describe it instead: what the
-light does, how the frame is composed, what the palette is. The description is the
-deliverable; the file stays out.
-
-A person's photo carries a second permission on top of the first: ask how their likeness
-may be used before writing anything that generates it.
+- **The mood board.** A found image feels harmless to attach "just for the vibe". It is
+  still a reference the user does not own. Describe it instead — what the light does,
+  how the frame is composed, what the palette is. The description is the deliverable;
+  the file stays out.
+- **The likeness question skipped because the user is the subject.** Ask anyway when
+  the photo shows anyone else, and when the use is public: a founder's portrait on a
+  launch cover is a different permission from a private avatar.
 
 ## The clean-reference builder
 
 When the only available references are casual photos, fix the reference itself
-before any serial work - one build, and every future generation inherits it instead
+before any serial work — one build, and every future generation inherits it instead
 of re-fighting the same flaws:
 
 1. **Generate a canonical pair** from the raw photos: a **front** (chest-up, dead
@@ -59,18 +60,18 @@ of re-fighting the same flaws:
    seamless mid-gray backdrop; plain logo-free wardrobe; ~85mm equivalent at ~2 m,
    deep f/8 focus, sharp everywhere; zero lens reflections so the eyes stay
    readable; accurate skin tone; no grade, no grain, no beautification. A reference
-   is a document - mood belongs to the real work.
+   is a document — mood belongs to the real work.
 2. **Verify likeness with the user** (or someone who knows the face) against the
    raw photos. The agent compares features; only a human blesses likeness.
 3. **Freeze the approved pair** as the canonical references and archive the raw
    photos beside them. Downstream prompts attach the clean pair.
 4. **Rebuild only when the face materially changes** (grooming, glasses). Never
-   refresh the canon casually - every regeneration is a new person.
+   refresh the canon casually — every regeneration is a new person.
 
 ## The verbal identity lock
 
 For serial identity work, derive a written identity block from the references once
-and duplicate it **verbatim** into every prompt - paraphrase is drift:
+and duplicate it **verbatim** into every prompt — paraphrase is drift:
 
 - Contents: face geometry (shape, cheeks, nose, brows, eye color) · skin tone with
   an explicit no-smoothing / no-lightening clause · hair (color, texture, exact
@@ -78,7 +79,7 @@ and duplicate it **verbatim** into every prompt - paraphrase is drift:
   shorten or sculpt") · eyewear (frame shape, material, "must be worn") · build and
   height for anything framed below the shoulders.
 - **Identity is frozen; presentation is free.** Expression, gaze, pose, wardrobe,
-  and role are per-image variables, each redefined explicitly in its own prompt -
+  and role are per-image variables, each redefined explicitly in its own prompt —
   never inherited from the reference's expression.
 - Per-shot exceptions (this shot's glasses-reflection rule, a lit eye in darkness)
   are granted in the shot's own sections, never edited into the lock block.
@@ -87,7 +88,7 @@ and duplicate it **verbatim** into every prompt - paraphrase is drift:
 
 - Default: camera at eye level, straight on, ~85mm portrait compression, subject
   distance ≥1.5 m, framing named (chest-up / head-and-shoulders / full figure).
-- A low or high angle is a deliberate, stated choice with a reason - never an
+- A low or high angle is a deliberate, stated choice with a reason — never an
   inheritance from the reference.
 - The selfie-flaw catalog to prompt against: below-eye camera (up-nostril
   perspective), close wide-angle distortion (enlarged nose, narrowed skull), tilted
@@ -98,7 +99,7 @@ and duplicate it **verbatim** into every prompt - paraphrase is drift:
 
 ## Edits and drift
 
-- Every edit iteration restates the **full preserve list** - face, features,
+- Every edit iteration restates the **full preserve list** — face, features,
   expression, camera, framing, palette, plus the destiny clauses (the flat-backdrop
   clause for cutouts). Preservation never carries over between edits.
 - Chain at most ~3 edits off any base; likeness mutates one generation at a time.

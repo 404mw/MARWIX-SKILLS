@@ -1,20 +1,21 @@
 # MW Image Skills
 
-**Whatever the prompt doesn't decide, the engine decides — and the engine's habits are
+**Whatever the prompt doesn't decide, the model decides — and the model's habits are
 nobody's taste.**
 
 Claude can't make images, and no agent arrives with taste. These two skills add both —
-one gives your agent art direction, the other the ability to generate. Either works
-alone; together they are the pipeline. Used on my own work for months before release.
+one plans the image with you and writes the prompt, the other generates it. Either
+works alone; together they are the pipeline. Used on my own work for months before
+release.
 
-Install, requirements, the key warning and the chat-UI bundles:
+Install, requirements, the key warning and the Claude.ai bundles:
 [repository README](../../README.md).
 
 ## Contents
 
-- [`mw-image-prompt`](#mw-image-prompt) — decides what the image is, then writes the prompt
+- [`mw-image-prompt`](#mw-image-prompt) — plans the image with you, then writes the prompt
 - [`mw-image-gen`](#mw-image-gen) — runs the prompt against fal.ai or OpenAI
-- [Using them](#using-them) — invocation per client
+- [Using them](#using-them) — invocation in Claude Code and Claude.ai
 - [Examples — from four words to a full brief](#examples--from-four-words-to-a-full-brief)
   - [Most vague — a message, not a picture](#most-vague--a-message-not-a-picture)
   - [Vague, but placed — it knows where it goes](#vague-but-placed--it-knows-where-it-goes)
@@ -27,28 +28,39 @@ Install, requirements, the key warning and the chat-UI bundles:
 
 ## `mw-image-prompt`
 
-*Decides what the image is, then writes the prompt.*
+*Plans the image with you, then writes the prompt.*
 
-Takes what you asked for, however little that is, and finishes it into a brief:
-purpose, mode, subject, style source, camera, lighting, palette, in-image text, ratio,
-engine, references, and the checklist that gates shipping. Every line is tagged with
-where it came from — your words, your project's docs, or a proposal you can accept in
-one word. Only then is a prompt written.
+Ideas arrive rough — a feeling, a placement, three words. The skill reasons about what
+you said, then answers in one go: what it understood, a draft brief, and the few
+questions only you can answer, each with its own recommendation and concrete options to
+pick from. The brief covers purpose, mode, subject, style, camera, lighting, palette,
+in-image text, where you'll generate, ratio, references, lock level, budget and the
+checklist that gates shipping. Every line is tagged with where it came from — your
+words, your project's docs, or a proposal you can accept in one word.
 
-It brings **no style of its own**, deliberately. Palette, mood, banned elements and
-recurring characters all come from your project's documentation at runtime, so one
-install produces different work in different repos. If your project documents nothing,
-it asks you. It does not improvise a style.
+Then it writes the prompt **for the model you'll actually use**. ChatGPT
+(GPT-Image-2.5), Gemini (Nano Banana), Midjourney, FLUX, Seedream, Ideogram, Recraft,
+Qwen — each family wants a different encoding: sentences or labeled sections, a
+negative field or positive restatement, parameters or settings. The brief stays the
+same and the encoding changes. A model it doesn't know gets safe defaults, flagged as a
+calibration pass.
 
-It writes prompts and never generates.
+It brings **no style of its own**, deliberately. If your project documents a brand kit
+or art direction, it reads that and follows it; if not, you are the source, and it
+offers directions rather than improvising a house look. When a result comes back, it
+diagnoses the result first, then writes one edit with the full preserve list.
+
+It plans and writes prompts. It never generates, and it works the same in Claude Code
+and on Claude's web, desktop and mobile apps.
 
 ## `mw-image-gen`
 
 *Runs the prompt against fal.ai or OpenAI.*
 
-Takes a finished prompt, calls the endpoint it names, saves every image beside a JSON
-sidecar recording model, settings, seed and request id, then converts approved masters
-to WebP/AVIF. It chooses nothing — engine, size and prompt all arrive from upstream.
+Takes a finished prompt, calls the endpoint for the model it names, saves every image
+beside a JSON sidecar recording model, settings, seed and request id, then converts
+approved masters to WebP/AVIF. It chooses nothing — model, size and prompt all arrive
+from upstream.
 
 Generation spends your money, so it runs only on an explicit request and states provider,
 model, size, count and estimated cost before each batch. If something it needs is missing,
@@ -70,11 +82,8 @@ it stops and names it rather than substituting a default and billing you for the
 /mw-image-gen      run the prompt above
 ```
 
-The prefix differs by client: `/name` in most, `$name` in Codex, `@name` in ChatGPT,
-`/skill:name` in Kimi and Pi. **If none is recognised, just say it in words** — "use the
-mw-image-prompt skill for this" works everywhere. The `mw-` prefix keeps the bare name
-from colliding with anything else you have; `/mw-image:mw-image-prompt` is the
-namespaced form in Claude Code.
+`/mw-image:mw-image-prompt` is the namespaced form in Claude Code. In Claude.ai and the
+desktop and mobile apps, say it in words — "use the mw-image-prompt skill for this".
 
 They also fire on their own from an ordinary request — "I need a cover image for the
 launch" reaches `mw-image-prompt` — but that is a judgement the model makes, and it can
@@ -86,7 +95,9 @@ command in Claude Code directly, or use `//mw-image-prompt`.
 ## Examples — from four words to a full brief
 
 The skill's job is to close the gap between what you said and what an image needs. How
-much it asks depends entirely on how much you left open.
+much it asks depends entirely on how much you left open. A complete worked example —
+the batch, the answers and the deliverable, encoded for two different models — lives in
+[`references/examples.md`](skills/mw-image-prompt/references/examples.md).
 
 ### Most vague — a message, not a picture
 
@@ -94,11 +105,14 @@ much it asks depends entirely on how much you left open.
 > something for the launch post
 ```
 
-**It stops before writing anything.** "Launch post" names what the image is *for*, never
-what it is *of*, and a model asked to fill that blank produces the glowing-terminal-in-space
-that every other account posted this week. So it asks what you already have: a screenshot,
-a before and after, a number, an ugly output the thing fixes. A concept built from your
-material can't be generically wrong; one reasoned from the topic alone usually is.
+**It writes no prompt yet.** "Launch post" names what the image is *for*, never what it
+is *of*, and a model asked to fill that blank produces the glowing-terminal-in-space
+that every other account posted this week. So it says what it understood, asks what
+material you already have — a screenshot, a before and after, a number, an ugly output
+the thing fixes — and offers two or three concrete directions built on the kind of
+material you're likely to have, so there is something to react to. A concept built
+from your material can't be generically wrong; one reasoned from the topic alone
+usually is.
 
 ### Vague, but placed — it knows where it goes
 
@@ -108,9 +122,10 @@ material can't be generically wrong; one reasoned from the topic alone usually i
 
 **It proposes the whole brief and asks you to correct it.** Placement is enough to derive
 most of the rest: docs hero means production asset, means live HTML text over the top,
-means a reserved quiet zone and no baked-in words. It reads your project's docs for palette
-and mood, tags every line with where it came from — `[user]`, `[doc]`, `[proposed]` — and
-asks only about the ones it genuinely can't infer. Usually two or three.
+means a reserved quiet zone and no baked-in words. If your project documents a palette
+and mood it reads them; either way it tags every line with where it came from —
+`[user]`, `[doc]`, `[proposed]` — and asks only about the ones it genuinely can't infer,
+including which tool you'll generate with. Usually two or three questions.
 
 ### Specific — you've made the calls
 
@@ -121,7 +136,8 @@ asks only about the ones it genuinely can't infer. Usually two or three.
 **It takes your three constraints as law and fills the rest around them.** "Text on top"
 changes the composition, not just the mood: it reserves the space your copy needs and drops
 the atmosphere effects that would fight it. And if "dark" contradicts what your brand docs
-say, it tells you that instead of silently picking a winner.
+say, it tells you that instead of silently picking a winner. With nothing left that
+changes the job, it goes straight to the prompt.
 
 ### Fully specified, with references — the most it can be given
 
@@ -140,7 +156,7 @@ exactly one named role, stated in the prompt:
 - **The product is placed as-is**, never redrawn from memory — that is where subtle
   wrong-proportion and wrong-logo errors come from.
 - **The look comes from your brand docs**, not from either image. "Same as the site" is
-  resolved by reading the documented palette and mood, not guessed from the attachments.
+  resolved by reading the documented palette and mood — or, with no docs, by asking.
 
 ### Then generation
 
@@ -148,8 +164,9 @@ exactly one named role, stated in the prompt:
 > generate it
 ```
 
-States the model, size, count and estimated cost, then waits. One approval covers one
-stated batch, not the session.
+In ChatGPT, Gemini or Midjourney you paste the prompt there. In Claude Code with
+`mw-image-gen` installed, it states the model, size, count and estimated cost, then
+waits. One approval covers one stated batch, not the session.
 
 ```
 > convert the approved ones
@@ -159,7 +176,8 @@ Writes WebP/AVIF beside the masters. The originals stay.
 
 ## Requirements
 
-`mw-image-prompt` has none — plain Markdown, runs anywhere an agent reads instructions.
+`mw-image-prompt` has none — plain Markdown, works in Claude Code and on Claude's web,
+desktop and mobile apps.
 
 `mw-image-gen` runs **locally** and needs Node.js 18+, [`uv`](https://docs.astral.sh/uv/)
 for the WebP/AVIF conversion, and **at least one provider key in the environment.**
@@ -180,7 +198,7 @@ is postpaid against a card, so an unset limit is no ceiling at all — set a mon
 under *Settings → Limits* first. An empty fal balance stops by itself; an OpenAI account
 does not.
 
-**Never paste a key into a hosted chat** — ChatGPT, Claude.ai, any web interface. It
+**Never paste a key into a hosted chat** — Claude.ai or any other web interface. It
 becomes part of that conversation's stored history and you cannot retract it; rotate at
 [fal.ai/dashboard/keys](https://fal.ai/dashboard/keys) or
 [platform.openai.com/api-keys](https://platform.openai.com/api-keys) if you ever do. Keep

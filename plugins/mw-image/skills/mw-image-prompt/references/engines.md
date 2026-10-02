@@ -1,175 +1,65 @@
-# mw-image-prompt — Engine routing, settings, and cost
+# mw-image-prompt — Encoding the prompt per model family
 
-> **The prices below are indicative, for routing only — never quote them to a user as
-> current.** They were read off each model's own fal page on 2026-09-09 — every roster
-> row carries its source link — and have decayed from that date onward. They stay
-> useful for comparing engines *against each other*, since tiers drift together; they
-> are not a quote, and no deliverable should present them as one.
->
-> **If the user wants an actual cost breakdown, offer it and let them decline.** Real
-> numbers mean fetching each candidate model's own page — several web lookups, costing
-> real time and tokens. Say roughly how many before running them. This file cannot
-> stay accurate forever; the provider's page always can, so route people there rather
-> than maintaining a copy that quietly goes wrong.
->
-> Any limit not listed here: confirm on the fal model page before locking the asset's
-> generation size.
-
-Per-engine mechanics for the current generation of image models. **Engine facts date
-fast**: when engines change, update this file — the doctrine in SKILL.md and the mode
-references doesn't change with them. The roster below is fal-hosted: billed per output
-image or per megapixel (queue wait and failed requests are free), executed by the
-`mw-image-gen` skill against the pinned endpoint IDs. The mw-image-prompt deliverable names
-the engine per asset; the executor never chooses.
+SKILL.md's shared craft holds on every model. **This is the layer that does not.** A
+working prompt is a brief plus a family-specific encoding of it; moving it to another
+family keeps the brief and rewrites the encoding. OpenAI says this of its own models —
+do not assume *"older prompt patterns transfer unchanged"* — and it holds in every
+direction. Which model to use, its limits and its cost: [roster.md](roster.md).
 
 ## Contents
 
-- Model roster (read off the fal model pages, 2026-09-09)
-- Routing
-- Cached price lookups — filesystem only
-- **Prompt construction per engine family** — what does *not* transfer
-- Negative constraints — phrasing is engine-specific
-- Nano Banana 2 specifics
+- The families
+- Prompt construction per family
+- Ordering
+- Lighting transfers as a measurement, not a mood
+- Words that summon what you did not ask for
+- Negative constraints — phrasing is family-specific
+- Chat apps vs APIs — what moves into the prompt
+- Nano Banana specifics
 - GPT-Image-2.5 specifics — Flare and Sunburst
+- Midjourney specifics
+- A model not listed here
 - The cost ladder — draft cheap, finalize once
 
-## Model roster (read off the fal model pages, 2026-09-09)
+## The families
 
-| Model | fal ID | Price | Niche | Source |
+| Family | Models | What defines it |
+|---|---|---|
+| **Diffusion / flux-class** | FLUX.2, FLUX.1, Qwen Image | phrase weighting works; a negative-prompt field where the model exposes one (Qwen does; several FLUX endpoints do not — check) |
+| **Reasoning** | Nano Banana 2, Nano Banana Pro | plans the composition before rendering; full sentences; no negative channel |
+| **GPT-Image** | GPT-Image-2.5 Flare, Sunburst | format-agnostic; roles assignable to references; no negative field, but stated exclusions are sanctioned |
+| **Midjourney** | V8.2, V7, Niji | natural-language description plus a parameter string; a real `--no` channel; its own reference syntax |
+| **Typography-first** | Ideogram 4, Recraft V4 | built for text and layout; use the app's negative field if it shows one, otherwise the safe defaults |
+| **Not characterized** | Seedream and anything not listed | the safe defaults under *A model not listed here* |
+
+## Prompt construction per family
+
+| | Diffusion / flux-class | Nano Banana 2 / Pro | GPT-Image-2.5 | Midjourney V8.2 |
 |---|---|---|---|---|
-| FLUX.2 klein 4B | `fal-ai/flux-2/klein/4b` | $0.005/MP | drafts, simple graphics, gray-box comps (9b + `/base` variants exist) | [fal](https://fal.ai/models/fal-ai/flux-2/klein/4b) |
-| FLUX.1 schnell | `fal-ai/flux/schnell` | $0.003/MP | throwaway composition drafts | [fal](https://fal.ai/models/fal-ai/flux/schnell) |
-| FLUX.2 dev / turbo | `fal-ai/flux-2-dev` · `fal-ai/flux-2/turbo` | check page | open-weights / speed mid-tier | not re-checked 2026-09 |
-| FLUX.2 pro | `fal-ai/flux-2-pro` (+`/edit`) | $0.03 first MP, then $0.015/MP | **balanced default for text-free photoreal/atmospheric production art**; up to 9 reference images | [fal](https://fal.ai/models/fal-ai/flux-2-pro) |
-| FLUX.2 flex | `fal-ai/flux-2-flex` (+`/edit`) | $0.05/MP, charged on input **and** output | step and guidance control; the flux line's typography variant, up to 10 refs | [fal](https://fal.ai/models/fal-ai/flux-2-flex) |
-| Nano Banana 2 | `fal-ai/nano-banana-2` (+`/edit`) | $0.08/img at 1K (0.5K ×0.75, 2K ×1.5, 4K ×2; web search +$0.015, high thinking +$0.002) | reasoning-guided composition, character consistency, up to 14 refs, grounded data, localization | [fal](https://fal.ai/models/fal-ai/nano-banana-2) |
-| Nano Banana Pro | `fal-ai/nano-banana-pro` (+`/edit`) | $0.15/img at 1K–2K, $0.30 at 4K | top-end final render, native 4K, legible multilingual in-image text | [fal](https://fal.ai/models/fal-ai/nano-banana-pro) |
-| GPT-Image-2.5 Flare | `openai/gpt-image-2.5/flare/text-to-image` (+`/flare/edit`) | per image, size × quality: $0.004 low → $0.036 high → $0.144 max at 1024×768; $0.011 → $0.100 → $0.400 at 3840×2160 | speed-first mode, OpenAI's default: dense text + precise layout at everyday cost | [fal](https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image) |
-| GPT-Image-2.5 Sunburst | `openai/gpt-image-2.5/sunburst/text-to-image` (+`/sunburst/edit`) | same published table as Flare | precision mode: fine detail, closest reference adherence, slower renders | [fal](https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image) |
-| GPT-Image-2 | `fal-ai/gpt-image-2` (+`/edit`) | $0.005 low → $0.145 high at 1024×768 | **superseded by 2.5** — still live, not marked deprecated; no reason to route new work here | [fal](https://fal.ai/models/openai/gpt-image-2) |
-| Qwen Image 2.0 | `fal-ai/qwen-image-2/text-to-image` · `/pro/text-to-image` (+`/edit`, `/pro/edit`) | $0.035/img · $0.075 pro | dense in-image text plus a real `negative_prompt`, cheap. **A deprecation banner sat on the model page on 2026-09-09 while the product page still sold it — confirm before routing.** v1 `fal-ai/qwen-image` (+`-edit`) is $0.02/MP and still live | [fal](https://fal.ai/qwen-image-2.0) |
-| Ideogram 4 | `ideogram/v4` | $0.03/MP turbo · $0.06 balanced · $0.10 quality (+$0.03 when prompt expansion runs) | typography-first: posters, logos, headlines; native 2K, native transparency. **Supersedes `fal-ai/ideogram/v3`** | [fal](https://fal.ai/ideogram-4) |
-| Recraft V4 | `fal-ai/recraft/v4/text-to-image` | $0.04 raster · $0.25 raster pro · $0.08 vector · $0.30 vector pro | the vector-output option. **Supersedes Recraft V3** | [fal](https://fal.ai/models/fal-ai/recraft/v4/text-to-image) |
-| Seedream 5.0 | `bytedance/seedream/v5/pro/text-to-image` · `/v5/lite/text-to-image` | pro $0.0675/img ≤1536×1536, $0.135 up to 2048×2048 · lite $0.035/img up to 3072×3072 | dense structured layouts, native text in 14 languages; V4.5 (`bytedance/seedream/v4.5`, $0.04) is still the cheap photoreal option | [fal](https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image) |
+| **Format** | keyword-and-phrase weighting still works | **full sentences; keyword soup degrades results** | **format-agnostic** — paragraphs, labeled sections, tags, JSON-like structures. For complex briefs OpenAI recommends labeled sections: *scene, subject, details, constraints* | descriptive sentences, subject first; **~50–150 tokens** beats 300+; parameters last |
+| **Exclusions** | the negative field, where there is one — state the negation | positive restatement only | direct exclusions supported (*"state exclusions such as unwanted text"*), but positive restatement works better for invented objects | `--no a, b` — bare nouns, no "no" inside the prompt text |
+| **Reference roles** | style/structure conditioning | identity anchors; name each reference | roles beyond identity: *"identify each input by number and purpose: subject, style, clothing, or background"*, then say how they combine | `--sref` = style only; image URLs at the start = content, weighted by `--iw`; the Edit model = up to four subject references |
+| **Lighting** | responds to adjectives and film-stock shorthand | responds to described intent | **mood words alone are unreliable** — OpenAI: for wide, cinematic, low-light, rainy or neon scenes, *"specify scale, atmosphere, and color instead of relying on mood words alone"* | responds to adjectives strongly — pair them with a measurement when the look must hold |
+| **Camera** | lens/aperture shorthand reads as style | composition planned before render | camera specs are *"cues for appearance, not a guarantee of exact physical simulation"* — state the resulting framing too | lens shorthand reads as style; state framing in words |
+| **Photorealism** | implied by style tokens | implied by description | **ask for it explicitly** — *"request 'photorealistic' or 'real photograph' when that is the goal"* | `--raw` plus a photograph described with camera and lens |
 
-Prices marked "check page" and any max-resolution limit not listed here: confirm on
-the fal model page before locking the asset's generation size.
+## Ordering
 
-## Routing
-
-**The resolution gate comes first.** Lock the target generation size (from the
-project's asset contract or the platform ratio) before weighing quality: an engine
-that cannot hit the size is disqualified no matter how good it is — GPT-2.5 refuses an
-aspect ratio past 3:1, so a 21:9 banner is out however good its text is, and Seedream
-5.0 Pro stops at 2048×2048. Megapixel-priced models get their cost estimated from
-these exact dimensions, and the deliverable records both the size and the engine it
-forced. (The old ~1536×1024 GPT-Image cap is **gone**: both 2.5 modes and GPT-Image-2
-now take a 3840px max edge and ~0.66–8.29 MP, with custom dimensions in multiples of
-16.)
-
-**Production assets (text-free scene art, backgrounds, parallax layers):**
-
-| Job | Engine | Why |
-|---|---|---|
-| Composition drafts, gray-box comps, simple graphics | **FLUX.2 klein 4B** | $0.005/MP with intact quality fundamentals; schnell at $0.003/MP if even cheaper is fine |
-| Photoreal / atmospheric final layers (the default) | **FLUX.2 pro** | production-grade without tuning; fal's own roundup names it for studio-grade photorealism, $0.03 first MP then $0.015/MP |
-| Deep low-key / near-black fields (dark fog, void layers) | **NB2** | flux-class normalizes exposure and gray-lifts near-black scenes even through /edit darkening passes (observed 2026-07-10, 2 assets x 2 attempts each); NB2 holds ink-level darkness and constraint lists. NB2 4K may letterbox 16:9 with hard seam bands ~12% from frame edges - plan to crop inside them |
-| Complex composition or a recurring character in-scene | **NB2** | plans composition, holds character consistency |
-| Top-end final render (large format, or contains a face) | **NB Pro** | native 4K, one render only per the cost ladder |
-| Photoreal final where prompt adherence matters more than tuning | **Seedream 5.0 Pro** | fal rates the Seedream line level with FLUX.2 pro on photorealism; stops at 2048×2048 |
-
-**Promotional imagery:**
-
-| Job | Engine | Why |
-|---|---|---|
-| Single-subject covers, character scenes | **NB2** | Fast, excellent at single-scene briefs and character consistency |
-| Edits, variations, expression swaps | **NB2** | Editing mode preserves everything unnamed; upload + describe only the change |
-| Data-grounded infographics (real stats, real dates) | **NB2** | Pulls live data from search during generation instead of hallucinating |
-| Text localization (same image, translated in-image text) | **NB2** | Translates and swaps in-image text natively |
-| Dense text: carousels, multi-label diagrams | **GPT-2.5 Flare** | an independent 14-call test got four text blocks at three type sizes back correctly spelled at every quality tier, down to an 8px line; OpenAI still says `quality=high` for small type |
-| Multi-element compositions (3+ elements, precise layout) | **GPT-2.5 Flare** | fal's own line for it: complex layouts, natural lighting, rich textures |
-| Multi-reference composites (character + logo + product) | **GPT-2.5** `/edit` | up to **16** images in `image_urls`, referenced by index; OpenAI: "assign roles to references… subject, style, clothing, or background" |
-| Identity-critical character work | **GPT-2.5 Sunburst** | OpenAI routes here when "small visual details matter, reference images must be followed closely". **`input_fidelity` no longer exists on 2.5** — image inputs are always processed at high fidelity |
-
-For text-heavy promotional work, check the cheaper typography specialists before
-reaching for GPT-2.5: **Ideogram 4** (posters, logos, big headlines, $0.03/MP turbo),
-**Recraft V4** (typography and vector), and **Qwen Image 2.0** ($0.035/img, and it has
-a real negative channel) often match or beat it. GPT-2.5 earns its cost when dense
-text and precise multi-element layout are needed *in the same image* — though at
-`quality=low` (~$0.004/img at 1024×768) it now undercuts all of them, so the old
-"GPT is the expensive one" reflex is worth re-testing per job.
-
-One line: *production art → flux-class (klein drafts, pro finals), NB2/NB Pro when
-composition or characters demand it · character scenes / edits / grounded data /
-localization → NB2 · typography-first → Ideogram 4 / Recraft V4 / Qwen 2.0 · dense
-text + precise layout together / multi-reference composites → GPT-2.5 Flare ·
-identity-critical or fine-detail finals → GPT-2.5 Sunburst (`high` only when text is
-small or faces matter).*
-
-## Cached price lookups — filesystem only
-
-A live lookup costs the user time and tokens, so it is worth doing once instead of
-every session. **This whole section applies only where files can be read and written.**
-In a chat UI there is no filesystem: skip it silently and never mention a cache the
-user has no way to keep.
-
-**Before any lookup, check for a cache.** Look for `.mw-image/engine-prices.md` in the
-host project. If it exists, read it and use it — and **state its fetch date out loud
-every time**, in the same breath as the numbers: "$0.03/MP, from a lookup on
-2026-08-14." A price whose age is not stated is a price presented as current.
-
-**After a lookup, offer to write one.** Creating a file in someone's repository is a
-change they did not ask for, so propose it and take a no for an answer:
-
-```
-Fetched current prices for 3 models. Save them to .mw-image/engine-prices.md so
-the next session doesn't have to look them up again?
-```
-
-Write the fetch date, one row per model, and the source URL for each — a cached number
-without its source cannot be re-checked, only re-trusted.
-
-**A cache ages exactly like this file does.** It is a saved lookup, not a source of
-truth, and it decays from its own fetch date onward. Two rules keep that honest:
-
-- Always state the age with the number. Never present a cached figure bare.
-- **Re-offer a lookup before any final-tier spend.** Draft and iteration tiers are
-  cheap enough that a stale estimate costs little; a final render is where a wrong
-  number becomes a wrong decision, so that is where a refresh earns its cost.
-
-If the host project's docs name a different location for generated artifacts, put the
-cache there instead — the host contract wins over the default path.
-
-## Prompt construction per engine family — what does *not* transfer
-
-SKILL.md's shared craft holds everywhere. **This is the layer that does not.** A prompt
-that works is a brief plus a family-specific encoding of it; moving it to another family
-keeps the brief and rewrites the encoding. OpenAI states this of its own models —
-do not assume *"older prompt patterns transfer unchanged"* — and it is true in every
-direction, not just theirs.
-
-| | Diffusion / flux-class | Nano Banana 2 / Pro | GPT-Image-2.5 (Flare, Sunburst) |
-|---|---|---|---|
-| **Prompt format** | keyword-and-phrase weighting still works | **full sentences; keyword soup degrades results** | **format-agnostic** — paragraphs, labeled sections, tags and JSON-like structures all work. For complex briefs OpenAI recommends labeled sections: *scene, subject, details, constraints* |
-| **Exclusions** | real `negative_prompt` channel — state the negation | no negative channel — positive restatement only | direct exclusions are supported (*"state exclusions such as unwanted text"*), but positive restatement still works better for invented objects |
-| **Reference roles** | style/structure conditioning | identity anchors; name each reference | roles assignable beyond identity: *"identify each input by number and purpose: subject, style, clothing, or background"*, then say how they combine |
-| **Lighting** | responds to adjectives and film-stock shorthand | responds to described intent | **mood words alone are unreliable** — OpenAI: for wide, cinematic, low-light, rainy or neon scenes, *"specify scale, atmosphere, and color instead of relying on mood words alone"* |
-| **Camera** | lens/aperture shorthand reads as style | composition planned before render | camera specs are *"cues for appearance, not a guarantee of exact physical simulation"* — state the resulting framing too, not only the lens |
-| **Photorealism** | implied by style tokens | implied by description | **ask for it explicitly** — *"request 'photorealistic' or 'real photograph' when that is the goal"* |
-
-**Ordering, concretely.** Reasoning and diffusion families weight early tokens heavier,
-so the pieces run front-loaded in one flowing block:
+Reasoning, diffusion and Midjourney prompts weight early words heavier, so the pieces
+run front-loaded in one flowing block:
 
 > style/medium → subject (+ expression) → the one action → setting → composition
 > (camera height and angle, subject distance or lens feel, framing, focal point,
 > reserved negative space) → exact text in quotes → constraints → ratio and resolution
 
-GPT-Image-2.5 takes the same pieces but does not need that order. For anything complex,
-OpenAI recommends labeled sections instead — **scene, subject, details, constraints** —
-and the labels help more than the ordering does. Either way the *content* is the brief's
-decision set, unchanged; only the packaging moves.
+Midjourney then appends its parameter string. GPT-Image-2.5 takes the same pieces but
+does not need that order: for anything complex, labeled sections — **scene, subject,
+details, constraints** — help more than ordering does. Either way the *content* is the
+brief's decision set, unchanged; only the packaging moves.
 
-**The failure this table exists to prevent.** A night scene tuned on Nano Banana 2 —
+## Lighting transfers as a measurement, not a mood
+
+**The failure this section exists to prevent.** A night scene tuned on Nano Banana 2 —
 dark, cold, warm light contained to one shelter — was carried word-for-word to
 GPT-Image-2.5 and came back nearly gold: every source blown out, the cold gone, the
 whole frame warm. Both Flare and Sunburst did it, so it is a family trait, not a
@@ -177,48 +67,52 @@ variant's quirk. The words describing light had not changed; only the family had
 Recovering it took three passes in opposite directions, the first overshooting into a
 frame too dark to read a face in.
 
-What finally transferred was not an adjective but a measurement: *"the exposure is set a
-little above the night sky, so about half the picture sits in soft shadow"*, with the
+What finally transferred was not an adjective but a measurement: *"the exposure is set
+a little above the night sky, so about half the picture sits in soft shadow"*, with the
 light strips described as *"a clean bright line with a defined edge"* and the warm pool
 extended to a named distance. **Write lighting that way from the start whenever the
-engine might change**, and treat three recovery passes as the cost of switching if it
-was not.
+model might change** — name what the exposure is set for, what share of the frame sits
+in shadow, the scale, the level and the color — and treat three recovery passes as the
+cost of switching if it was not.
 
-Vocabulary that summons what you did not ask for: **`halation`, `glowing` and `neon`
-bring bloom** on every family, and on a brief that wants restraint they undo it. "A
-clean bright line with a defined edge" is the phrasing that holds.
+## Words that summon what you did not ask for
 
-**Say that in-scene content stays inside its frame.** Art shown on a screen, poster or
-sign inside the scene escapes its edges and floats on whatever is beside it — observed
-across three passes and two providers. One clause fixes it: name the surface and say
-the content stops at its border.
+- **`halation`, `glowing` and `neon` bring bloom** on every family; on a brief that
+  wants restraint they undo it. "A clean bright line with a defined edge" holds.
+- **In-scene content escapes its frame.** Art on a screen, poster or sign inside the
+  scene spills past its edges and floats on whatever is beside it — observed across
+  three passes and two providers. Name the surface and say the content stops at its
+  border.
+- **Quality padding is noise everywhere.** "8k, masterpiece, trending" degrades
+  reasoning models and Midjourney alike.
 
-## Negative constraints — phrasing is engine-specific
+## Negative constraints — phrasing is family-specific
 
-**Scope: this section governs *banned content* only** - things that must not appear in
-the frame (watermark, signature, extra text, extra logos, the project's banned list).
-Process instructions - "change only X", "do not redraw the logo", "do not import the
-reference's background" - name no absent object and stay literal on every engine. The
-two buckets and the test between them: brief.md.
+**Scope: banned content only** — things that must not appear in the frame (watermark,
+signature, extra text, extra logos, any documented banned list). Process instructions —
+"change only X", "do not redraw the logo", "do not import the reference's background" —
+name no absent object and stay literal on every model. The two buckets: brief.md.
 
-For banned content, the list never changes; **how it is phrased depends on the engine
-family, and getting it backwards summons the thing you excluded.**
+For banned content the list never changes; **how it is phrased depends on the family,
+and getting it backwards summons the thing you excluded.**
 
-| Engine family | Negative channel | How to phrase an exclusion |
+| Family | Negative channel | How to phrase an exclusion |
 |---|---|---|
-| Diffusion / flux-class | a real negative-prompt input the sampler steers away from | State the negation directly: "no lens flare, no text" |
-| Reasoning / multimodal (NB2, NB Pro, GPT-2) | **none — there is no subtractable reverse vector** | Restate each exclusion as the positive state that excludes it |
-| GPT-Image-2.5 (Flare, Sunburst) | no negative-prompt parameter, but OpenAI's guidance explicitly allows stated exclusions in the prompt text | Either works; **prefer the positive restatement** — see the note below |
+| Diffusion / flux-class | a negative-prompt field the sampler steers away from, where the model has one | state the negation directly in that field: "lens flare, text" |
+| Reasoning (Nano Banana) | **none — there is no subtractable reverse vector** | restate each exclusion as the positive state that excludes it |
+| GPT-Image-2.5 | no field, but OpenAI's guidance allows stated exclusions in the prompt | either works; **prefer the positive restatement** — see below |
+| Midjourney | `--no` | bare nouns after `--no`; never "no X" or "without X" in the prompt text, which can summon X |
+| Chat apps, any model | none exposed | positive restatement in the prompt |
 
-**On 2.5 the two approaches are not equally reliable.** OpenAI sanctions direct
-exclusions (*"state exclusions such as unwanted text"*), and for text they work. For
-*objects the model invented on its own*, positive restatement is what actually removes
-them: a real sportswear logo kept appearing on shoes nobody had described, and "plain
-unbranded white sneakers" cleared it where naming the brand to exclude it would have
-put the brand back in context. Default to the positive state; reach for a direct
+**On GPT-Image-2.5 the two approaches are not equally reliable.** Direct exclusions work
+for text. For *objects the model invented on its own*, positive restatement is what
+removes them: a real sportswear logo kept appearing on shoes nobody had described, and
+"plain unbranded white sneakers" cleared it where naming the brand to exclude it would
+have put the brand back in context. Default to the positive state; reach for a direct
 exclusion only when no positive phrasing exists, and keep it short and last.
 
-For a reasoning engine, write the world you want rather than the one you don't:
+For a model with no negative channel, write the world you want rather than the one you
+don't:
 
 | Instead of | Write |
 |---|---|
@@ -228,105 +122,152 @@ For a reasoning engine, write the world you want rather than the one you don't:
 | "no text anywhere" | "unlabelled surfaces throughout" |
 
 Google's own Nano Banana guidance is explicit — *describe what you want, not what you
-don't want* — and the failure is the familiar one: naming the unwanted thing puts it
-in the model's context, and a model with no way to subtract it may render it. When a
-positive restatement is genuinely impossible, keep the negation short and place it
-last, where it carries least weight.
+don't want*. Naming the unwanted thing puts it in the model's context, and a model with
+no way to subtract it may render it. When a positive restatement is genuinely
+impossible, keep the negation short and place it last.
 
-## Nano Banana 2 specifics
+## Chat apps vs APIs — what moves into the prompt
+
+In ChatGPT and the Gemini app most settings an API exposes do not exist. Whatever the
+surface cannot set goes into the prompt text:
+
+- **Ratio and size intent** — "a 4:5 vertical image", in the prompt, every time.
+- **Exclusions** — positive restatement; there is no negative field.
+- **References** — attach them and name them in order: "the first image is the person —
+  identity only; the second is the product — place it as-is."
+- **Edits** — in the same conversation, with the image to change attached or selected;
+  a new chat loses the image as context. Mechanics: iterate.md.
+- **Paste the prompt whole and ask for it to be used as written.** A chat assistant may
+  rephrase a prompt before generating; if locked details come back changed, say so in
+  the next turn and restate them.
+
+## Nano Banana specifics
 
 - A reasoning model: it **plans the composition before rendering**. Give it the *why*
   of the image — it uses intent.
 - **Two modes; mode confusion is the top failure.** *Generation* (from scratch — full
-  creative direction) vs *editing* (upload image, describe **only what changes**, and
-  explicitly name what must stay: "keep the character, lighting, and background
-  exactly as they are").
-- **Name your references.** Upload anchors/logos and assign names ("the character
-  'X' from Image 1"). Named references hold consistency across iterations.
+  creative direction) vs *editing* (upload, describe **only what changes**, and name
+  what must stay: "keep the character, lighting, and background exactly as they are").
+- **Name your references.** Assign names ("the character 'X' from Image 1"); named
+  references hold consistency across iterations.
 - Put **ratio and resolution at the end of the prompt** ("4:5 vertical, 2K output")
-  even when set in the UI.
+  even when they are also set elsewhere.
 - For grounded infographics, describe the *organization*, not just the topic: "a
-  timeline", "a flowchart with 4 stages", "a comparison table" — it structures real
-  data into that shape.
+  timeline", "a flowchart with 4 stages", "a comparison table".
 
 ## GPT-Image-2.5 specifics — Flare and Sunburst
 
-> **These models are reachable two ways, and the facts below differ by path.** Every
-> price and parameter here was read off **fal**. Reached through OpenAI's own API
-> instead, the model id is hyphenated (`gpt-image-2.5-flare`), billing is per token
-> rather than per image, and `quality` defaults to `auto` rather than `high`. The size
-> limits are identical on both. The comparison table and the direct-API facts live in
-> mw-image-gen's `references/endpoints.md`; never state a price without knowing which
-> path it came from.
->
-> **Prompt-craft for this family is in *Prompt construction per engine family* above.**
-> That section is the one that stops a working prompt breaking here.
-
-- **Two modes, one price table.** *Flare* is the small, speed-optimised model —
-  OpenAI's default, quality comparable to GPT-Image-2. *Sunburst* is the base model,
-  optimised for quality and for edits that must follow a reference closely, at the
-  cost of longer renders. fal publishes the **same per-image price** for both, so the
-  choice is latency and fidelity, not budget. Four endpoints: `flare/text-to-image`,
-  `flare/edit`, `sunburst/text-to-image`, `sunburst/edit`.
-- **The quality enum grew:** `auto | low | medium | high | xhigh | max`. **The default
-  differs by path — `high` on fal, `auto` on OpenAI direct — and `auto` re-picks the
-  tier per request.** Always name a tier explicitly: output tokens track the tier, so
-  on the token-billed path an unset `quality` makes identical requests vary in cost by
-  up to 8× (roughly 160 output tokens at `low`, ~340 at `medium`, ~1,370 at `high` for
-  a portrait render). `xhigh` and `max` run roughly 2× and 4× the `high` price — spend
-  there only when a print-size crop demands it.
-- **No `seed`, no `negative_prompt`, no `input_fidelity`.** Each call varies on its
-  own; exclusions must be written as positive states (above); reference images are
-  always processed at high fidelity now, so there is no fidelity dial to reach for.
-- **Sizes:** presets `square_hd, square, portrait_4_3, portrait_16_9, landscape_4_3,
-  landscape_16_9, auto`, or custom dimensions in multiples of 16 — max edge 3840px,
-  aspect ≤3:1, total pixels 655,360–8,294,400. `background` takes
-  `auto | transparent | opaque`. **Re-verified 2026-09-20 on both paths, including a
-  live 4:5 render at 1024×1280 through OpenAI's own edits endpoint.** The three sizes
-  OpenAI calls "recommended" (`1024x1024`, `1536x1024`, `1024x1536`) are a
-  recommendation, not an enum — **4:5 and other custom ratios are available, so no
-  Instagram-feed asset needs cropping from 2:3.** Above 2560×1440 is documented as
-  experimental.
-- **Editing:** `/edit` takes `image_urls` (up to **16** images) plus an optional
-  `mask_url` for true inpainting — the mask is the only way to scope an edit to an
-  exact region.
-- **Word order is visual weight.** Early words dominate; focal subject in the first
-  sentence, constraints last.
-- **Quality tiers cost real money — route deliberately:** `low` for ideation and
-  drafts, `medium` as the production default, `high` **only** for dense/small text,
-  detailed infographics, and identity-sensitive character work; `xhigh`/`max` only
-  when the output is going to print size.
-- **Text discipline:** exact copy in quotes or ALL CAPS; for tricky words and brand
-  names, spell them out letter-by-letter ("the word 'ANTHROPIC': A-N-T-H-R-O-P-I-C");
-  close with a hard stop: "Render this text verbatim. No extra characters. No
-  duplicate text."
-- **The preserve list is the whole editing game.** Every edit prompt: "Change only
-  [X]. Preserve [face, pose, proportions, palette, background, lighting, all text]
-  exactly as in the input image." **Repeat the full list on every iteration** —
-  preservation instructions don't carry over, and un-restated details drift.
-- Multi-image composites: reference by index and describe the interaction explicitly
+- **Two modes.** *Flare* is the speed-optimised model and OpenAI's default; *Sunburst*
+  is optimised for quality and for edits that must follow a reference closely, at the
+  cost of longer renders. Published API prices are the same for both, so the choice is
+  latency and fidelity, not budget.
+- **Quality tiers:** `low | medium | high | xhigh | max | auto`. On an API, **always
+  name a tier** — `auto` re-picks it per request, and the bill with it. `low` for
+  ideation, `medium` as the production default, `high` only for dense or small text,
+  detailed infographics and identity-sensitive work, `xhigh`/`max` only for print-size
+  output. In ChatGPT there is no tier to set; ask for the detail in words.
+- **No seed, no negative field, no fidelity dial.** Each call varies on its own;
+  reference images are always processed at high fidelity.
+- **Sizes:** custom `WxH` in multiples of 16, max edge 3840, aspect between 1:3 and
+  3:1. `1024x1024`, `1536x1024` and `1024x1536` are recommendations, not an enum —
+  4:5 and other custom ratios work. Transparent output needs `background: transparent`
+  with PNG or WebP.
+- **Editing** takes many reference images, referenced by index, plus an optional mask —
+  the only way to scope an edit to an exact region.
+- **Word order is visual weight.** Focal subject in the first sentence, constraints
+  last.
+- **Text discipline:** exact copy in quotes or ALL CAPS; spell tricky words and brand
+  names letter by letter ("the word 'ANTHROPIC': A-N-T-H-R-O-P-I-C"); close with a
+  hard stop: "Render this text verbatim. No extra characters. No duplicate text."
+- **Multi-image composites:** reference by index and describe the interaction
   ("apply Image 2's style to the subject of Image 1").
-- Ask for `n=4` variants when exploring; pick and edit rather than re-prompting from
-  zero.
+- On an API, ask for **four variants** when exploring; pick and edit rather than
+  re-prompting from zero.
+
+## Midjourney specifics
+
+Facts as of V8.2, the default since 2026-07-24 (V8.0 retired the same day).
+
+- **Prompt shape:** describe it like a photograph to a skilled cinematographer —
+  subject first, then details, context, style and technique, parameters last. Around
+  50–150 tokens; past that you are over-specifying.
+- **Parameters** (append after the description):
+
+  | Parameter | Range / default | Use |
+  |---|---|---|
+  | `--ar W:H` | integers; ≤14:1, ≤4:1 with `--hd`; default 1:1 | always set it |
+  | `--raw` | off | literal control; the default for photoreal and brand work (V7 spelled it `--style raw`) |
+  | `--s` | 0–1000, default 100 | lower = closer to the prompt, higher = more Midjourney taste |
+  | `--c` | 0–100, default 0 | spread across the four results; raise it when exploring |
+  | `--w` | 0–3000, default 0 | unconventional aesthetics; rarely on brand work |
+  | `--exp` | 0–100, default 0 | extra detail and tone-mapping; 10–25 is the useful band |
+  | `--no` | — | the negative channel: bare nouns, comma-separated |
+  | `--sref` + `--sw` | `--sw` 0–1000, default 100 | style reference by image or code; the series lock |
+  | `--p` | — | the user's personalization profile or a named moodboard |
+  | `--iw` | 0–2, default 1 | weight of image prompts placed at the start |
+  | `--hd` | off | native 2048px; inpaint or outpaint on an HD image drops it to SD |
+  | `--seed` | — | near-identical on V8, not exact |
+  | `--v` | 8.2 | pin it, so a default change cannot change a series |
+
+  `--q` and `--tile` are not supported on V8.2; `--tile` still works on V7.
+- **References.** Image URLs at the start of the prompt are content references,
+  weighted by `--iw`. `--sref` carries style only. Since 2026-08-27 the **Edit model**
+  takes up to four references and written edit instructions, plus inpainting and
+  outpainting, on V8.1/V8.2 (`--edit` on Discord); it replaced Omni Reference
+  (`--oref`), Character Reference (`--cref`) and Retexture. Midjourney is not
+  character-consistent by design — identity-critical work routes elsewhere (roster.md).
+- **Text:** a single word or a 2–4 word phrase in quotes. Long or small text fails;
+  composite it in an editor instead.
+- **Series consistency:** the verbal anchor block *and* a fixed parameter string —
+  `--v`, `--raw`, `--s`, `--sref`, `--sw` — stamped together. Either alone drifts.
+- **Exploration:** every job returns four images; raise `--c` for spread. Draft mode on
+  the web app is the cheap rung where it is available.
+
+## A model not listed here
+
+Identify the family from the model's own documentation, then encode for it:
+
+1. **Does it expose a negative-prompt field?** Phrase banned content there, diffusion
+   style.
+2. **Does its maker say to describe scenes in natural language and edit
+   conversationally?** Encode it reasoning-style: full sentences, positive restatement.
+3. **Does it take a parameter syntax?** Learn the syntax for ratio, style reference and
+   exclusions before writing anything.
+
+When the docs do not say, use the **safe defaults**, which hold on every family: full
+sentences, focal subject first, exact text in quotes, exclusions as positive states,
+ratio in the prompt and in the settings, lighting as a measurement. Check the model's
+size, ratio and reference limits before locking the size, and tell the user the model
+is uncharacterized — the first pass is a calibration pass, and the brief should budget
+for it.
 
 ## The cost ladder — draft cheap, finalize once
 
 Never iterate at final quality or final size:
 
-1. **Explore at the bottom:** production art drafts on klein ($0.005/MP) or schnell,
-   several variants per prompt; promotional on GPT-2.5 Flare `quality=low` (~$0.004 an
-   image at 1024×768) with `n=4`, or NB2 at standard 1K. This rung is for composition,
-   idea, and pose — nothing else is judgeable yet. (Exception: dense text is
-   illegible at `low` — judge text-heavy slides at `medium` from the start.)
-2. **Iterate in the middle:** pick the winner, surgical preserve-list edits at
-   `medium`/1K until the image is *right*.
-3. **Finalize exactly once at the top:** one render at `quality=high`/2K of the
-   approved composition — and only if the image contains small text or a face.
-   Everything else ships at medium; the feed cannot tell the difference at thumbnail
-   size.
+1. **Explore at the bottom.** For composition, idea and pose — nothing else is
+   judgeable yet.
+   - APIs: production drafts on FLUX.2 klein or schnell, several per prompt;
+     promotional on GPT-Image-2.5 Flare at `low` with four variants, or Nano Banana 2
+     at 1K.
+   - Midjourney: standard (SD) renders with `--c` raised; Draft mode where available.
+   - Chat apps: every generation spends plan quota — explore with short L1 prompts and
+     ask for variations before writing the L2 prompt.
+   - Exception: dense text is illegible at the bottom tier — judge text-heavy slides at
+     `medium` from the start.
+2. **Iterate in the middle.** Pick the winner; surgical preserve-list edits at
+   `medium` / 1K / SD until the image is *right* (iterate.md).
+3. **Finalize exactly once at the top.** One render at `high` / 2K / `--hd` of the
+   approved composition — only if the image contains small text or a face, or is going
+   to print — and only on the user's yes. Everything else ships at the middle tier; a
+   feed cannot tell the difference at thumbnail size.
 
-**Stop-loss:** if five edits haven't landed the image, the prompt is wrong, not the
-model. Rewrite from the nearest known-good template instead of paying for edit six.
+**A model switch reopens the ladder.** "Finalize once" assumes one model start to
+finish; moving a tuned prompt to another family costs a fresh round of exposure and
+framing passes. Budget them, or do not switch mid-series.
+
+**Stop-loss:** five edits without landing it means the prompt is wrong, not the model
+(iterate.md).
 
 ---
 
@@ -335,27 +276,21 @@ model. Rewrite from the nearest known-good template instead of paying for edit s
 - [Google DeepMind — Nano Banana prompt guide](https://deepmind.google/models/gemini-image/prompt-guide/)
 - [Google Cloud — Ultimate prompting guide for Nano Banana](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-nano-banana)
 - [Google — Nano Banana Pro prompting tips](https://blog.google/products-and-platforms/products/gemini/prompting-tips-nano-banana-pro/)
+- [OpenAI — Image prompting guide](https://developers.openai.com/api/docs/guides/image-prompting)
+  (Flare vs Sunburst, reference roles, `quality=high` for small text)
+- [OpenAI — Image generation guide](https://developers.openai.com/api/docs/guides/image-generation)
+  (sizes, quality tiers, transparency; read 2026-10-02)
 - [OpenAI Cookbook — GPT Image models prompting guide](https://developers.openai.com/cookbook/examples/multimodal/image-gen-models-prompting-guide)
+- [Axios — ChatGPT Images 2.5, 2026-09-08](https://www.axios.com/2026/09/08/exclusive-hands-on-with-chatgpts-new-image-editor)
+  (rollout to every ChatGPT tier)
+- [Midjourney — Parameter list](https://docs.midjourney.com/hc/en-us/articles/32859204029709-Parameter-List)
+  (refused automated reads on 2026-10-02; the Midjourney facts above come from the two
+  guides below — confirm in-app)
+- [Blake Crosley — Midjourney 8.2 guide](https://blakecrosley.com/guides/midjourney)
+  (V8.1/V8.2 dates, Edit model, parameter ranges, read 2026-10-02)
+- [gradually.ai — Midjourney parameters](https://www.gradually.ai/en/midjourney-parameters/)
 - [fal — Prompting GPT Image 2](https://fal.ai/learn/tools/prompting-gpt-image-2)
 - [fal — FLUX.2 klein user guide](https://fal.ai/learn/devs/flux-2-klein-user-guide)
-- [fal — 10 best AI image generators in 2026](https://fal.ai/learn/tools/ai-image-generators)
+- [Segmind — GPT Image 2.5 Flare and Sunburst, tested](https://blog.segmind.com/gpt-image-2-5-api-the-ultimate-guide-to-flare-and-sunburst/)
+  (the 14-call small-text test)
 - [Artificial Analysis — image model leaderboard](https://artificialanalysis.ai/image/models)
-- Endpoint IDs verified live against `fal.run` (empty-body 422 probe), 2026-07-09
-
-**2026-09-09 refresh** — the prices, sizes and parameters above were read off these
-pages on that date:
-
-- [OpenAI — Image prompting guide](https://developers.openai.com/api/docs/guides/image-prompting)
-  (Flare vs Sunburst, reference roles, `quality=high` for small text, no `input_fidelity` on 2.5)
-- [fal — GPT Image 2.5 Flare](https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image)
-  · [its schema](https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image/api)
-  · [Flare edit schema](https://fal.ai/models/openai/gpt-image-2.5/flare/edit/api) (16 `image_urls`, `mask_url`)
-- [fal — GPT Image 2.5 Sunburst](https://fal.ai/models/openai/gpt-image-2.5/sunburst/text-to-image)
-  · [Sunburst edit](https://fal.ai/models/openai/gpt-image-2.5/sunburst/edit)
-- [fal — GPT Image 2](https://fal.ai/models/openai/gpt-image-2) (3840px max edge; the old 1536×1024 cap is gone)
-- [fal — Nano Banana 2](https://fal.ai/models/fal-ai/nano-banana-2) · [Nano Banana Pro](https://fal.ai/models/fal-ai/nano-banana-pro)
-- [fal — FLUX.2 pro](https://fal.ai/models/fal-ai/flux-2-pro) · [FLUX.2 flex](https://fal.ai/models/fal-ai/flux-2-flex) · [klein 4B](https://fal.ai/models/fal-ai/flux-2/klein/4b) · [schnell](https://fal.ai/models/fal-ai/flux/schnell)
-- [fal — Seedream 5.0 Pro](https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image) · [Seedream 5.0 Lite](https://fal.ai/models/bytedance/seedream/v5/lite/text-to-image)
-- [fal — Ideogram 4](https://fal.ai/ideogram-4) · [Recraft V4](https://fal.ai/models/fal-ai/recraft/v4/text-to-image) · [Qwen Image 2.0](https://fal.ai/qwen-image-2.0)
-- [fal — best image-to-image APIs, 2026](https://fal.ai/learn/tools/best-image-to-image-apis-2026) (per-model reference-image ceilings)
-- [Segmind — GPT Image 2.5 Flare and Sunburst, tested](https://blog.segmind.com/gpt-image-2-5-api-the-ultimate-guide-to-flare-and-sunburst/) (the 14-call small-text test)

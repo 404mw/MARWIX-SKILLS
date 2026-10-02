@@ -111,6 +111,38 @@ Dimension snapping: flux-family endpoints round requested dimensions to multiple
 actual output size; when an asset contract needs exact pixels, generate at the
 snapped-safe size or crop in the conversion step (`--resize`).
 
+## Cached price lookups — filesystem only
+
+A live price lookup costs the user time and tokens, so it is worth doing once instead
+of every session.
+
+**Before any lookup, check for a cache.** Look for `.mw-image/engine-prices.md` in the
+host project. If it exists, read it and use it — and **state its fetch date out loud
+every time**, in the same breath as the numbers: "$0.03/MP, from a lookup on
+2026-08-14." A price whose age is not stated is a price presented as current.
+
+**After a lookup, offer to write one.** Creating a file in someone's repository is a
+change they did not ask for, so propose it and take a no for an answer:
+
+```
+Fetched current prices for 3 models. Save them to .mw-image/engine-prices.md so
+the next session doesn't have to look them up again?
+```
+
+Write the fetch date, one row per endpoint, and the source URL for each — a cached
+number without its source cannot be re-checked, only re-trusted.
+
+**A cache ages exactly like this file does.** It is a saved lookup, not a source of
+truth, and it decays from its own fetch date onward:
+
+- Always state the age with the number. Never present a cached figure bare.
+- **Re-offer a lookup before any final-tier batch.** Draft and iteration tiers are
+  cheap enough that a stale estimate costs little; a final render is where a wrong
+  number becomes a wrong decision.
+
+If the host project's docs name a different location for generated artifacts, put the
+cache there instead — the host contract wins over the default path.
+
 ## Billing model (verified 2026-07, not re-checked 2026-09)
 
 Billed per output image or per megapixel of output. Queue wait time is free; failed

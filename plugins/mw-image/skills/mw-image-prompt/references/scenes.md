@@ -2,9 +2,11 @@
 
 Deep technique for writing image-generation prompts that produce consistent,
 production-processable scene assets. Generic craft only; the actual palette, mood,
-banned elements, layer scheme, naming, formats, and sizes come from the host project's
-docs at runtime. The shared skeleton, anchor-block, and edit rules live in SKILL.md;
-this file covers what is specific to assets that ship inside the product.
+banned elements, layer scheme, naming, formats, and sizes come from the project's
+documented rules when there are some, and from the user when there are not — below,
+"documented" means whichever of the two supplied it. The shared
+craft lives in SKILL.md; this file covers what is specific to assets that ship inside
+the product.
 
 ---
 
@@ -140,7 +142,7 @@ The generated image is raw material, not the asset. Per the contract:
    assets shipping inside the interface, its design tokens — not by eye; monitors lie
    and drift compounds. Correct with curves/HSL toward that palette. Photographic
    subjects (skin, faces, natural materials) grade to their own reference, never to
-   interface colour.
+   interface color.
 3. **Name** every file per the naming contract before export, not after — the name
    encodes the contract (scene, layer, size).
 4. **Export** in the documented formats and size variants. Encode from the master
@@ -151,6 +153,15 @@ The generated image is raw material, not the asset. Per the contract:
 
 ## The processing checklist (instantiate per scene)
 
+Inspect first — a flaw found after the split costs every layer:
+
+- [ ] no text, pseudo-lettering, watermark ghosts, or signatures anywhere in the frame
+- [ ] no brand marks nobody asked for (engines add real logos to plain objects unprompted)
+- [ ] no accidental faces or figures, unless the docs call for them
+- [ ] composition splits cleanly along the planned depth planes; cutouts carry no baked atmosphere
+
+Then process:
+
 - [ ] layer split per the documented scheme, each layer named per the naming convention
 - [ ] color/grade check against the documented palette (sample pixels, compare numerically; photographic subjects excluded)
 - [ ] export in the documented formats and size variants
@@ -159,16 +170,19 @@ The generated image is raw material, not the asset. Per the contract:
 
 ## Failure-mode catalog
 
-Inspect every accepted generation for these before processing:
+Inspect every accepted generation for these before processing. "Exclude" means the
+banned-content constraint phrased for the model's family — a negation on models with
+a negative channel, the positive state that excludes it everywhere else
+([engines.md](engines.md#negative-constraints--phrasing-is-family-specific)).
 
 | Failure | What it looks like | Countermeasure |
 |---|---|---|
-| Embedded text | Signage, glyph-like shapes, pseudo-lettering | Negative prompt; regenerate rather than retouch |
+| Embedded text | Signage, glyph-like shapes, pseudo-lettering | Exclude ("unlabelled, unmarked surfaces throughout"); regenerate rather than retouch |
 | Palette leak | Saturated color outside the allowed accent | Strengthen the "only color is…" clause; desaturate in grade |
-| Style drift | Scene N reads as a different artist than scene 1 | Verbatim anchor block; diff prompts; reuse seed |
-| Watermark ghosts | Corner artifacts, faint signatures | Negative prompt; crop margin from oversized generation |
-| Baked vignette/frame | Dark border that fights layout | Negative prompt "no borders, no vignette" |
+| Style drift | Scene N reads as a different artist than scene 1 | Verbatim anchor block on the same model family; diff prompts; reuse the seed where the model has one |
+| Watermark ghosts | Corner artifacts, faint signatures | Exclude ("clean, unmarked corners"); crop margin from oversized generation |
+| Baked vignette/frame | Dark border that fights layout | Exclude ("full-bleed, even exposure to every edge") |
 | Unsplittable composition | Planes interlock, no clean silhouettes | Re-prompt for depth separation or generate layers separately |
-| Accidental focal face | A face where none was asked | "no faces" negative; regenerate |
+| Accidental focal face | A face where none was asked | Exclude ("an empty street", "unpeopled"); regenerate |
 | Inherited reference geometry | Output copies the reference photo's camera: low selfie angle, wide-angle distortion, its crop | References carry identity only ([identity.md](identity.md)); state camera height, angle, distance, and framing explicitly in the prompt |
 | Baked atmosphere on a cutout asset | Glow orb, haze, or halo that dies at the matte edge after background removal | Cutout rules above: no atmosphere, subject-contained light, flat separable background |

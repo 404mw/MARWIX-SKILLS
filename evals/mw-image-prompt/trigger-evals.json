@@ -1,0 +1,14 @@
+[
+  {"query": "I need a cover image for our launch post on LinkedIn", "should_trigger": true},
+  {"query": "can you write me a midjourney prompt for a cyberpunk alley for our game's loading screen", "should_trigger": true},
+  {"query": "make it pop — the hero art on the landing page feels flat", "should_trigger": true},
+  {"query": "what should the image for my newsletter be? something about cutting cloud costs", "should_trigger": true},
+  {"query": "here's what gemini gave me, the face looks off and the lighting is too warm, how do I fix it", "should_trigger": true},
+  {"query": "plan a 6-slide carousel for instagram explaining our pricing tiers", "should_trigger": true},
+  {"query": "write an SVG rocket icon for the navbar", "should_trigger": false},
+  {"query": "add a CSS gradient background to the pricing section", "should_trigger": false},
+  {"query": "make a bar chart of monthly signups from this csv", "should_trigger": false},
+  {"query": "draw a mermaid diagram of our auth flow", "should_trigger": false},
+  {"query": "compress these PNGs to webp for the site", "should_trigger": false},
+  {"query": "generate the image now with fal using the prompt above", "should_trigger": false}
+]

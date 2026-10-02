@@ -2,8 +2,10 @@
 
 Deep technique for images that sell, announce, or stop a feed scroll. Generic craft
 only; the brand kit (style blocks, palette, accent color, recurring props and
-characters, metaphor libraries, voice rules) comes from the host project's brand docs
-at runtime. The shared skeleton, anchor-block, edit, and cost rules live in SKILL.md.
+characters, metaphor libraries, voice rules) comes from the project's brand docs when
+there are some, and from the user when there are not — below, "the brand docs" means
+the kit wherever it came from. The shared craft lives in
+SKILL.md; edits in iterate.md; models and cost in roster.md and engines.md.
 
 ---
 
@@ -34,23 +36,27 @@ Three facts to internalize:
 
 1. **One subject, one message, one second to understand.** Cluttered images can't be
    parsed at scroll speed; every scroll-stopper has a single focal point.
-2. **Prompt like a creative director** (SKILL.md): full sentences, one scene, intent
-   included.
+2. **Prompt like a creative director:** one scene, intent included — what the viewer
+   should take from it. The *format* (sentences, labeled sections, parameters) is the
+   model family's call: [engines.md](engines.md).
 3. **The feed itself is a brand asset.** One great image gets a click; thirty visually
    consistent images get recognition. Style consistency compounds.
 
 ## The scroll-stop doctrine
 
-What stops a thumb, in order of power:
+What stops a thumb, in order of power. These are rules of thumb drawn from thumbnail
+and marketing write-ups, not controlled studies — treat them as defaults the brand's
+own scoreboard can overturn.
 
-1. **A face with an emotion.** Expressive faces lift click-through measurably. Gaze
+1. **A face with an emotion.** Expressive faces tend to lift click-through. Gaze
    direction is a steering wheel: a character *looking at* the headline drags the
    viewer's eyes there too.
 2. **Pattern interrupt against the median feed.** Whatever the brand's stage is, its
    power is contrast with what surrounds it. Check both light and dark feed
    backgrounds: a dark backdrop that interrupts a light feed melts into a dark one,
    where the lit subject, rim light, and accent must carry the stop alone.
-3. **In-image text, four words max.** Minimal-text images out-click text-heavy ones.
+3. **In-image text, four words max.** Minimal-text images tend to out-click text-heavy
+   ones.
    The headline is a trigger, not a summary; paragraphs belong in the post.
 
 Two further stops — the curiosity gap and absurd juxtaposition — decide *what the
@@ -61,6 +67,9 @@ seen at, in-feed, on a phone. If the subject and the pull aren't clear in under 
 second, it fails, no matter how good it looks full-screen.
 
 ## Aspect ratios — generate for the placement
+
+Platform specs as of 2026-10. Platforms change these without notice; check the
+platform's own current guidance before locking a master format.
 
 | Placement | Ratio | Note |
 |---|---|---|
@@ -96,10 +105,11 @@ Consistency across slides is the whole problem: ten slides that drift read as am
 
 1. **Design the master frame first** (highest text-accuracy engine and tier): slide 1
    with the full layout system — title placement, icon style, margins, accent usage.
-2. **Produce siblings by editing the master, never from scratch.** Edit mode with a
-   full preserve list ("keep background, palette, margins, typography style identical;
-   change only the icon and headline"). "Same style as before" across separate
-   generations is a coin flip per slide.
+2. **Produce siblings by editing the master, never from scratch** — one change per
+   pass. Edit mode with a full preserve list: "keep background, palette, margins,
+   typography style and headline identical; change only the icon." Check it, then a
+   second pass for the headline. "Same style as before" across separate generations is
+   a coin flip per slide.
 3. **Body text lives in the editor (Figma/Canva), not the model.** Generate slides
    with headline + illustration + *reserved empty zones*; fonts stay pixel-identical
    and a text fix costs nothing. Model-rendered text is for the cover headline and
@@ -134,8 +144,9 @@ A recognizable face compounds into recognition. **The governing rule: identity i
 frozen, presentation is free.** Likeness (face shape, hair, build) stays constant;
 expression, pose, wardrobe, role, and scenario are per-post variables.
 
-1. **Build the identity anchor once, carefully.** Highest quality tier and input
-   fidelity, from the reference portrait: a character sheet (front, three-quarter,
+1. **Build the identity anchor once, carefully.** Highest quality tier, on the
+   model with the closest reference adherence you have access to
+   ([roster.md](roster.md)), from the reference portrait: a character sheet (front, three-quarter,
    profile, plus a few expression close-ups) in the brand's documented style. This
    step is also where poor raw references get fixed: selfie camera geometry, color
    casts, and uneven light are corrected here, once, instead of fought in every
@@ -204,6 +215,9 @@ at thumbnail size:
    image vanishes on one, raise the subject's contrast, not the background's.
 11. **Alt text written.** Describe subject, action, and any rendered text verbatim;
     accessibility first, personality second.
+12. **AI label.** A photoreal image of a person, a place or an event that could pass as
+    a real photograph gets the platform's AI-generated label where the platform asks
+    for one. Flag it; the user applies it when posting.
 
 ## Failure modes
 
@@ -216,7 +230,7 @@ at thumbnail size:
    family. Per-family formats: engines.md.
 3. **Re-rolling instead of editing.** Fixing one detail by regenerating re-rolls
    everything that was right.
-4. **Text overload.** More than ~4 words on a cover measurably drops click-through.
+4. **Text overload.** More than ~4 words on a cover tends to cost click-through.
 5. **Unverified model-drawn logos and data.** The two places a generated image makes
    the brand wrong in public; both have mandatory verification steps above.
 6. **Character drift.** Chained edits mutate the face one generation at a time;
