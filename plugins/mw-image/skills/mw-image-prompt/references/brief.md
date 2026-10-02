@@ -31,8 +31,8 @@ are nobody's taste.
 | Mode | production vs promotional (SKILL.md table) | ask only if genuinely both |
 | Destiny | whole-frame / cutout / layered / editor-composite | whole-frame — but if any signal points at cutout or text overlay, ask: this row flips the background and atmosphere rules |
 | Subject + the one action | the focal point | the concrete noun in the ask; one subject, never a collage. If the ask names a message instead of a thing → concept.md |
-| Style source | which doc, kit or user description rules the look | documented rules if any; otherwise ask whether there is a look to match, and offer two or three concrete directions as `[proposed]` options. Never applied without confirmation |
-| Camera | height, angle, distance/lens feel, framing | eye-level straight-on; ~85mm compression for people; wide establishing for places |
+| Style source | which direction, doc, kit or user description rules the look | a direction chosen with `mw-image-direction` if any — it outranks documented looks; else documented rules; otherwise ask whether there is a look to match, suggest `mw-image-direction` if installed (switch only on a yes), or offer two or three concrete directions as `[proposed]` options. Never applied without confirmation |
+| Camera | height, angle, distance/lens feel, framing, subject placement | the chosen direction's shot if any; otherwise propose two or three contrasting framings that differ in height, distance or placement, and let the user pick. No silent default — an unchosen eye-level, centered, straight-on shot is the reason generated images all look alike |
 | Lighting | source count, direction, temperature | one motivated key with a stated direction; never "well lit" |
 | Palette & grade | colors allowed, colors banned | the documented art-direction or brand palette if any. Design-system tokens count only for assets shipping inside the interface, and only for graphic/background color — never for skin, faces or photographic material. Otherwise restrained, one accent maximum |
 | In-image text | exact words in quotes, or none | none for production; ≤4 words for promotional |
@@ -135,7 +135,7 @@ hidden decisions, resolve what you can, and turn the rest into questions with op
 | "make it pop" | focal contrast, not saturation | one subject larger/brighter, everything else quieter; never neon, never more elements |
 | "professional / premium / clean" | restraint | fewer elements, controlled palette, generous negative space, one disciplined light |
 | "cinematic / moody / epic" | genre defaults | one motivated light source, atmosphere per destiny, restrained high-contrast grade |
-| "I can picture it but can't describe it" | the user has a feeling, not a frame | offer three distinct directions — different subject, camera or light — and let them pick or blend |
+| "I can picture it but can't describe it" | the user has a feeling, not a frame | suggest `mw-image-direction` if installed; otherwise offer three distinct directions — different subject, camera or light — and let them pick or blend |
 | "something like this" + attached image | *which property* they liked | name the property (composition? palette? mood? subject?); borrow that one property — never clone the image, its style wholesale, or anyone's identity |
 | "use my photo" | identity work | identity.md: reference roles, clean-reference builder, likeness question |
 | "just make something" | full delegation | resolve every row from docs and defaults; the brief *is* the consultation |

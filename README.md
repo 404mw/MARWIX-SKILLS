@@ -16,6 +16,7 @@ web, desktop and mobile apps. Free, MIT, no paid version held back.
 
 | Skill | Plugin | What it's for |
 |---|---|---|
+| [`mw-image-direction`](plugins/mw-image/README.md#mw-image-direction) | `mw-image` | **Gives your agent taste, on request.** When you don't know what an image should look like, it asks a few plain questions and shortlists three contrasting directions from a library of 46 — photography, flat graphic, 3D, illustration, mixed media, eras — then two or three shots instead of the same centered eye-level one. Decides the look; never generates. |
 | [`mw-image-prompt`](plugins/mw-image/README.md#mw-image-prompt) | `mw-image` | **Plans the image with you.** Reasons about a rough idea like "something for the launch post", asks one batch of questions with its own suggestions, locks a brief — subject, style, camera, palette, banned elements — then writes the prompt for the model you use: ChatGPT, Gemini, Midjourney, FLUX and more. Writes prompts; never generates. |
 | [`mw-image-gen`](plugins/mw-image/README.md#mw-image-gen) | `mw-image` | **Gives your agent the ability to generate images.** Runs a prompt against fal.ai or OpenAI, saves each result with the settings that made it, converts approved masters to web formats. Decides nothing creative. |
 | [`mw-query-plan`](plugins/mw-query/README.md#mw-query-plan) | `mw-query` | **Makes your agent prove a query is slow before telling you how to fix it.** Diagnoses Postgres queries from the actual EXPLAIN plan — indexes, N+1, joins, keyset pagination — and marks the finding *provisional* when it hasn't got one. Postgres only; adapters for Prisma and Medusa. |
@@ -53,6 +54,7 @@ before executing them.
 
 Download a skill and upload it at **Settings → Skills**:
 
+- [**`mw-image-direction.zip`**](https://github.com/404mw/MARWIX-SKILLS/releases/latest/download/mw-image-direction.zip)
 - [**`mw-image-prompt.zip`**](https://github.com/404mw/MARWIX-SKILLS/releases/latest/download/mw-image-prompt.zip)
 - [**`mw-image-gen.zip`**](https://github.com/404mw/MARWIX-SKILLS/releases/latest/download/mw-image-gen.zip)
 - [**`mw-query-plan.zip`**](https://github.com/404mw/MARWIX-SKILLS/releases/latest/download/mw-query-plan.zip)
@@ -60,8 +62,8 @@ Download a skill and upload it at **Settings → Skills**:
 Those links always serve the newest release; [Releases](https://github.com/404mw/MARWIX-SKILLS/releases)
 lists every version.
 
-`mw-image-prompt` and `mw-query-plan` both work here — neither needs anything but the
-conversation, and you can paste a query and a plan straight in. **Don't run `mw-image-gen`
+`mw-image-direction`, `mw-image-prompt` and `mw-query-plan` all work here — none needs
+anything but the conversation, and you can paste a query and a plan straight in. **Don't run `mw-image-gen`
 from a hosted chat** — it would mean pasting a provider key into it; see
 [the key warning](#never-paste-keys-into-a-chat).
 
@@ -74,8 +76,8 @@ whole skill folder, not just its `SKILL.md`.
 
 ## Requirements
 
-`mw-image-prompt` has none. It is plain Markdown and works in Claude Code and on Claude's
-web, desktop and mobile apps.
+`mw-image-direction` and `mw-image-prompt` have none. They are plain Markdown and work in
+Claude Code and on Claude's web, desktop and mobile apps.
 
 `mw-query-plan` needs no install either — but it needs **a Postgres database you can run
 `EXPLAIN` against**, and it is Postgres-only by design. On MySQL, SQLite or SQL Server it
@@ -125,8 +127,9 @@ Your keys are yours to manage; this project can't do it for you and doesn't try.
 **Name the skill and there's nothing to guess:**
 
 ```
-/mw-image-prompt   a hero background for the docs page
-/mw-image-gen      run the prompt above
+/mw-image-direction  a look for our launch posts
+/mw-image-prompt     a hero background for the docs page
+/mw-image-gen        run the prompt above
 ```
 
 `/mw-image:mw-image-prompt` is the namespaced form in Claude Code. In Claude.ai and the
@@ -162,6 +165,9 @@ that one is installed alone. Straight to a section:
 
 ### `mw-image` — [full write-up](plugins/mw-image/README.md)
 
+- [**`mw-image-direction`**](plugins/mw-image/README.md#mw-image-direction) — the interview, the 46
+  directions, the shot options that replace the one default camera, and why a chosen
+  look outranks your docs on everything but technical limits.
 - [**`mw-image-prompt`**](plugins/mw-image/README.md#mw-image-prompt) — how it plans with you from a rough
   idea, the models it writes for, and why it brings no style of its own.
 - [**`mw-image-gen`**](plugins/mw-image/README.md#mw-image-gen) — the cost gate, the JSON sidecar written

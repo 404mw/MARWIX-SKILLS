@@ -1,0 +1,107 @@
+{
+  "skill_name": "mw-image-direction",
+  "evals": [
+    {
+      "id": 1,
+      "name": "no-idea-full-interview",
+      "prompt": "I need images for my bakery's new website but I honestly have no idea what they should look like",
+      "expected_output": "One batch of plain-language questions with recommendations and options; no shortlist or prompt yet unless the context already answers them.",
+      "files": [],
+      "expectations": [
+        "All questions arrive in a single reply",
+        "It asks who sees the images or where they appear only if the ask leaves it open, and does not re-ask that it is a bakery website",
+        "It asks for the feeling in about three words and offers ready-made word sets to react to",
+        "It asks what the images must never look like",
+        "It asks whether the look should be photographic, drawn, 3D or flat graphic, with a recommendation",
+        "No image-generation prompt is written"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "shortlist-contrasts-on-two-axes",
+      "prompt": "It's for a bakery website. The feeling is honest, warm, a bit playful. Never corporate or glossy. You choose the medium. Today, not retro. Shortlist some looks.",
+      "expected_output": "Three named directions with variants that differ on at least two axes, each with a reason tied to the user's words, a one-sentence picture, a risk, and a recommendation; offers the optional sketch round with its cost.",
+      "files": [],
+      "expectations": [
+        "Exactly three directions are shortlisted, each named with a specific variant",
+        "The three differ in medium (not three photographic looks)",
+        "Each direction has a one-line reason that uses the user's words (honest, warm or playful)",
+        "Each direction names the way it could go wrong",
+        "One direction is recommended",
+        "A sketch round is offered as optional with its cost stated, and nothing is rendered",
+        "No direction is described as 'in the style of' a named artist, studio or photographer"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "same-pose-goes-to-shots",
+      "prompt": "Every image I make of our founder comes out the same: straight on, centered, smiling at the camera. The look is fine, it's just boring. Help.",
+      "expected_output": "Treats the shot, not the style, as the problem and offers two or three contrasting shot options with what each communicates.",
+      "files": [],
+      "expectations": [
+        "It does not propose a new style or ask the full style interview",
+        "It offers two or three shot options",
+        "The options differ on at least two of camera height, distance, subject placement and pose",
+        "None of the options is eye level, centered and facing the camera",
+        "Each option states what it communicates",
+        "Pose and gaze are described as body mechanics or direction (for example 'looking camera-right, out of frame'), not adjectives alone"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "named-umbrella-style-asks-variant",
+      "prompt": "make our launch visuals retro",
+      "expected_output": "Treats 'retro' as an umbrella and asks which strand, offering concrete decade variants.",
+      "files": [],
+      "expectations": [
+        "It says 'retro' covers several different looks",
+        "It offers at least three decade-specific variants (for example 50s atomic, 70s warm, 80s synthwave, 90s grunge)",
+        "Each variant is described concretely by palette, medium or type",
+        "It recommends one variant or asks a question that decides between them"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "living-artist-becomes-attributes",
+      "prompt": "I want it to look exactly like a living illustrator I love — I'll give you their name — for our product poster.",
+      "expected_output": "Declines to use the artist's name and instead asks for or describes the attributes that make the work appealing.",
+      "files": [],
+      "expectations": [
+        "It explains that a direction is not written as 'in the style of' a living artist",
+        "It offers to capture the look through attributes such as line, palette, texture and composition",
+        "It asks which properties of the work the user likes, or maps them to library directions",
+        "No style block or prompt contains an artist's name"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "readback-and-docs-precedence",
+      "prompt": "Go with Analog film, warm consumer color, shot option B. Our docs/brand.md says dark editorial look, 1600x900 heroes, headline over the right 40%.",
+      "files": [],
+      "expected_output": "A readback block where the direction rules the look and the docs supply only size and text zone, plus a style block and a one-time save offer.",
+      "expectations": [
+        "The readback keeps the 1600x900 size and the right-40% headline zone from the docs",
+        "The docs' dark editorial look is mentioned once as replaced, not blended in and not asked about repeatedly",
+        "Palette, light, texture, shot and composition lines are concrete (no bare 'moody' or 'well lit')",
+        "Light is stated with direction and a color temperature or shadow share",
+        "The subject placement keeps the right 40% clear for the headline",
+        "A style block in full sentences is included, with exclusions phrased as positive states",
+        "It offers once to save the look to docs/art-direction.md and writes nothing without a yes"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "series-rotates-shots",
+      "prompt": "We need five LinkedIn images for a series about our engineers, documentary candid look. Plan the shots.",
+      "files": [],
+      "expected_output": "Keeps one direction and assigns different shot recipes across the five images.",
+      "expectations": [
+        "The direction stays Documentary / candid for all five",
+        "At least four different shot recipes are used across the five images",
+        "At least one image uses an unusual height (overhead, ground-level or high-angle)",
+        "No image has the subject looking into the lens unless that is stated as deliberate",
+        "Composition for each image names where the subject sits in the frame"
+      ]
+    }
+  ]
+}

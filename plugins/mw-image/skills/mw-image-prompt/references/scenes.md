@@ -32,10 +32,11 @@ emphases:
    part that must be identical across every scene.
 2. **Subject and composition** — what the scene contains and how it's framed. This
    is the only part that should change per scene. The camera is always stated, never
-   defaulted: height and angle (eye-level straight-on is the default for people; low
-   or high angle only as a deliberate choice), subject distance or lens feel ("85mm
-   portrait compression", "wide establishing shot", "close macro"), and framing
-   (chest-up, full figure, horizon-low vista). An unstated camera falls back to the
+   defaulted: height and angle (from the chosen direction's shot, or picked by the user
+   from two or three contrasting framings — no angle is the default), subject distance
+   or lens feel ("85mm portrait compression", "wide establishing shot", "close
+   macro"), and framing (chest-up, full figure, horizon-low vista). Across a series,
+   choose each scene's framing on purpose rather than repeating one by habit. An unstated camera falls back to the
    engine's habit — or, in image-to-image, gets copied from the reference photo
    (references carry identity only: [identity.md](identity.md)).
 3. **Lighting** — source, direction, temperature, falloff. For projects with a
@@ -127,7 +128,8 @@ Provide 1–2 variations per primary prompt so there's a fallback without a new 
 ## Consistency guard
 
 If prompts for other scenes were generated earlier in the project, diff the new style
-constraints against those to prevent drift; the docs win over both. When a scene
+constraints against those to prevent drift; the chosen direction wins on look, the
+docs on technical limits. When a scene
 genuinely needs to break the anchor (a documented beat change), say so in the
 deliverable — a silent exception becomes the next scene's accidental baseline.
 

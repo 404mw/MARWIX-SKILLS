@@ -1,0 +1,210 @@
+# mw-image-direction — Shot recipes
+
+The menu of shots. A **direction** decides how an image looks; a **shot** decides where
+the camera is, how far away, what the subject is doing and where it sits in the frame.
+Any direction can take any shot. Each direction names the shots it favors, but they are
+starting points, not limits.
+
+Without a stated shot, every model returns the same one: eye level, medium distance,
+subject centered, facing the lens. That is recipe 1 below. It is a fine choice when it is
+*chosen*. It is the reason everything looks alike when nobody chooses.
+
+Terms (shot sizes, lens feel, light patterns, pose words): [vocabulary.md](vocabulary.md).
+Grids and placement: [composition.md](composition.md).
+
+## Contents
+
+- Building two or three shot options
+- Series — rotate, don't repeat
+- The recipes
+- Writing a shot so the model follows it
+
+## Building two or three shot options
+
+1. **Start from the direction's favored shots**, then fit them to the subject and the
+   placement (a 9:16 story wants height, a 21:9 banner wants width).
+2. **Make the options differ on at least two of:** camera height · distance · subject
+   placement · pose register. Eye level medium vs. eye level medium-close is one option,
+   not two.
+3. **Include one the user would not have asked for** — the overhead, the
+   through-frame, the tiny figure in a big space.
+4. **For each option say what it communicates**, in a few words: "low-angle hero — the
+   product towers; confidence".
+5. **Check against the hard limits:** if text sits on the right 40%, every option keeps
+   the subject and its gaze on the left.
+
+## Series — rotate, don't repeat
+
+For three or more images in one set, assign shots from a rotation instead of one recipe
+for all. A good rotation per set of five: one wide, one environmental, one candid
+mid-action, one detail, one unusual height (overhead or ground-level). Keep the
+direction and the style block fixed; vary only the shot. The set reads as one look with
+movement in it.
+
+## The recipes
+
+Each recipe: camera, distance and lens feel, subject and pose, placement, what it says,
+and when not to use it.
+
+### 1. Eye-level medium
+- **Camera:** at the subject's eye height, level, straight on or slightly turned.
+- **Distance:** medium shot (waist up), 50mm-to-85mm feel.
+- **Pose:** relaxed, facing camera or three-quarter.
+- **Placement:** centered or on a vertical third.
+- **Says:** neutral, direct, approachable.
+- **Avoid when:** it would be the third neutral shot in a row.
+
+### 2. Low-angle hero
+- **Camera:** below the subject, looking up 15–35°.
+- **Distance:** full figure or three-quarter figure; 24–35mm feel exaggerates height.
+- **Pose:** upright, weight grounded, chin level or slightly down (chin up from low
+  reads as arrogance).
+- **Placement:** subject tall in frame, head in the upper third, sky or ceiling behind.
+- **Says:** power, confidence, importance.
+- **Avoid when:** the subject should feel approachable or vulnerable.
+
+### 3. High-angle down
+- **Camera:** above the subject, looking down 30–60°.
+- **Distance:** medium to full.
+- **Pose:** looking up toward camera, or busy with something below.
+- **Placement:** subject in the lower half; the floor or table becomes the background.
+- **Says:** intimacy, overview, vulnerability, or "what's on the table".
+- **Avoid when:** the subject must look strong.
+
+### 4. Overhead flat-lay
+- **Camera:** straight down, 90°, lens parallel to the surface (top-down).
+- **Distance:** a table or floor area; 35–50mm feel.
+- **Pose:** hands entering the frame, or objects only.
+- **Placement:** arranged on a grid or a loose diagonal; elements cropped at the edges
+  so the arrangement continues.
+- **Says:** order, process, inventory, craft.
+- **Avoid when:** depth or emotion is needed.
+
+### 5. Aerial
+- **Camera:** high above, top-down or high oblique.
+- **Distance:** buildings, landscapes, crowds as patterns.
+- **Placement:** one break in the pattern as the focal point.
+- **Says:** scale, systems, the big picture.
+- **Avoid when:** a person must be recognizable.
+
+### 6. Ground-level
+- **Camera:** at or a few centimeters above the ground, level or tilted up.
+- **Distance:** wide; a 16–24mm feel puts the ground into the foreground.
+- **Placement:** the horizon low; foreground texture big and blurred or sharp.
+- **Says:** immersion, a world seen from inside, scale.
+- **Avoid when:** clarity of the subject matters more than mood.
+
+### 7. Wide environmental
+- **Camera:** eye level or a little higher.
+- **Distance:** extreme wide; the subject 5–20% of the frame height.
+- **Pose:** small action readable in silhouette — walking, looking, working.
+- **Placement:** the subject on a third, the space around it as the subject too;
+  horizon on a third.
+- **Says:** solitude, scale, freedom, context.
+- **Avoid when:** the face or product detail matters.
+
+### 8. Environmental portrait
+- **Camera:** eye level or slightly below, three-quarter.
+- **Distance:** medium-full; the person and their place, 35mm feel.
+- **Pose:** in their space, with their tools; a natural gesture.
+- **Placement:** person on a third, their environment telling the story beside them.
+- **Says:** who this person is through where they are.
+- **Avoid when:** the background is irrelevant or messy.
+
+### 9. Candid mid-action
+- **Camera:** at the action's height, not quite level, slightly off the axis.
+- **Distance:** medium to medium-close; 35mm feel.
+- **Pose:** caught in the middle of doing something — pouring, laughing at someone off
+  frame, turning; eyes *not* on the lens; a little motion blur on hands allowed.
+- **Placement:** off-center, edges cutting limbs or foreground objects.
+- **Says:** real life, honesty, warmth.
+- **Avoid when:** the subject must be presented formally.
+
+### 10. Over-the-shoulder
+- **Camera:** behind one person's shoulder, looking at what they see.
+- **Distance:** the near shoulder big and soft in the foreground, the subject beyond.
+- **Placement:** the shoulder fills a third on one side; the subject in the opposite
+  third.
+- **Says:** point of view, conversation, being there.
+- **Avoid when:** there is only one element of interest.
+
+### 11. Through-frame
+- **Camera:** shooting through a doorway, window, foliage, a gap between objects.
+- **Distance:** medium to wide; the frame element in the near foreground, soft.
+- **Placement:** subject inside the inner frame, which sits on a third.
+- **Says:** observation, privacy, layered depth.
+- **Avoid when:** the image will be small (the frame eats the subject).
+
+### 12. Profile
+- **Camera:** 90° to the subject's facing direction.
+- **Distance:** close-up to full figure.
+- **Pose:** looking along the frame, toward the open side.
+- **Placement:** lead room in front of the face — two thirds of the width ahead of
+  them. Backlit, it becomes a silhouette.
+- **Says:** contemplation, direction, journey. Side view for games and diagrams.
+- **Avoid when:** the face must be fully read.
+
+### 13. Tight detail
+- **Camera:** close, at the detail's angle.
+- **Distance:** extreme close-up or macro: hands, eyes, a texture, a part.
+- **Placement:** the detail on a third, crop aggressively.
+- **Says:** craft, care, materiality.
+- **Avoid when:** the whole object needs to be identified.
+
+### 14. Three-quarter
+- **Camera:** 15–30° above, the object turned about 30–45°, showing front and side.
+- **Distance:** the object 50–70% of the frame.
+- **Placement:** centered for packshots; on a third with props for styled sets.
+- **Says:** product clarity, form.
+- **Avoid when:** a flat graphic look is wanted.
+
+### 15. Flat frontal
+- **Camera:** perpendicular to the subject, no perspective (elevation, wall, poster).
+- **Placement:** on the grid; centered axis or flush to a column.
+- **Says:** graphic, honest, designed. Used for flat styles, walls, labels, technical
+  elevations, exploded views and cutaways.
+- **Avoid when:** depth or atmosphere is the point.
+
+### 16. Isometric
+- **Camera:** parallel projection, axes at 30°, no vanishing point.
+- **Placement:** a diorama block or tile on a grid.
+- **Says:** systems, how it works, a world in miniature.
+- **Avoid when:** emotion or realism matters.
+
+### 17. Symmetric center-punch
+- **Camera:** dead center, level, one-point perspective.
+- **Placement:** subject on the vertical center line, symmetry around it.
+- **Says:** order, ritual, confrontation, grandeur.
+- **Avoid when:** there is text on one side (use a third instead).
+
+### 18. Dutch tilt
+- **Camera:** rolled 10–25° off level.
+- **Placement:** diagonals across the frame.
+- **Says:** unease, speed, energy.
+- **Avoid when:** trust or calm is wanted; use once per series at most.
+
+### 19. Fisheye close-up
+- **Camera:** very close with an ultra-wide, curved lens.
+- **Says:** fun, attitude, 90s–Y2K skate and music culture.
+- **Avoid when:** faces must look flattering or true.
+
+### 20. Walking toward camera
+- **Camera:** eye level, a long lens (85–135mm feel), the subject approaching.
+- **Pose:** mid-stride, one foot lifted, arms in natural swing.
+- **Placement:** the subject on the center line or a third, the background compressed.
+- **Says:** momentum, arrival, purpose.
+- **Avoid when:** the scene has no depth behind the subject.
+
+## Writing a shot so the model follows it
+
+Lens names are cues, not physics: models read "85mm" as a portrait mood, not a field of
+view. Always state the **resulting frame** in words and numbers:
+
+- Camera height and angle: "camera at knee height, looking up about 20°".
+- Distance and framing: "full figure; head at about one sixth of the frame height from
+  the top".
+- Placement: "the subject's body in the left third; the right two thirds open sky".
+- Gaze and pose: "looking camera-right, out of frame, not at the lens".
+- Camera-left / camera-right, never a bare "left".
+
+One shot per prompt. A prompt that lists two framings gets a compromise between them.

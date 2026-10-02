@@ -3,16 +3,17 @@
 **Whatever the prompt doesn't decide, the model decides — and the model's habits are
 nobody's taste.**
 
-Claude can't make images, and no agent arrives with taste. These two skills add both —
-one plans the image with you and writes the prompt, the other generates it. Either
-works alone; together they are the pipeline. Used on my own work for months before
-release.
+Claude can't make images, and no agent arrives with taste. These three skills add
+both — one decides the look with you, one plans the image and writes the prompt, one
+generates it. Each works alone; together they are the pipeline. Used on my own work for
+months before release.
 
 Install, requirements, the key warning and the Claude.ai bundles:
 [repository README](../../README.md).
 
 ## Contents
 
+- [`mw-image-direction`](#mw-image-direction) — decides the look and the shot with you
 - [`mw-image-prompt`](#mw-image-prompt) — plans the image with you, then writes the prompt
 - [`mw-image-gen`](#mw-image-gen) — runs the prompt against fal.ai or OpenAI
 - [Using them](#using-them) — invocation in Claude Code and Claude.ai
@@ -25,6 +26,38 @@ Install, requirements, the key warning and the Claude.ai bundles:
 - [Requirements](#requirements)
 - [Layout](#layout)
 
+
+## `mw-image-direction`
+
+*Decides the look and the shot with you.*
+
+Left alone, every image model makes the same choices: the subject centered at eye
+level, facing the lens, softly lit, graded teal and orange or washed in a purple-blue
+gradient. Nobody picked any of it. This skill picks on purpose.
+
+If you have no idea what the image should look like, it asks a few plain questions — who
+sees it, three words for the feeling, what it must never look like — and shortlists
+three contrasting directions from a library of 46, each with its variants: photography
+from cinematic and documentary to direct flash and dark luxury; flat graphic styles
+from Swiss to pixel art; glass morphism and aurora; clay, soft 3D and isometric;
+watercolor, anime and technical drawing; collage, graffiti and maximalism; and eras
+from 50s atomic to Y2K and cyberpunk. Name a style and it skips straight to its
+variants.
+
+Then it decides the shot, which is where most generated images go stale: two or three
+options that differ in camera height, distance, pose and placement, instead of one
+default. It places the subject on a grid, keeps it aligned with any text or UI that
+will sit on the image, and splits the scene into layers when the asset needs them.
+
+It reads the look back as one block — palette, light, texture, shots, composition, and a
+style paragraph to paste into every prompt of a series — and offers to save it to
+`docs/art-direction.md` so the next session reuses it. A chosen direction rules the look;
+your project docs keep only the technical limits (sizes, formats, layer names, text-safe
+zones) and content bans. Directions are described by their attributes, never as
+"in the style of" a named artist.
+
+It decides the look. It doesn't write the final prompt or generate; with
+`mw-image-prompt` installed it hands straight over.
 
 ## `mw-image-prompt`
 
@@ -45,9 +78,12 @@ negative field or positive restatement, parameters or settings. The brief stays 
 same and the encoding changes. A model it doesn't know gets safe defaults, flagged as a
 calibration pass.
 
-It brings **no style of its own**, deliberately. If your project documents a brand kit
-or art direction, it reads that and follows it; if not, you are the source, and it
-offers directions rather than improvising a house look. When a result comes back, it
+It brings **no style of its own**, deliberately. If you chose a direction with
+`mw-image-direction`, it follows that; if your project documents a brand kit or art
+direction, it reads that and follows it; if neither, you are the source — it suggests
+`mw-image-direction` and asks before switching, or offers directions rather than
+improvising a house look. It never falls back on one fixed camera: without a chosen
+shot it proposes two or three framings. When a result comes back, it
 diagnoses the result first, then writes one edit with the full preserve list.
 
 It plans and writes prompts. It never generates, and it works the same in Claude Code
@@ -78,8 +114,9 @@ it stops and names it rather than substituting a default and billing you for the
 **Name the skill and there's nothing to guess:**
 
 ```
-/mw-image-prompt   a hero background for the docs page
-/mw-image-gen      run the prompt above
+/mw-image-direction  a look for our launch posts
+/mw-image-prompt     a hero background for the docs page
+/mw-image-gen        run the prompt above
 ```
 
 `/mw-image:mw-image-prompt` is the namespaced form in Claude Code. In Claude.ai and the
@@ -176,8 +213,8 @@ Writes WebP/AVIF beside the masters. The originals stay.
 
 ## Requirements
 
-`mw-image-prompt` has none — plain Markdown, works in Claude Code and on Claude's web,
-desktop and mobile apps.
+`mw-image-direction` and `mw-image-prompt` have none — plain Markdown, they work in
+Claude Code and on Claude's web, desktop and mobile apps.
 
 `mw-image-gen` runs **locally** and needs Node.js 18+, [`uv`](https://docs.astral.sh/uv/)
 for the WebP/AVIF conversion, and **at least one provider key in the environment.**

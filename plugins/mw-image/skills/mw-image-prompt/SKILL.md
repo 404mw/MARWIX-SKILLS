@@ -9,8 +9,9 @@ People arrive with a feeling, a placement, or three words; a finished image need
 dozen decisions. This skill closes that gap: it reasons about what the user said,
 proposes the rest, asks only what the user alone can answer — then writes the prompt.
 
-It carries prompt craft, never taste. The look comes from the user, or from the
-project's documented rules when there are some. Generating the image is out of scope:
+It carries prompt craft, never taste. The look comes from the user, from a direction
+chosen with `mw-image-direction`, or from the project's documented rules when there are
+some. Generating the image is out of scope:
 the user runs the prompt in their own tool — a web app such as ChatGPT, Gemini or
 Midjourney, an API, or whatever generation tool the environment provides.
 
@@ -54,6 +55,12 @@ Where documented rules exist they win over this skill's defaults. Name the rule 
 followed and where it came from. A doc that conflicts with what the user just said is
 raised as a question, never silently resolved.
 
+**A chosen direction outranks the docs on look.** When the user picked a direction with
+`mw-image-direction` — in this conversation, or saved to `docs/art-direction.md` — it
+rules style, palette, lighting, texture, camera, pose and composition. The docs then
+keep only hard technical limits (sizes, formats, layer and naming scheme, text-safe
+zones) and content bans.
+
 ### 2. Reason about the ask
 
 Before asking anything, work out what the user's words already settle and what they
@@ -71,8 +78,9 @@ Classify the mode first — the two have opposite defaults:
 | Output shape | Built for post-processing: layer splits, grading, format exports | Built for the feed: platform ratios, thumbnail legibility |
 
 Then draft every row of the decision set ([references/brief.md](references/brief.md))
-from three sources, in order: the user's words `[user]`, documented rules `[doc]`, and
-your own inference from context and the defaults `[proposed]`. Note what is genuinely
+from four sources, in order: the user's words `[user]`, a chosen direction
+`[direction]`, documented rules `[doc]`, and your own inference from context and the
+defaults `[proposed]`. Note what is genuinely
 open. If the subject — what the image is *of* — is open because the ask names a
 message rather than a thing, prepare directions from
 [references/concept.md](references/concept.md).
@@ -83,8 +91,8 @@ Reply once, with three parts:
 
 1. **What I understand** — two or three plain sentences: what the image is for, where
    it lives, what it shows. This is where a wrong reading gets caught for free.
-2. **The draft brief** — one line per decision, tagged `[user]`, `[doc]` or
-   `[proposed]`.
+2. **The draft brief** — one line per decision, tagged `[user]`, `[direction]`,
+   `[doc]` or `[proposed]`.
 3. **Questions** — only for what is genuinely open, each carrying your recommendation
    and two or three concrete options to react to. A rough idea gets directions, not an
    interrogation: offer "the old 3-day checklist beside a 20-minute timer", not "what
@@ -95,6 +103,12 @@ whole job: mode, destiny (whole-frame / cutout / layered / text overlay), where 
 user will generate (which tool or model they have), how a real person's likeness may
 be used, and final-tier spend. Never drip questions one at a time; a second batch only
 when the answers opened something new.
+
+**No look to follow.** When no direction was chosen, the docs describe no style, and the
+user has no look in mind, suggest `mw-image-direction` in the batch if it is installed —
+one question: "Pick a look first with mw-image-direction? It shortlists three
+contrasting directions and two or three shots." Switch only on a yes. Without it, or on
+a no, offer two or three concrete directions as `[proposed]` options (brief.md).
 
 **Fast lane.** When no work-changing line is `[proposed]`, or the user says to go
 ahead, show the brief and continue straight to prompts in the same reply.

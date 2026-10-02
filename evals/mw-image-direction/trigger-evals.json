@@ -1,0 +1,58 @@
+[
+  {
+    "query": "I have no idea what the images for my new site should look like",
+    "should_trigger": true
+  },
+  {
+    "query": "give our brand a visual direction — we want something that doesn't look like every other AI startup",
+    "should_trigger": true
+  },
+  {
+    "query": "make the launch visuals look Y2K",
+    "should_trigger": true
+  },
+  {
+    "query": "every picture I generate of my character has the same pose and camera angle, how do I get variety?",
+    "should_trigger": true
+  },
+  {
+    "query": "what style should our podcast cover art be?",
+    "should_trigger": true
+  },
+  {
+    "query": "pick a look for a series of 10 instagram posts about our coffee",
+    "should_trigger": true
+  },
+  {
+    "query": "I want it cinematic but I don't know what that means exactly",
+    "should_trigger": true
+  },
+  {
+    "query": "write me a nano banana prompt for a red mug on a white table, 1:1",
+    "should_trigger": false
+  },
+  {
+    "query": "generate the image from the prompt above with fal",
+    "should_trigger": false
+  },
+  {
+    "query": "convert these PNGs to webp",
+    "should_trigger": false
+  },
+  {
+    "query": "design a logo for my bakery as an SVG",
+    "should_trigger": false
+  },
+  {
+    "query": "set up a tailwind color palette for the dashboard",
+    "should_trigger": false
+  },
+  {
+    "query": "make a bar chart of signups by month",
+    "should_trigger": false
+  },
+  {
+    "query": "the face in this gemini image looks wrong, fix the prompt",
+    "should_trigger": false
+  }
+]

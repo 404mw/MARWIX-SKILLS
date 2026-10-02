@@ -86,10 +86,13 @@ and duplicate it **verbatim** into every prompt — paraphrase is drift:
 
 ## Camera for people
 
-- Default: camera at eye level, straight on, ~85mm portrait compression, subject
-  distance ≥1.5 m, framing named (chest-up / head-and-shoulders / full figure).
-- A low or high angle is a deliberate, stated choice with a reason — never an
+- No fixed default. The camera comes from the chosen direction's shot, or from the
+  user's pick among two or three contrasting framings. Height, angle, distance and
+  framing (chest-up / head-and-shoulders / full figure) are always stated — never an
   inheritance from the reference.
+- Likeness holds best around ~85mm portrait compression at ≥1.5 m. When the chosen shot
+  is wide, very low or very high, say so in the brief: it costs some likeness, and
+  identity-critical shots may need a closer variation.
 - The selfie-flaw catalog to prompt against: below-eye camera (up-nostril
   perspective), close wide-angle distortion (enlarged nose, narrowed skull), tilted
   frame, the reference's own expression and crop.

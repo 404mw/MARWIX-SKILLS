@@ -113,6 +113,32 @@
         "Lighting is given as a measurement (exposure reference, share of frame in shadow), not only mood words",
         "The ratio appears in the prompt and is also listed as a setting to set where the tool has one"
       ]
+    },
+    {
+      "id": 9,
+      "name": "no-fixed-camera-default",
+      "prompt": "Portrait of our CTO for the team page. Use the attached headshot for likeness, she's fine with it. ChatGPT. No particular style.",
+      "expected_output": "Does not default to eye-level straight-on 85mm; proposes contrasting framings and, with no look to follow, suggests mw-image-direction when it is installed.",
+      "files": [],
+      "expectations": [
+        "The camera line is not silently set to eye level, straight on, ~85mm",
+        "It proposes two or three framings that differ in height, distance or placement, and asks the user to pick",
+        "With no documented style and no direction chosen, it suggests mw-image-direction (when installed) as a question and does not switch without a yes, or offers concrete style options",
+        "If a wide, very low or very high framing is proposed, it notes the likeness trade-off"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "direction-outranks-docs-on-look",
+      "prompt": "Earlier in this chat we picked a look with mw-image-direction: Cinematic film still, night practicals. Our docs/brand.md says bright high-key product look and 1920x1080 heroes. Write the GPT-Image prompt for the homepage hero of our espresso machine.",
+      "expected_output": "Uses the chosen direction for the look and takes only the size from the docs.",
+      "files": [],
+      "expectations": [
+        "Style, lighting and palette follow the cinematic night-practicals direction, tagged [direction]",
+        "The 1920x1080 size comes from the docs, tagged [doc]",
+        "The docs' high-key look is not used and not blended in",
+        "Lighting is written as a measurement (shadow share or exposure reference) rather than mood words alone"
+      ]
     }
   ]
 }
