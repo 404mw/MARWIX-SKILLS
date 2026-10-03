@@ -360,7 +360,7 @@ distance as overlap and blur, light as side, height and shadow, contact once per
 that matters, materials by their response, emphasis as the brightest and sharpest point,
 one instant. The worked example in Midjourney (4 clauses, 47 words):
 
-> a round sourdough loaf on a dark walnut board in the lower left, a baker's hands scoring it, face turned away and cropped at the brow; low morning sun from the left casting long shadows to the right; the floured scored ridge is the brightest, sharpest point
+> a round sourdough loaf on a dark walnut board in the lower left, a baker's hands dusting flour over it, face turned away and cropped at the brow; low morning sun from the left casting long shadows to the right; the floured scored ridge is the brightest, sharpest point
 
 ## Worked example
 
@@ -369,7 +369,7 @@ consumer colour. Shot A: candid mid-action over the counter, the baker cropped a
 brow, 35mm feel, loaf in the lower-left third.
 
 ```
-Scene        a baker scoring a round loaf, early morning, sun through the east window
+Scene        a baker dusting flour over a fresh-baked round loaf, early morning, sun through the east window
 Use          homepage hero, 16:9, 1600 px; headline over the right 40%; own mobile crop
 World scale  oak counter 0.90 m high; the loaf, Ø22 × 11 cm
 Camera       1.35 m high, 1.1 m back from the loaf (≈ 1.15 m along the lens axis),
@@ -378,7 +378,7 @@ Camera       1.35 m high, 1.1 m back from the loaf (≈ 1.15 m along the lens ax
              horizon ~20% from the top, behind the wall
 Objects      hero     loaf on a dark oiled walnut board, lower left · 19% of width ·
                       sharp; matte crust, flour dusted on the scored ridge only
-             support  the baker's hands, one drawing a blade along the ridge · sharp
+             support  the baker's hands, one dusting flour over the ridge · sharp
              support  baker, 1.72 m, 35 cm beyond the loaf, leaning in, three-quarter
                       away, looking down at it; head ≈ half the loaf's width; frame top
                       at their plane ≈ 1.51 m → cropped at the brow

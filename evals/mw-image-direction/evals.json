@@ -290,7 +290,7 @@
     {
       "id": 18,
       "name": "midjourney-staging-budget",
-      "prompt": "We locked Analog film, warm consumer color, shot A for the bakery hero: a round loaf lower-left on a dark walnut board, the baker's hands scoring it, face turned away and cropped, low morning sun through the east window, plaster wall on the right for the headline. I'll generate in Midjourney. Give me the staging part for the prompt.",
+      "prompt": "We locked Analog film, warm consumer color, shot A for the bakery hero: a round loaf lower-left on a dark walnut board, the baker's hands dusting flour over it, face turned away and cropped, low morning sun through the east window, plaster wall on the right for the headline. I'll generate in Midjourney. Give me the staging part for the prompt.",
       "files": [],
       "expected_output": "Compresses the staging into at most four physics clauses and about 50 words, in the prompt-budget priority order, and keeps everything else on the sheet to check the render against.",
       "expectations": [

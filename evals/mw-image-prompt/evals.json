@@ -143,7 +143,7 @@
     {
       "id": 11,
       "name": "direction-handoff-not-reasked",
-      "prompt": "Confirmed — here's the direction from mw-image-direction:\n[direction] Look: Analog film, warm consumer color\n[direction] Images: one homepage hero, 1600x900\n[direction] Destiny: whole frame, live HTML headline over it\n[direction] Text zone: right 40%, plaster wall in shadow, one value\n[direction] Generator: Nano Banana (Gemini)\n[direction] Shot A: candid over the counter; loaf lower-left on a dark walnut board, baker's hands scoring it, face turned away and cropped; one low morning sun from camera-left, long shadows to the right; the floured ridge brightest and sharpest\n[direction] Style block: (pasted verbatim)\nWrite the prompt.",
+      "prompt": "Confirmed — here's the direction from mw-image-direction:\n[direction] Look: Analog film, warm consumer color\n[direction] Images: one homepage hero, 1600x900\n[direction] Destiny: whole frame, live HTML headline over it\n[direction] Text zone: right 40%, plaster wall in shadow, one value\n[direction] Generator: Nano Banana (Gemini)\n[direction] Shot A: candid over the counter; loaf lower-left on a dark walnut board, baker's hands dusting flour over it, face turned away and cropped; one low morning sun from camera-left, long shadows to the right; the floured ridge brightest and sharpest\n[direction] Style block: (pasted verbatim)\nWrite the prompt.",
       "expected_output": "Treats every [direction] line as settled, shows the brief with those tags, asks nothing about destiny, generator, image list or text zone, and writes the Nano Banana prompt in the same reply.",
       "files": [],
       "expectations": [
@@ -202,7 +202,7 @@
     {
       "id": 15,
       "name": "variation-on-staged-image",
-      "prompt": "Here's the Midjourney prompt we just wrote for the bakery hero (16:9, headline over the right 40%), staged with mw-image-direction: \"a round sourdough loaf on a dark walnut board in the lower left, a baker's hands scoring it, face turned away and cropped at the brow; low morning sun from the left casting long shadows to the right; the floured scored ridge is the brightest, sharpest point\" plus the style block and parameters. Give me one or two variations as a fallback, and make one of them from a higher angle.",
+      "prompt": "Here's the Midjourney prompt we just wrote for the bakery hero (16:9, headline over the right 40%), staged with mw-image-direction: \"a round sourdough loaf on a dark walnut board in the lower left, a baker's hands dusting flour over it, face turned away and cropped at the brow; low morning sun from the left casting long shadows to the right; the floured scored ridge is the brightest, sharpest point\" plus the style block and parameters. Give me one or two variations as a fallback, and make one of them from a higher angle.",
       "expected_output": "Variations change placement or the instant within the same staging; the higher-angle variation re-derives its staging lines. Style, light logic and palette stay fixed.",
       "files": [],
       "expectations": [

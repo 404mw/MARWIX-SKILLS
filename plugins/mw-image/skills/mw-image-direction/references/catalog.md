@@ -89,7 +89,7 @@ When they name a format instead of a feeling:
 | Direction | Feels | Best for | Variants |
 |---|---|---|---|
 | Cinematic film still | tense, story-led, expensive | heroes, key art, campaign images | night practicals · naturalistic daylight · period drama |
-| Documentary / candid | honest, unposed, present | about pages, impact stories, behind the scenes | street · photojournalism · behind-the-scenes |
+| Documentary / candid | honest, unposed, present | briefs for a real shoot of the business (about, team, impact); generic scenes that claim nothing | street · photojournalism · behind-the-scenes |
 | Editorial fashion | confident, styled, aspirational | portraits, team, apparel, covers | studio seamless · location · color-blocked set · corporate headshot / team portrait |
 | Direct flash snapshot | raw, immediate, party | social, events, youth brands | night party · daylight fill-flash · point-and-shoot film |
 | Phone candid (UGC) | unpolished, peer-made, native to the feed | creator-style social ads, product-in-hand posts, vertical video covers | front-camera selfie · POV product in hand · night flash unboxing |
@@ -107,7 +107,7 @@ When they name a format instead of a feeling:
 | Direction | Feels | Best for | Variants |
 |---|---|---|---|
 | Vector art | clear, friendly, scalable | explainers, onboarding, marketing sites | flat geometric · outline · character vector · gradient vector · editorial infographic illustration |
-| Swiss design | rational, precise, confident | posters, covers, type-led headers | grid poster · photographic Swiss · Bauhaus geometric (the 1919–33 precursor, not Swiss itself) |
+| Swiss design | rational, precise, confident | posters, covers, type-led headers | grid poster · photographic Swiss · Bauhaus geometric (1919–33 precursor, not Swiss) |
 | Minimalism | calm, premium, focused | heroes, product, brand moments | Japanese · Scandinavian · product minimal · monochrome |
 | Pop art | loud, ironic, punchy | social, campaigns, merch | halftone comic · screen-print repeat · bold flat pop |
 | Pixel art | playful, nostalgic, gamer | games, dev tools, social | 8-bit · 16-bit · isometric pixel · 1-bit |
@@ -163,7 +163,7 @@ screenshots, draw the idea instead (vector, isometric, glass morphism).
 
 | Direction | Feels | Best for | Variants |
 |---|---|---|---|
-| Retro | nostalgic, specific | campaigns, merch, social | 50s atomic · 60s mod and psychedelic · 70s warm · 80s synthwave and Memphis · 90s grunge and vaporwave |
+| Retro | nostalgic, specific | campaigns, merch, social | 50s atomic · 60s mod and psychedelic · 70s warm · 80s Memphis and synthwave revival · 90s grunge and vaporwave revival |
 | Y2K | glossy, optimistic, internet-pop | youth, fashion, music, tech-nostalgia | pop Y2K · cyber chrome · Frutiger Aero (post-Y2K, about 2004–13) |
 | Futuristic | clean, aspirational, sci-fi | tech launches, AI, mobility | clean sci-fi · retro-futurism · solarpunk |
 | Cyberpunk | gritty, neon, rebellious | games, security, nightlife | neon noir · used-future daylight |

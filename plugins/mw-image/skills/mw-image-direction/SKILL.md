@@ -1,6 +1,6 @@
 ---
 name: mw-image-direction
-description: Decide with the user how an image or series should look, its art direction — style, palette, light, shot, framing and staging (real sizes, contact, light and shadow, what reads first). Use when the user has no idea what an image should look like; asks for a style, a look, a vibe, a mood or art direction; names one ("make it Y2K", "editorial"); wants a look for a brand or a series; says every image comes out the same; or says renders look fake — floating objects, wrong scale, clashing shadows — and wants the scene set up right. It interviews in plain words, shortlists three contrasting directions from a library of 48, each with a recommended shot, then reads it back with a scene sheet for prompting. Does not write or edit a model prompt or generate — that is mw-image-prompt / mw-image-gen. Not for logos, UI layouts, SVG or CSS, real photo shoots, or home staging.
+description: Decide with the user how an image or series should look, its art direction — style, palette, light, shot, framing and staging (real sizes, contact, light and shadow, what reads first). Use when the user has no idea what an image should look like; asks for a style, a look, a vibe, a mood or art direction; names one ("make it Y2K", "editorial"); wants a look for a brand or a series; says every image comes out the same; or says renders look fake — floating objects, wrong scale, clashing shadows — and wants the scene set up right. It interviews in plain words, shortlists three contrasting directions from a library of 48, each with a recommended shot, then reads it back in plain words, with a scene sheet for the prompt. Does not write or edit a model prompt or generate — that is mw-image-prompt / mw-image-gen. Not for logos, UI layouts, SVG or CSS, brand style guides, 3D-software settings, real photo shoots, or home staging.
 argument-hint: "[what the image is for, or the look you have in mind]"
 ---
 
@@ -203,7 +203,7 @@ L3, or when a render is checked. Terms: [vocabulary.md](references/vocabulary.md
 
 ```
 Looks like   warm analog film, an early-morning bakery
-In it        a baker's hands scoring a round loaf on a dark wooden board; their face mostly out of frame
+In it        a baker's hands dusting flour over a round loaf on a dark wooden board; their face mostly out of frame
 Camera       just above the counter, close — the loaf is about a fifth of the picture, lower left
 Light        one low morning sun from the left window; long shadows to the right; about half the picture in warm shadow
 You see      the scored crust first, then the hands; the face last
@@ -235,7 +235,7 @@ Shot A       candid mid-action over the counter, baker cropped at the brow, 35mm
 Rig          one low early sun, ~15° up, through the east window (camera-left), ≈ 4000K
 Camera       1.35 m high, 1.1 m back, down ~10° → loaf ~77% down; frame at loaf ≈ 1.18 × 0.66 m; f/2.8
 Hero         loaf Ø22 × 11 cm, dark walnut board, oak counter; lower-left third, ≈ a fifth of width, sharp
-Support      hands scoring · baker 35 cm beyond, head ≈ half the loaf's width, three-quarter away
+Support      hands dusting flour · baker 35 cm beyond, head ≈ half the loaf's width, three-quarter away
 Context      proving baskets on a shelf, soft; plaster wall 2.4 m back, out of the beam, ≈ 4 stops down
 Light        side-lit, grazing the ridge; shadows to camera-right ≈ 3.7× height; flour only on the ridge
 Emphasis     1) floured scored ridge: brightest, sharpest  2) hands  3) face, held down by turn and crop
@@ -255,7 +255,8 @@ Exclusions are stated as the positive state that excludes them:
 > brightest highlights only.
 
 With a known generator, add that family's notes from the direction's entry and stamp
-the block with the family. For Midjourney, a fixed parameter line sits **beside** the
+the block with the family; if the entry has no note for it, use `mw-image-prompt`
+engines.md's safe defaults and say the block is uncalibrated. For Midjourney, a fixed parameter line sits **beside** the
 block and the Avoid line becomes `--no`:
 `--v 8.2 --raw --s 100 --no teal-and-orange grade, lens flare`. Unknown generator: the
 block stays model-neutral.
@@ -296,7 +297,9 @@ was tuned on. If the file exists, show what changes and ask before replacing it.
 ## Library at a glance
 
 [references/catalog.md](references/catalog.md) indexes 48 directions in seven groups,
-with variants, the shortlisting axes and the generic AI looks to steer away from:
+with variants, the shortlisting axes and the generic AI looks to steer away from. Every
+entry carries the same fields, including its staging depth and a palette of named
+colors with approximate hex and a role:
 
 - [photo.md](references/directions/photo.md) — cinematic, documentary, editorial, direct
   flash, lifestyle, product, low-key, B&W, analog film, architecture, food, landscape,
