@@ -18,6 +18,7 @@ Terms: [vocabulary.md](vocabulary.md). Placement on the frame: [composition.md](
 ## Contents
 
 - When to stage, and how deep
+- Decided, not measured
 - The scene sheet
 - 1. Inventory and roles
 - 2. Real sizes
@@ -43,6 +44,58 @@ Terms: [vocabulary.md](vocabulary.md). Placement on the frame: [composition.md](
 
 Stage after the shot is picked: the shot sets camera height, distance and placement;
 staging fills the space the shot looks into.
+
+## Decided, not measured
+
+The scene does not exist yet, so nothing in it can be measured, and nobody knows its
+distances. They are not unknowns to find out; they are **choices**, made the way a set
+designer decides where the table stands and a camera operator decides where to stand.
+Two kinds of number go on the sheet, and only one of them is a fact:
+
+| Number | Where it comes from |
+|---|---|
+| **Object sizes** | known: a mug is about 10 cm tall, a counter 90 cm high, an adult about 1.7 m (the size table in section 2), or the product's real dimensions |
+| **Distances, camera height, tilt, sun elevation, aperture** | decided: worked out backwards from the picture you want |
+
+**Work backwards from the framing.**
+
+1. **Decide the framing** — how much of the frame the hero fills, and the lens feel the
+   direction calls for: "the loaf about a fifth of the frame width, 35mm feel".
+2. **Take the known size** — the loaf is 22 cm across, so the frame must be about
+   22 ÷ 0.2 ≈ 1.1 m wide where the loaf sits.
+3. **Derive the distance** — distance ≈ frame width × focal length ÷ 36, so
+   1.1 × 35 ÷ 36 ≈ 1.1 m. Nobody measured it; the framing forced it.
+4. **Place everything else relative to the hero** — "the baker 35 cm behind it", "the
+   wall 1.2 m behind the counter" — each a decision about the scene, chosen for what
+   it does to the picture.
+5. **Collect the consequences** — the one invented geometry now decides the rest: the
+   baker falls outside the sharp zone, their head appears about the loaf's width, the
+   shadow length follows from the sun height you chose for the time of day.
+
+The point is not accuracy, it is **consistency**: every relation in the prompt comes from
+one geometry, so they agree with each other. Written without it — "big loaf, baker
+behind, blurry background" — the model guesses each part separately, and that is where
+floating objects and mismatched scale come from.
+
+**What never to ask the user.** Distances, camera height, tilt, aperture, sun angle:
+nobody knows them, and asking hands the user the arithmetic. Ask only what they really
+know and you cannot — a product's real dimensions, the size of a space that exists
+(their shop, their office), and what the viewer must notice first. A size that matters
+and is unknown is assumed and stated on the sheet ("bottle assumed 14 cm tall —
+correct me if not").
+
+**Reading an image that exists.** For a reference photo or a failed render, distances
+can be estimated, not chosen: find something of known size in it (a door is about
+2 m, a face about 23 cm, a phone 15 cm) and scale from it. Its frame share and the
+lens feel give its distance by the same formula, and every other object follows from
+how big it looks beside it. That is how a render's scale error is diagnosed: "the mug
+is drawn as wide as the laptop, so it is either 30 cm across or twice as close — the
+prompt must state its size relative to the laptop".
+
+**How exact.** The model never sees the centimeters; it gets the visible results
+(section "Writing physics into a prompt"), and lands near them, not on them. Round
+every number to what a person would say aloud — 1.1 m, not 1.07 m — and treat the sheet
+as a consistent plan, not a measurement.
 
 ## The scene sheet
 
@@ -126,7 +179,8 @@ far more reliably than centimeters.
 
 ## 3. The camera as a physical object
 
-The camera is somewhere in the room. Put it there in numbers.
+The camera is somewhere in the room. Put it there in numbers — chosen, as above, from
+the framing you want, never asked for.
 
 **Height and distance.** Camera height above the floor (or table), horizontal distance
 to the hero, and tilt in degrees. The tilt follows from them: a camera 40 cm above a

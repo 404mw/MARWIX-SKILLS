@@ -119,7 +119,8 @@
         "Which objects are sharp and which are soft is stated, consistent with the stated distances",
         "Emphasis is given as an order (first, second, third read) with a specific detail on the hero, and at least one competitor (a face, a window, a bright surface) is named with how it is held down",
         "The headline zone top-right is filled by a named physical surface kept low in contrast",
-        "Nothing is described 'in the style of' a named artist or photographer"
+        "Nothing is described 'in the style of' a named artist or photographer",
+        "It does not ask the user for distances, camera height, angles or aperture; it decides them and states them on the sheet"
       ]
     },
     {
@@ -135,7 +136,8 @@
         "It states the light sources with their directions instead of a mood word",
         "It gives an emphasis plan in which the bottle or a named detail of it wins, and says how the background is held down (focus, value, saturation or distance)",
         "It asks for the bottle's real dimensions or states an assumed size",
-        "Physics is written for the prompt as visible results (relations, frame shares, shadow directions), not only as centimeters"
+        "Physics is written for the prompt as visible results (relations, frame shares, shadow directions), not only as centimeters",
+        "It does not ask the user for distances, camera height or angles"
       ]
     }
   ]

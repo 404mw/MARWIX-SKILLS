@@ -136,10 +136,12 @@ a series), reason the scene out physically before anything is described, and fil
    listed, the model invents.
 2. **Real sizes.** Each object's real dimensions, from the user, the docs or the size
    table; the scale relations between them.
-3. **The camera in the room.** Height, distance to the hero, tilt, lens feel → the
-   frame's width at the hero, each object's frame share (size ÷ frame width), the
-   horizon height, and the depth of field in centimeters, so it is known which objects
-   are sharp.
+3. **The camera in the room.** Nothing here is measured — the scene does not exist
+   yet. Decide the hero's frame share and lens feel, then derive the distance from the
+   hero's known size, and place everything else relative to the hero. From that one
+   invented geometry follow the frame's width at the hero, each object's frame share,
+   the horizon height, and the depth of field in centimeters, so it is known which
+   objects are sharp.
 4. **Gravity and contact.** What each object rests on or is held by; contact shadows;
    liquids, cloth, hair, steam and wind behaving as they must.
 5. **Light as physics.** Each source's direction, elevation, size and temperature →
@@ -157,8 +159,10 @@ Stylized directions keep the laws staging.md lists for their family and bend the
 on purpose; a surreal image breaks exactly one law and keeps all others strict.
 
 Show the sheet in the readback; ask only about what the user alone knows (a product's
-real dimensions, what the image must make the viewer notice first). Do not ask the user
-to check the arithmetic.
+real dimensions, the size of a real space, what the image must make the viewer notice
+first). Never ask for distances, camera height, angles or aperture — those are the
+skill's decisions. A size that matters and is unknown is assumed and stated on the
+sheet. Do not ask the user to check the arithmetic.
 
 ### 6. Read back the locked look
 
