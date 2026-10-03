@@ -11,6 +11,7 @@ reliably than as a geometry.
 - Camera height and angle
 - Lens feel and focus
 - Light quality
+- Contrast and value
 - Portrait lighting patterns
 - Light setups and times of day
 - Color temperature
@@ -56,8 +57,14 @@ reliably than as a geometry.
 | Tilt-shift | a thin band of focus; miniature effect, or corrected verticals in architecture |
 | Anamorphic | wide aspect, oval bokeh, horizontal streak flares (state if unwanted) |
 
-- **Depth of field:** deep (everything sharp) · shallow (subject sharp, background soft)
-  · a named focus plane ("focus on the near eye").
+- **Depth of field:** how deep the sharp zone is: deep (everything sharp) · shallow
+  (subject sharp, the rest soft) · a named focus plane ("focus on the near eye").
+- **Background blur:** how soft a given plane renders, which is a different thing. At
+  the same framing it grows with a longer lens, a wider aperture and, most of all, a
+  background farther behind the subject. Write it as a result: "the shelf behind clearly soft, still
+  recognizable". Numbers: [optics-light.md](optics-light.md#depth-of-field-and-background-blur).
+- **Faces and distance:** a camera closer than about 1–1.5 m enlarges the nose on any
+  lens; portraits sit at 1.5–3 m. The distance flatters, not the lens name.
 - Lens numbers are cues for the look, not exact optics; state the resulting framing too.
 
 ## Light quality
@@ -65,14 +72,37 @@ reliably than as a geometry.
 - **Hard:** a small or distant source; crisp shadow edges (sun, bare flash, spotlight).
 - **Soft:** a large or diffused source; gradual shadow edges (overcast, window,
   softbox).
-- **Direction:** front · side (90°) · 45° · back (rim, silhouette) · top · under.
-- **Contrast:** the share of the frame in shadow, and whether the shadows hold detail.
-- **Key / fill / rim:** main light, the light that opens shadows, the light that
-  outlines the edge. Say how many lights exist; unstated lights get added.
+- **Direction:** front · side (90°) · 45° · back (rim, silhouette) · top · under. A
+  low light from the side grazes the surface and shows texture; that is side light, not
+  rim.
+- **Key / fill / rim:** main light, the light that opens shadows, and a light from
+  behind that outlines the edge. Rim always comes from behind the subject. Say how many
+  lights exist; unstated lights get added.
 - **Motivated / practical:** light that comes from a visible source in the scene (lamp,
   window, screen).
 - **High-key / low-key:** mostly bright with few shadows / mostly dark with selected
   highlights.
+
+## Contrast and value
+
+- **Key:fill ratio**, in stops between the lit side and the shadow side:
+
+  | Key:fill | Stops | Reads as |
+  |---|---|---|
+  | 2:1 | 1 | open, gentle |
+  | 4:1 | 2 | sculpted |
+  | 8:1 | 3 | dramatic, low-key |
+
+  In a prompt, write the result: "shadow side about two stops darker, detail visible".
+- **Negative fill:** a dark card or wall on the shadow side that takes bounce away and
+  deepens the shadow without touching the key.
+- **Shadow share:** how much of the frame is in shadow, and whether the shadows hold
+  detail.
+- **Value grouping:** lights, mids and darks gathered into a few big shapes (a
+  three-value pattern) instead of scattered spots. The hero sits on the strongest value
+  step.
+- **Squint test:** squint or blur until detail is gone; what still stands out is what
+  the viewer sees first. Planning: [composition.md](composition.md#value-plan).
 
 ## Portrait lighting patterns
 
@@ -89,11 +119,16 @@ reliably than as a geometry.
 
 ## Light setups and times of day
 
-- **Golden hour:** low warm sun, long shadows, glowing edges; around sunrise and sunset.
+- **Golden hour:** the sun from about 4° below to 6° above the horizon; deep gold, very
+  long shadows, glowing edges; around sunrise and sunset.
+- **Low morning or evening sun:** the sun 10–20° up; warm gold, not orange; shadows
+  about three to six times the object's height.
 - **Blue hour:** after sunset, cool even sky, artificial lights warm against it.
 - **Overcast:** soft, shadowless, muted color; honest and calm.
 - **Midday hard sun:** short dark shadows, high contrast; graphic.
-- **Window light:** soft directional; falloff across the room.
+- **Window light:** soft directional; falloff across the room. Daylight through a
+  window is neutral to faintly cool; the warmth in a window-lit room comes from bounce
+  off warm surfaces and from the grade.
 - **Direct flash:** flat bright subject, hard shadow outline behind, dark background.
 - **Ring light:** even frontal light, circular catchlights.
 - **Colored gels:** a colored light per side (e.g. a warm key and a cool rim).
@@ -101,17 +136,25 @@ reliably than as a geometry.
 
 ## Color temperature
 
-| Kelvin | Reads as |
-|---|---|
-| ~1900K | candle, firelight |
-| ~2700–3000K | household tungsten, cozy |
-| ~3500K | golden hour, warm |
-| ~5000–5600K | daylight, flash, neutral |
-| ~6500K | overcast, cool |
-| 7000K+ | shade, blue hour, cold |
+A Kelvin number alone is ambiguous: as a light it names a color, as a camera setting a
+higher number warms the picture. Write color as the result under a stated white balance
+("balanced for daylight, the low sun reads warm gold"), never a bare Kelvin number in a
+style block.
+
+| Source | Kelvin | Under daylight balance it reads |
+|---|---|---|
+| Candle, firelight | ~1900K | deep orange |
+| Household tungsten | ~2700–3000K | amber, cozy |
+| Golden-hour sun (−4° to +6°) | ~2000–3500K | deep gold to orange |
+| Low sun (10–20°) | ~4000–4500K | warm gold |
+| Midday sun, flash | ~5000–5600K | neutral |
+| Window daylight | 5500–6500K | neutral to faintly cool |
+| Overcast | ~6500–7500K | cool |
+| Open shade, blue hour | 7500K+ | blue |
 
 Mixed temperatures (a warm lamp in a blue room) create depth; say which source is
-which.
+which, and which one the image is balanced for. Details:
+[optics-light.md](optics-light.md#color-and-white-balance).
 
 ## Pose and body
 

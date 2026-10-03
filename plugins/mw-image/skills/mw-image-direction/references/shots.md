@@ -10,16 +10,23 @@ subject centered, facing the lens. That is recipe 1 below. It is a fine choice w
 *chosen*. It is the reason everything looks alike when nobody chooses.
 
 Terms (shot sizes, lens feel, light patterns, pose words): [vocabulary.md](vocabulary.md).
-Grids and placement: [composition.md](composition.md).
+Grids and placement: [composition.md](composition.md). The scene behind a shot (what is
+in it, real sizes, emphasis): [staging.md](staging.md). The camera and light math
+(frame size, tilt, blur): [optics-light.md](optics-light.md).
 
 ## Contents
 
 - Building two or three shot options
-- Series — rotate, don't repeat
+- Series — grid or narrative
+- Sets by placement
 - The recipes
 - Writing a shot so the model follows it
 
 ## Building two or three shot options
+
+The shortlist already carries one recommended shot per direction, so one pick settles
+both. Build two or three options when the user asks for alternatives, for a series, or
+when the recommended shot does not fit the placement.
 
 1. **Start from the direction's favored shots**, then fit them to the subject and the
    placement (a 9:16 story wants height, a 21:9 banner wants width).
@@ -31,15 +38,44 @@ Grids and placement: [composition.md](composition.md).
 4. **For each option say what it communicates**, in a few words: "low-angle hero — the
    product towers; confidence".
 5. **Check against the hard limits:** if text sits on the right 40%, every option keeps
-   the subject and its gaze on the left.
+   the subject on the left; a person who is the hero looks toward the text, a person in
+   support looks toward the hero. The hero and the first read must also survive every
+   crop the placement uses ([composition.md](composition.md)).
 
-## Series — rotate, don't repeat
+## Series — grid or narrative
 
-For three or more images in one set, assign shots from a rotation instead of one recipe
-for all. A good rotation per set of five: one wide, one environmental, one candid
-mid-action, one detail, one unusual height (overhead or ground-level). Keep the
-direction and the style block fixed; vary only the shot. The set reads as one look with
-movement in it.
+First decide which kind of set it is.
+
+- **Grid set** — a product grid, a swipe-continuous carousel, anything seen side by side
+  as one unit. Same shot, same subject size, horizon, margin and light rig in every
+  image. Only the subject changes.
+- **Narrative set** — a campaign, an editorial story, a website's pages, separate posts.
+  Rotate the shots so the set has movement. Keep the *light logic* (quality, temperature
+  against one white balance, contrast, shadow share), not a camera-fixed rig: the sun
+  stays "low through the east window", and each shot works out which side that falls on.
+
+Rotations for a narrative set of five:
+
+| Set | Rotation |
+|---|---|
+| People | one wide · one environmental · one candid mid-action · one detail · one unusual height (overhead or ground-level) |
+| Product | three-quarter packshot · in hand · material or ingredient macro · in context · overhead |
+
+Keep the direction and the style block fixed in both kinds. Once the first image is
+approved, reuse it as a style-only reference next to the word-for-word style block for
+the rest of the set.
+
+## Sets by placement
+
+What a set usually needs, by where it goes. Offer it as the default list; the user
+trims or adds.
+
+| Placement | Images | Kind |
+|---|---|---|
+| Website | hero (16:9, a quiet zone for the headline) · section backgrounds (low detail) · product or service tiles (4:5 or 1:1) · about or team | hero and backgrounds narrative; tiles a grid set; about and team from real photos when they show real people or premises |
+| E-commerce | three-quarter packshot on one backdrop · detail macro · in hand for scale · in context | packshots a grid set; the rest narrative. The real product is placed from the user's photo, never redrawn |
+| Social, product only | packshot · texture macro · ingredient still life · shadow-play · the product on a context surface | narrative, 4:5 or 3:4; a 9:16 cover keeps the platform's safe zones ([composition.md](composition.md)) |
+| People | environmental portrait · candid mid-action · hands detail · wide with the person small · over-the-shoulder | narrative; casting stated once for the set; real staff from a real shoot |
 
 ## The recipes
 
@@ -97,7 +133,9 @@ and when not to use it.
 ### 7. Wide environmental
 - **Camera:** eye level or a little higher.
 - **Distance:** extreme wide; the subject 5–20% of the frame height.
-- **Pose:** small action readable in silhouette — walking, looking, working.
+- **Pose:** small action readable in silhouette — walking, looking, working. At this
+  size the face is far below a tenth of the frame height, and models mangle small faces:
+  turn the figure away, or silhouette it.
 - **Placement:** the subject on a third, the space around it as the subject too;
   horizon on a third.
 - **Says:** solitude, scale, freedom, context.
@@ -153,7 +191,7 @@ and when not to use it.
 
 ### 14. Three-quarter
 - **Camera:** 15–30° above, the object turned about 30–45°, showing front and side.
-- **Distance:** the object 50–70% of the frame.
+- **Distance:** the object 50–70% of the frame height (of the width for a wide object).
 - **Placement:** centered for packshots; on a third with props for styled sets.
 - **Says:** product clarity, form.
 - **Avoid when:** a flat graphic look is wanted.
@@ -166,7 +204,9 @@ and when not to use it.
 - **Avoid when:** depth or atmosphere is the point.
 
 ### 16. Isometric
-- **Camera:** parallel projection, axes at 30°, no vanishing point.
+- **Camera:** parallel projection, no vanishing point. True isometric puts the receding
+  axes at 30° to the horizontal. Pixel art's 2:1 tiles are dimetric (about 26.57°);
+  either works, but don't mix them in one set.
 - **Placement:** a diorama block or tile on a grid.
 - **Says:** systems, how it works, a world in miniature.
 - **Avoid when:** emotion or realism matters.
@@ -195,6 +235,51 @@ and when not to use it.
 - **Says:** momentum, arrival, purpose.
 - **Avoid when:** the scene has no depth behind the subject.
 
+### 21. POV / in-hand
+- **Camera:** at the viewer's own eye, looking down 30–60° at their hands, as if the
+  viewer holds the thing.
+- **Distance:** arm's length, 40–60 cm; 24–35mm feel, like a phone.
+- **Pose:** one or two hands entering from the bottom edge, holding or using the object;
+  the forearms cropped by the frame. The grip matches the object's weight.
+- **Placement:** the object in the middle or lower half, the hands coming from below.
+- **Says:** "this could be you"; use, trial, real scale.
+- **Avoid when:** the hands would be too small to hold up, or a clean packshot is needed.
+
+### 22. Two-shot
+- **Camera:** eye level, a little off the axis between the two people.
+- **Distance:** medium to medium-full, both in frame; 35–50mm feel.
+- **Pose:** a relation, not two portraits: turned toward each other in three-quarter, one
+  talking and one listening, or both looking at the same thing.
+- **Placement:** each on a vertical third, or one near and larger, one farther and
+  smaller. One of them leads; say which.
+- **Says:** conversation, service, partnership, a relationship.
+- **Avoid when:** one person must carry the message. Models give both the same face;
+  state two distinct castings.
+
+### 23. Silhouette
+- **Camera:** level or low, facing a bright field: sky, window, lit wall.
+- **Light:** behind the subject only; nothing on the camera side. The subject is the
+  darkest shape against the brightest field.
+- **Pose:** a shape that reads in outline: profile, limbs clear of the body, a gap
+  between arm and torso.
+- **Placement:** the shape against the brightest part of the frame; the horizon often low.
+- **Says:** mystery, emotion without identity, scale.
+- **Avoid when:** a face, a label or a material must read. It is also the fix for faces
+  too small to survive.
+
+### 24. Reflection
+- **Camera:** aimed at a mirror, shop window, puddle or still water that carries the
+  subject, or the subject and its double.
+- **Distance:** medium; say whether the focus is on the reflection or on the surface.
+- **Placement:** the real subject and its reflection split along one line (the water's
+  edge, the mirror's frame), or the reflection alone.
+- **Physics:** a mirror shows the side of the subject that faces it, flipped left to
+  right; still water hangs the reflection straight below, slightly darker. State what the
+  reflection shows; models get it wrong when left to guess.
+- **Says:** introspection, doubling, a city after rain.
+- **Avoid when:** text is in the scene (it reads mirrored), or the camera would appear
+  in the mirror.
+
 ## Writing a shot so the model follows it
 
 Lens names are cues, not physics: models read "85mm" as a portrait mood, not a field of
@@ -209,6 +294,9 @@ view. Always state the **resulting frame** in words and numbers:
 
 One shot per prompt. A prompt that lists two framings gets a compromise between them.
 
-Once a shot is picked, [staging.md](staging.md) puts the camera in the room in numbers
-(height, distance, tilt, the frame's real width at the subject, depth of field) and
-fills the space it looks into.
+Once a shot is picked, [staging.md](staging.md) fills the space it looks into: what is
+in it, how big, what touches what, what is seen first. For photographic, 3D render and
+miniature directions, [optics-light.md](optics-light.md) puts the camera in the room in
+numbers: height, distance and the frame's real width at the subject ("Frame size and
+distance"), tilt and where the hero lands ("Tilt, horizon and placement"), and how soft
+each plane falls ("Depth of field and background blur").
