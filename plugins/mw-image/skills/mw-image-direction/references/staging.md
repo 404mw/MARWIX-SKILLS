@@ -1,465 +1,417 @@
 # mw-image-direction — Staging: the scene's physics and emphasis
 
 A direction decides how an image looks; a shot decides where the camera is. Staging
-decides **what physically exists in front of that camera**: every object, how big it
-really is, where it stands in space, what holds it up, where its light comes from, what
-its shadow and reflection do, and which one of them the viewer must see first.
+decides **what physically exists in front of that camera**: every object, its real size,
+what holds it up, where its light comes from, and what the viewer sees first. Models
+compose by pattern: unstaged, they float cups and throw two shadows from one sun.
+Staging reasons the scene out once, then writes the *visible results*.
 
-Image models compose by pattern, not by physics. Left unstaged they float a cup a
-centimeter above the table, make a phone as long as a forearm, throw two shadows in two
-directions from one sun, tilt the coffee with the cup, put a reflection where no mirror
-could make one, and light every object equally so nothing leads. Each of those reads as
-"AI" before the viewer can say why. Staging reasons the scene out like a set designer,
-a gaffer and a camera operator would, then writes down the *visible results* so the
-model has nothing physical left to guess.
-
-Terms: [vocabulary.md](vocabulary.md). Placement on the frame: [composition.md](composition.md).
+Terms: [vocabulary.md](vocabulary.md). Placement: [composition.md](composition.md).
+Camera and light maths: [optics-light.md](optics-light.md).
 
 ## Contents
 
-- When to stage, and how deep
-- Decided, not measured
-- The scene sheet
-- 1. Inventory and roles
-- 2. Real sizes
-- 3. The camera as a physical object
-- 4. Gravity, support and contact
-- 5. Light as physics
-- 6. Materials
-- 7. Motion and the instant
-- 8. Emphasis
-- Stylized directions — which laws bend
-- The physics check
-- Writing physics into a prompt
-- Worked example
+When to stage, and how deep · Decided, not measured · The scene sheet · Inventory and
+roles · Real sizes · Casting and styling · Gravity, support and contact · Materials ·
+Motion and the instant · Emphasis · Stylized directions · Physics check · Why renders
+look fake · Diagnose a render · When words aren't enough · Placing a supplied product ·
+Screens and devices · Where models still break · Prompt budget · Writing physics into a
+prompt · Worked example
 
 ## When to stage, and how deep
 
-| The image… | Stage |
-|---|---|
-| shows a physical scene — people, products, rooms, food, landscapes — in any photographic, 3D, painterly or illustrated direction | the full sheet |
-| is a flat graphic, Swiss, pattern, pixel or isometric composition | inventory, sizes as frame shares, emphasis; skip optics and light falloff |
-| is abstract (aurora, gradient, texture) | emphasis and the quiet zones only |
-| is a series | one sheet per image; the world scale, light rig and materials stay identical across the set |
+Stage after the shot is picked and the destiny is known. Set the depth first:
 
-Stage after the shot is picked: the shot sets camera height, distance and placement;
-staging fills the space the shot looks into.
+| Family | Sheet parts used |
+|---|---|
+| Photographic, 3D render, miniature | Full: inventory, sizes, camera ([optics-light.md](optics-light.md)), contact, light, materials, instant, emphasis, check |
+| Painterly, illustrated, children's book, anime, ink, hand-drawn | Inventory, sizes, contact, one light direction, emphasis, a stated focus area; no optics numbers |
+| Soft 3D, clay, paper craft, low-poly, glass morphism | Inventory, sizes, contact or licensed floating, one light, materials, emphasis |
+| Isometric, technical | Inventory, sizes, one consistent light direction with shadows on one side, emphasis; no perspective |
+| Flat, vector, Swiss, type-led, pop, pixel, print | Inventory, frame shares, overlap, emphasis, quiet zone (a flat colour field is a valid quiet zone); no camera, no optics, no contact shadows unless the style draws them |
+| Surreal | The family it is painted or photographed in, minus the law(s) the idea breaks |
+| Cutout or layer asset (destiny) | Inventory, sizes, light on the subject only (key side and temperature matched to the composite); no set, no cast shadow, no bounce; contact shadows are added at composite time |
+
+Abstract images (aurora, gradient, texture) need only emphasis and the quiet zone.
 
 ## Decided, not measured
 
-The scene does not exist yet, so nothing in it can be measured, and nobody knows its
-distances. They are not unknowns to find out; they are **choices**, made the way a set
-designer decides where the table stands and a camera operator decides where to stand.
-Two kinds of number go on the sheet, and only one of them is a fact:
+The scene does not exist yet, so its distances are **choices**, worked backwards from
+the framing. Only object sizes are facts (the size table, or the product's own).
 
-| Number | Where it comes from |
-|---|---|
-| **Object sizes** | known: a mug is about 10 cm tall, a counter 90 cm high, an adult about 1.7 m (the size table in section 2), or the product's real dimensions |
-| **Distances, camera height, tilt, sun elevation, aperture** | decided: worked out backwards from the picture you want |
+1. **Decide the framing**: "the loaf about a fifth of the frame width, 35mm feel".
+2. **Take the known size**: a 22 cm loaf at a fifth needs a frame about 1.1 m wide.
+3. **Derive the distance** along the lens axis: frame width × f ÷ frame-width-mm =
+   1.1 × 35 ÷ 36 ≈ 1.1 m. A camera 1.35 m high and 1.1 m back is ≈ 1.15 m along the
+   axis, close enough: the loaf lands at 19%.
+4. **Place the rest relative to the hero**: "the baker 35 cm beyond it".
+5. **Collect the consequences**: the head appears about half the loaf's width; the face
+   is only a touch soft, so it needs a turn and a crop.
 
-**Work backwards from the framing.**
+The point is **consistency**: every relation comes from one geometry. Round to what a
+person says aloud.
 
-1. **Decide the framing** — how much of the frame the hero fills, and the lens feel the
-   direction calls for: "the loaf about a fifth of the frame width, 35mm feel".
-2. **Take the known size** — the loaf is 22 cm across, so the frame must be about
-   22 ÷ 0.2 ≈ 1.1 m wide where the loaf sits.
-3. **Derive the distance** — distance ≈ frame width × focal length ÷ 36, so
-   1.1 × 35 ÷ 36 ≈ 1.1 m. Nobody measured it; the framing forced it.
-4. **Place everything else relative to the hero** — "the baker 35 cm behind it", "the
-   wall 1.2 m behind the counter" — each a decision about the scene, chosen for what
-   it does to the picture.
-5. **Collect the consequences** — the one invented geometry now decides the rest: the
-   baker falls outside the sharp zone, their head appears about the loaf's width, the
-   shadow length follows from the sun height you chose for the time of day.
-
-The point is not accuracy, it is **consistency**: every relation in the prompt comes from
-one geometry, so they agree with each other. Written without it — "big loaf, baker
-behind, blurry background" — the model guesses each part separately, and that is where
-floating objects and mismatched scale come from.
-
-**What never to ask the user.** Distances, camera height, tilt, aperture, sun angle:
-nobody knows them, and asking hands the user the arithmetic. Ask only what they really
-know and you cannot — a product's real dimensions, the size of a space that exists
-(their shop, their office), and what the viewer must notice first. A size that matters
-and is unknown is assumed and stated on the sheet ("bottle assumed 14 cm tall —
-correct me if not").
-
-**Reading an image that exists.** For a reference photo or a failed render, distances
-can be estimated, not chosen: find something of known size in it (a door is about
-2 m, a face about 23 cm, a phone 15 cm) and scale from it. Its frame share and the
-lens feel give its distance by the same formula, and every other object follows from
-how big it looks beside it. That is how a render's scale error is diagnosed: "the mug
-is drawn as wide as the laptop, so it is either 30 cm across or twice as close — the
-prompt must state its size relative to the laptop".
-
-**How exact.** The model never sees the centimeters; it gets the visible results
-(section "Writing physics into a prompt"), and lands near them, not on them. Round
-every number to what a person would say aloud — 1.1 m, not 1.07 m — and treat the sheet
-as a consistent plan, not a measurement.
+- **Never ask the user** for distances, camera height, tilt, aperture or sun angle; ask
+  only a product's real size, a real space, what must be seen first.
+- **An unknown size** is assumed, stated and open to correction in the same reply
+  ("bottle assumed 14 cm tall — correct me if not"). It never blocks the work.
+- **Frame share** is linear: the share of frame width, or of height for standing
+  figures. Say which.
+- **Reading an image that exists:** scale from something of known size (a door ≈ 2 m, a
+  face ≈ 23 cm, a phone 15 cm). A mug (8 cm) drawn as wide as the laptop (31 cm) beside
+  it is either 31 cm across or about four times closer (31 ÷ 8).
 
 ## The scene sheet
 
-One sheet per image. The left half is reasoning (real units); what goes into a prompt
-is the right half (relations, frame shares, visible results).
+The numbers, for the hand-off (`[direction]` lines) and `docs/art-direction.md`. The
+user sees the **Plain readback** (SKILL.md); the sheet only on request, at L3, or when a
+render is checked. Fill only the lines the family uses.
 
 ```
-Scene         one sentence: who/what, doing what, where, when
-World scale   the anchor object of known size, and the floor/table/ground everything stands on
-Camera        height above the floor, distance to the hero, tilt, lens feel, ratio
-              → frame width × height at the hero's distance; depth of field in cm
-Objects       role · object · real size · position in space · rests on / held by ·
-              material · frame share · sharp or soft
-Light         each source: type, direction (camera-left/right, elevation), size → hard/soft,
-              temperature; shadow direction and length; falloff; bounce
-Physics       contact, liquids, cloth, hair, steam, wind, reflections, motion — only what
-              this scene contains
-Emphasis      1st, 2nd, 3rd read; the money detail; how the hero wins; what is held down
-Quiet zones   text-safe or UI areas and what physically fills them
+Scene        who or what, doing what, where, when
+Use          destiny, ratio, live-text zone, the crops the placement uses
+World scale  the anchor of known size; the surface everything stands on
+Camera       height, distance along the lens axis, tilt, lens feel → frame at the hero
+Objects      role · object · real size · rests on / held by · material · share · sharp/soft
+Cast         per person: age, build, skin tone, hair, wardrobe, grooming, one trait
+Light        count; side, elevation, hard/soft, colour under a stated white balance;
+             shadow direction and length; key:fill; shadow share
+Physics      only what the scene has: contact, liquids, cloth, steam, wind, the instant
+Emphasis     1st, 2nd, 3rd read; how the hero wins; what is held down
+Quiet zone   where text sits, and what physically fills it
+Assumed      sizes assumed; the honesty note for a real business
 ```
 
-## 1. Inventory and roles
+**Camera and light.** Decide camera height, distance, tilt, lens feel and ratio; light
+count, side, elevation, quality, temperature against a stated white balance, and
+key:fill. The maths is in [optics-light.md](optics-light.md); the sheet needs only:
+- frame width at the hero = distance along the lens axis × frame-width-mm ÷ f (36 for
+  landscape; 24 for 4:5, 3:4 and 1:1; 20.25 for 9:16);
+- shadow length = height ÷ tan(sun elevation): 15° → 3.7×, 30° → 1.7×, 45° → 1×;
+- key:fill 2:1 open, 4:1 sculpted, 8:1 dramatic;
+- a face held down by focus needs blur ≥ 1% of the frame width; otherwise crop or turn it.
 
-List **everything in frame**, including the floor, the wall, and anything only seen as a
-shadow or reflection. Anything not listed gets invented by the model. Give every item
-exactly one role:
+**A series:** one shared world sheet (scale, light logic with the rig in world terms,
+"low sun through the east window", materials, palette, casting) plus a 4–6-line delta
+per image. **Grid sets** (product grid, swipe carousel) keep shot, subject size, horizon,
+margin and rig. **Narrative sets** (campaign, editorial, a site's pages) rotate shots and
+keep the light logic (quality, temperature, contrast, shadow share). A product rotates:
+three-quarter packshot · in hand · material macro · in context · overhead.
+
+## Inventory and roles
+
+List everything in frame on the sheet, the floor and wall included. One role each:
 
 | Role | Count | Job |
 |---|---|---|
-| **Hero** | exactly one (a person *or* an object *or* one action) | what the image is about; wins the emphasis budget |
-| **Support** | one to three | explains or serves the hero — the hands using it, the person holding it, the thing it acts on |
-| **Context** | odd numbers, three or five | tells where and when; never competes |
-| **Set** | the surfaces | floor, table, wall, sky; carries light, shadow and quiet zones |
+| **Hero** | one, or one group read as one unit with a lead member | what the image is about |
+| **Support** | 0–3 | explains or serves the hero: the hands, the person holding it |
+| **Context** | zero, or an odd number, as few as the direction allows | where and when; never competes |
+| **Set** | the surfaces | carries light, shadow and the quiet zone |
 
-A face is never neutral: if a person is in frame but is not the hero, plan how the face
-is held down (cropped, turned, out of focus, eyes on the hero). Text, logos, screens
-and bright windows pull the eye the same way.
+Minimalism, studio product, Swiss, flat vector and editorial seamless default to zero
+context; maximalism and collage are exempt. **Prompt cap:** name the hero, ≤ 2 supports
+and ≤ 3 context items; describe set surfaces as materials; everything else is "nothing
+else on the counter".
 
-## 2. Real sizes
-
-Write each object's real size before deciding its frame share. Relative scale is where
-generated scenes break most visibly — and the viewer knows these sizes in their body.
+## Real sizes
 
 | Thing | Typical size |
 |---|---|
-| Adult standing | 1.60–1.85 m; eyes about 10–12 cm below the top of the head |
-| Adult seated (chair) | eyes about 1.15–1.25 m from the floor |
-| Head (chin to crown) | 22–24 cm; width 15 cm |
-| Hand (wrist to fingertip) | 17–20 cm; palm width 8–9 cm |
-| Child, 5 years | about 1.10 m |
-| Door | 2.0–2.1 m × 0.8–0.9 m |
-| Ceiling | 2.4–2.7 m in homes; 3–4 m in lofts and shops |
-| Dining table / desk top | 72–76 cm from the floor |
-| Kitchen counter | 90–92 cm |
-| Bar counter / bar stool seat | about 105 cm / 75 cm |
-| Chair seat · sofa seat | 45 cm · 40–45 cm |
-| Stair step | 17–18 cm high, 28 cm deep |
-| Smartphone | 15 × 7 × 0.8 cm |
-| Laptop (13–14 in) | 31 × 22 cm, 1.5 cm closed; screen about 30 × 19 cm |
-| A4 / US letter | 21 × 29.7 cm / 21.6 × 27.9 cm |
-| Hardcover book | 24 × 16 × 3 cm |
-| Coffee mug · espresso cup | 9–10 cm tall, 8 cm across · 6 cm tall |
-| Wine glass · wine bottle | 20–22 cm · 30 cm, 7.5 cm across |
-| Dinner plate | 26–28 cm |
-| Sourdough loaf · croissant | 20–25 cm across · 12–15 cm long |
-| Apple · lemon | 7–8 cm · 6 cm long |
-| Sneaker | 27–31 cm long |
-| Cat · medium dog | 25 cm at shoulder, 45 cm body · 50 cm at shoulder |
-| Bicycle | 1.7 m long; wheel 70 cm |
-| Car | 4.5 × 1.8 × 1.5 m |
-| One building storey | about 3 m |
-| Street lamp | 4–8 m |
-| Mature tree | 10–25 m |
+| Adult standing · seated eyes | 1.55–1.85 m, eyes 10–12 cm below the crown · 1.15–1.25 m |
+| Head · eye spacing · shoulders | 22–24 cm tall, 15 wide · ≈ 6.3 cm · 40–46 cm |
+| Hand · child of 5 | 17–20 cm, palm 8–9 · ≈ 1.10 m |
+| Door · ceiling | 2.0–2.1 × 0.8–0.9 m · 2.4–2.7 m homes, 3–4 m shops |
+| Table · counter · bar | 72–76 cm · 90–92 high, 60 deep · ≈ 105, stool 75 |
+| Chair seat · sofa · double bed · sill | 45 cm · ≈ 200 × 90, seat 45 · 140–160 × 200 · ≈ 90 |
+| Phone · credit card | 15 × 7 × 0.8 cm · 8.56 × 5.4 cm |
+| Laptop 13–14″ · 27″ monitor · keyboard | 31 × 22, screen ≈ 30 × 19 · ≈ 61 × 36 · ≈ 44 × 13 cm |
+| A4 · hardcover | 21 × 29.7 · 24 × 16 × 3 cm |
+| Mug · espresso · 12 oz takeaway cup | 9–10 tall, 8 across · 6 · 11–14 cm |
+| 330 ml can · 500 ml bottle · wine bottle | 12.2 × 6.6 · ≈ 21 · 30 cm |
+| Plate · layer cake · cupcake | 26–28 · Ø 20–25 · ≈ 7 cm |
+| Sourdough loaf · baguette · croissant | Ø 20–25 · 55–65 · 12–15 cm |
+| Apple · lemon | 7–8 · 7–9 long, 5–6 across |
+| Perfume 50 ml · 100 ml | 9–12 · 12–15 cm tall |
+| Lipstick · skincare jar · watch · ring | ≈ 8 · Ø 6–7 cm · case 36–44 mm · ≈ 2 cm |
+| Sneaker · cat · medium dog | 23–31 cm · 25 at the shoulder · 50 |
+| Car · storey · tree | 4.5 × 1.8 × 1.5 m · ≈ 3 m · 10–25 m |
 
-For a product, use its real dimensions from the user or the docs; ask if they matter
-and are unknown. For an invented object, decide its size anyway and write it down.
+Invented objects get a decided size. Inches convert on the sheet. The prompt uses
+**scale relations**: "the bottle a little taller than a hand".
 
-**Scale relations** are what the prompt uses: "the bottle is a little taller than the
-person's forearm", "the mug is about the width of their palm". A model reads relations
-far more reliably than centimeters.
+## Casting and styling
 
-## 3. The camera as a physical object
+Left alone, models cast young, slim, generic faces. Decide each person: age range,
+build, skin tone, hair; wardrobe in the palette, with a fabric weight; grooming; one
+specific trait (reading glasses pushed up, a rolled sleeve, a grey streak). Set the
+exposure for their skin. Across a set, cast deliberately: reflect the user's real
+audience or staff when they say who that is, and vary with intent, not as a stock lineup.
 
-The camera is somewhere in the room. Put it there in numbers — chosen, as above, from
-the framing you want, never asked for.
+## Gravity, support and contact
 
-**Height and distance.** Camera height above the floor (or table), horizontal distance
-to the hero, and tilt in degrees. The tilt follows from them: a camera 40 cm above a
-table top and 1.1 m back looks down about 20° to reach it (tan⁻¹ 0.4/1.1).
+Every object is **resting, held, hanging, or in flight for a reason**. Write which.
 
-**Frame size at the hero.** With full-frame lens feel, the frame width at the hero's
-distance is about **distance × 36 ÷ focal length** (landscape). Frame height is
-distance × 24 ÷ f for 3:2, × 20 ÷ f for 16:9; swap width and height for portrait frames.
+- **Contact:** a thin dark shadow, darkest at the touch point; without it, objects look
+  pasted in. Objects touch; they never merge.
+- **Weight shows:** a cushion compresses, a full bag pulls its strap taut, a stack stands
+  only with its centre of mass over its base.
+- **Liquids stay level with the world.** A meniscus climbs the glass. A thin trickle
+  stays a continuous thread for 10 cm or more and breaks into drops lower down; a thick
+  pour stays a rope longer. Condensation sits below the liquid line of a cold drink.
+- **Cloth and hair hang:** heavy fabric in few broad folds, light fabric in many fine ones.
+- **Wind is one direction**, at matching strength for hair, smoke and grass.
+- **Heat rises:** steam curls and thins within 10–30 cm, best seen backlit.
+- **Hands hold for real:** a pinch or wrap grip opposes thumb and fingers; a hook grip (a
+  bag handle) has no opposed thumb. Fingers wrap at the object's real width.
 
-| Lens feel | Frame width at 1 m | Horizontal view |
-|---|---|---|
-| 16mm | 2.25 m | 97° |
-| 24mm | 1.50 m | 74° |
-| 35mm | 1.03 m | 54° |
-| 50mm | 0.72 m | 40° |
-| 85mm | 0.42 m | 24° |
-| 135mm | 0.27 m | 15° |
-| 200mm | 0.18 m | 10° |
+## Materials
 
-Then the **frame share** is just size ÷ frame width: a 22 cm loaf at 1.1 m with a 35mm
-feel spans 22 ÷ 113 ≈ a fifth of the width. Check every object this way; a frame share
-the sizes cannot produce is a scale error waiting to happen.
+| Material | It shows |
+|---|---|
+| Matte (paper, plaster, cotton) | even shading, no highlight; no stray "premium" gloss |
+| Satin (oiled wood, skin) | a broad dim highlight toward the source; skin is not plastic |
+| Gloss (lacquer, glaze, wet) | a sharp highlight shaped like the source, on the source's side |
+| Metal | mostly its surroundings; gold and copper tint their highlights |
+| Glass, clear liquid | the background bent through it; caustics below, under hard light only |
+| Translucent (skin, leaves, wax) | glow where backlit, warmer at thin edges |
+| Any smooth surface | more reflection at grazing angles: a low camera mirrors the window |
 
-**Perspective comes from distance, not from the lens.** The size ratio between a near
-and a far object is set only by their distances from the camera: an object twice as far
-appears half as large, whatever the lens. A wide lens up close makes the foreground huge
-against a tiny background; stepping back with a long lens makes the background loom
-behind the subject (compression). Choose the distance for the relation you want, then
-the lens for the crop.
+**Reflections are geometry:** the scene seen from behind the surface, reversed; still
+water shows objects from below; ripples stretch reflections into vertical streaks.
 
-**Horizon and eye level.** With a level camera, the horizon runs through the frame at
-the camera's own height, and everything at that height sits on it. Camera at standing
-eye height → the heads of standing adults on flat ground all line up near the horizon,
-near or far. Camera at hip height → the horizon cuts every standing adult at the hip.
-Tilting down pushes the horizon up and out of the top of the frame; tilting up pulls it
-down. Objects on one floor share one horizon and one set of vanishing points. Verticals
-stay parallel only when the camera is level; tilted up they converge toward the top,
-tilted down toward the bottom (state which, or keep the camera level for architecture).
+## Motion and the instant
 
-**Depth of field.** Total sharp depth ≈ 2 × f-number × 0.03 mm × distance² ÷ focal
-length² (full frame, subject well inside the hyperfocal distance). Worked: 35mm at
-f/2.8 and 1.1 m → about 17 cm; 85mm at f/1.8 and 2 m → about 6 cm, so the near eye
-sharp and the ear already soft; 100mm macro at 40 cm → a few millimeters. Use it to
-decide which objects are sharp and which melt, then write that result. Out of focus is
-an emphasis tool, not a filter.
+Name **one instant** ("the blade mid-cut", not "baking") and one shutter: frozen (drops
+are spheres) or blurred (only what moves blurs, along its path).
+- In a stride, each arm swings forward with the opposite leg.
+- A look-turn leads with the head; a throw or swing leads with the hips.
+- Hair and cloth trail the movement. Thrown things move on arcs.
+- In a splash crown the rim's drops fly outward; only the central jet's drops fall back.
 
-## 4. Gravity, support and contact
+## Emphasis
 
-Every object is **resting, held, hanging, or in flight for a reason.** Write which.
+Decide the **first read** (the hero and its money detail), second and third.
+**Pull order:** faces and eyes · legible text · local contrast · brightness · sharpness ·
+an isolated saturated colour · lines and gaze · size · isolation · texture.
 
-- **Contact.** Where an object touches a surface there is a thin, dark contact shadow,
-  darkest and sharpest at the touch point. Missing contact shadow is the main reason
-  objects look pasted in or floating.
-- **Weight shows.** A cushion compresses under a sitter; a full bag pulls its strap
-  taut and the shoulder down; a hand holding something heavy has tension in the wrist;
-  a stack is stable only with its center of mass over its base.
-- **Liquids stay level with the world, not with the vessel.** Tilt the glass, the
-  surface stays horizontal. A meniscus climbs the glass wall. A pour narrows as it
-  falls; a thin trickle breaks into drops within a few centimeters, a thick pour stays
-  a smooth rope much longer. Condensation sits only below the
-  liquid line on a cold drink.
-- **Cloth and hair hang.** Fabric drapes from its support points and folds where it
-  is gathered; heavy fabric (denim, wool) falls in few broad folds, light fabric (silk,
-  chiffon) in many fine ones. Hair falls with gravity unless wind or motion moves it.
-- **Wind is one direction.** Hair, scarves, flags, smoke, grass and tree tops all lean
-  the same way, at strength matching each other.
-- **Heat rises.** Steam and smoke rise, widen, curl and thin out within 10–30 cm;
-  they show best backlit or against a dark ground. Steam needs a hot source and reads
-  faint in a warm room, strong in a cold one.
-- **Hands that hold.** A grip needs a thumb opposing the fingers; fingers wrap at the
-  object's real width. A hand holding a phone covers part of it.
-
-## 5. Light as physics
-
-Every light has a **source, a direction, a size, a color and a reach.** State the
-number of sources; unstated light gets added by the model.
-
-- **Shadow direction.** The sun and other distant sources throw parallel shadows: every
-  shadow in the scene points the same way. A near lamp throws shadows that fan out away
-  from it. Two shadow directions mean two sources — allowed only if both are listed.
-- **Shadow length from sun height.** Shadow length = object height ÷ tan(sun elevation).
-
-  | Sun elevation | 5° | 10° | 20° | 30° | 45° | 60° | 75° |
-  |---|---|---|---|---|---|---|---|
-  | Shadow ÷ height | 11× | 5.7× | 2.7× | 1.7× | 1× | 0.6× | 0.3× |
-
-  Golden hour is roughly 0–10°; midday in summer at mid-latitudes is 60–75°. The sky
-  color, the shadow length and the time of day must agree.
-- **Hard or soft is the source's size as seen from the subject.** A source much smaller
-  than its distance (the sun, a bare bulb across the room, a flash) gives crisp shadow
-  edges; a source about as wide as its distance or wider (overcast sky, a 1 m window
-  at 1 m, a big softbox close in) gives soft ones. Moving the same window light away
-  hardens it. Shadow edges also soften with distance from the object casting them.
-- **Falloff.** A nearby source loses light with the square of distance: 1.4× the
-  distance is one stop darker, 2× two stops, 3× about three, 4× four. A lamp 1 m from
-  a face and 3 m from the wall behind leaves the wall about three stops darker — that
-  is how a practical lamp isolates its subject. The **sun does not fall off** across a
-  scene: what is out of its beam is darker because it is lit only by sky and bounce,
-  not because it is farther.
-- **Bounce and color bleed.** Every lit surface becomes a dim source in its own color:
-  grass puts green under a chin, a wooden table warms the underside of hands, a red
-  wall tints the cheek facing it. Daylight shadows outdoors are blue-ish (lit by sky);
-  shadows indoors under warm lamps stay warm.
-- **Catchlights and highlights agree.** The catchlight in an eye has the shape and
-  position of the key source (a window is a rectangle, a ring light a ring). Specular
-  highlights on every glossy object sit on the side facing the same source.
-- **Visible beams need something in the air.** Light shafts appear only through dust,
-  flour, steam, smoke, fog or rain, and only where the beam passes through them.
-- **Atmosphere stacks with distance.** Outdoors, far planes get lighter, lower in
-  contrast and cooler; at a few hundred meters the effect is clear, at kilometers it
-  dominates.
-- **Mixed temperatures.** If two sources differ in Kelvin, write which surfaces each
-  one reaches; the boundary between them is part of the picture.
-
-## 6. Materials
-
-How each surface answers the light. Name it per object; "realistic materials" names
-nothing.
-
-| Material | It shows | Watch for |
-|---|---|---|
-| Matte (paper, plaster, cotton, unglazed clay) | even shading, no highlight, soft terminator | a stray gloss the model adds to "look premium" |
-| Satin (oiled wood, skin, eggshell paint) | a broad dim highlight toward the source | skin rendered as plastic gloss |
-| Gloss (lacquer, glazed ceramic, wet surfaces) | a sharp highlight shaped like the source; a dim reflection of the room | highlights on the wrong side |
-| Metal | mostly reflection of its surroundings; gold and copper tint their highlights | chrome reflecting nothing, or a studio that isn't there |
-| Glass and clear liquid | the background bent through it; bright or dark edges depending on the background; caustics on the surface below | glass with no refraction, straws that don't break at the water line |
-| Translucent (skin, leaves, wax, marble, paper) | glow where backlit, warmer at thin edges (ears, fingertips, leaf veins) | backlit skin that stays opaque |
-| Fabric | weave at close range; drape by weight (above) | every fabric the same weight |
-| Fresnel (any smooth surface) | reflects more at grazing angles — a low camera turns a table into a mirror of the window | a mirror-table from a high camera |
-
-**Reflections are geometry.** A mirror image is the scene seen from the mirror's far
-side: equal distance behind the surface, reversed. A reflection in still water shows
-objects from below — the underside of a bridge, the chin of a figure. Ripples stretch
-reflections into vertical streaks toward the camera (neon on wet asphalt).
-
-## 7. Motion and the instant
-
-Name **one instant**, not an activity: "the moment the flour leaves the fingers", not
-"baking". Then make everything obey the same shutter:
-
-- **Frozen** (fast shutter or flash): drops are spheres, hair strands sharp, pour is a
-  glassy rope.
-- **Blurred** (slow shutter): only what moves blurs, along its path of travel, in
-  proportion to its speed; still objects stay sharp. Blur on the hands but a frozen
-  splash next to them is a contradiction unless flash is stated.
-- **Bodies in motion** keep their mechanics: in a stride, opposite arm swings with
-  opposite leg; a turn leads with the head, then shoulders, then hips; hair and cloth
-  trail behind the movement.
-- **Ballistics.** Thrown and splashed things move on arcs; a splash crown rises around
-  the impact and drops fall back toward it.
-
-## 8. Emphasis
-
-The point of staging is that the viewer looks where you decided. Decide the order:
-
-1. **First read** — the hero, and the exact part of it that carries the image: the
-   **money detail** (the scored ear of the crust, the near eye, the label side, the
-   drop at the lip of the glass).
-2. **Second read** — the support that explains it.
-3. **Third read** — the context that places it.
-
-The eye goes, in roughly this order, to: a face or eyes · the brightest value · the
-sharpest area · the strongest local contrast · the only saturated color · text · the
-largest shape · what lines and gazes point at · what is isolated by empty space · the
-most detailed texture.
-
-**The hero must win at least three of those, and must win both of the strongest two
-available in the scene** (if a face is present and is not the hero, that face is the
-first competitor to hold down). Then state how each competitor loses:
+**The rule.**
+- The hero owns the strongest cue it *can* own: brightest relative to its surroundings,
+  or highest local contrast. It is the sharpest, and wins at least one more pull.
+- Any face or legible text that is not the hero is held down by at least two of: crop,
+  turn, focus, value. Say it will still be glanced at.
+- In silhouette, rim-lit low-key or backlit designs, the hero is the darkest shape
+  against the brightest field.
+- **Brightness = light × surface lightness.** A white surface in shade can match a dark
+  hero in sun. Keep light-coloured set pieces out of the beam, or make the hero the
+  lightest material in it.
+- **Live text:** decide the order (hero → headline, or the reverse) and route a gaze or
+  line between them. **Gaze** goes to the hero when the person is support, and to the
+  text when the person is the hero.
 
 | Competitor | Hold it down by |
 |---|---|
-| A face that is not the hero | crop it, turn it, put it out of focus, point its gaze at the hero |
-| A bright window or sky | expose for the hero and let it clip softly, or crop it out, or curtain it |
-| A second saturated color | desaturate it into the palette, or move it out of frame |
-| Sharp background detail | distance plus shallow depth of field (section 3), or a plain set |
-| Text, logos, screens | remove, turn away, or leave out of focus; banned anyway unless asked |
-| Objects equal in size to the hero | move them back (section 3: twice the distance, half the size) |
+| A face, not the hero | two of crop, turn, focus, value |
+| Text, logos, screens | remove, turn or defocus; **except the product's own label or screen**: composite it from the supplied photo or leave a clean plate |
+| A window or sky | expose for the hero and let it roll off, crop it, or curtain it |
+| A light set piece in the beam | move it out of the beam, or use a darker material |
+| A second saturated colour | desaturate it into the palette |
+| An object as big as the hero | move it back: twice the distance, half the size |
 
-**Lines and gazes.** Edges of tables, shadows, a road, an arm and every eye in the
-frame should lead toward the hero, or at least not lead out of the frame on the far side.
+## Stylized directions
 
-**Light is emphasis.** The brightest well-exposed area should be on or right behind the
-hero. Placing the hero where the key light is strongest and letting falloff (section 5)
-darken everything else is the most natural emphasis there is.
-
-## Stylized directions — which laws bend
-
-Staging is not only for photographs. Each direction keeps some laws and drops others;
-decide which, and keep the rest strict.
-
-| Direction family | Keeps | Drops or bends |
+| Family | Keeps | Bends |
 |---|---|---|
-| Painterly, watercolor, children's book, anime | sizes, contact, one light direction, emphasis | exact optics; texture replaces depth of field |
-| Clay, soft 3D, miniature | everything physical, at tabletop scale — a miniature needs very shallow depth of field, which is what makes it read as small | real-world size: decide the scale (1:1 tabletop or a 1:87 world) and keep it |
-| Isometric, technical | relative sizes, contact | perspective (none: far objects stay full size), light falloff |
-| Flat vector, Swiss, pop art, pixel | relative sizes as frame shares, overlap for depth, emphasis | shadows (or one flat offset shadow at one angle), optics, materials |
-| Surreal | **every law except one.** Break exactly the law the idea is about, and keep everything else rigorously real — that contrast is what makes surrealism believable | the one chosen law |
-| Collage, maximalism | emphasis (more important, not less, with many elements) | consistent light and scale between cut-outs, on purpose |
+| Painterly, children's book, anime, hand-drawn, ink | sizes, contact, one light, emphasis, a focus area | optics; texture or line replaces depth of field; ink draws shadow as shapes |
+| Clay, soft 3D, low-poly, paper craft | contact, one light, material (thumbprints, facets, paper thickness) | real scale: pick tabletop or toy world and keep it |
+| Miniature | everything; very shallow focus is what reads as small | nothing |
+| Glass morphism | one light; panels with thickness, frosted blur, a bright lit edge | floating panels |
+| Isometric, technical | relative sizes, contact, shadows on one side | perspective, falloff |
+| Flat, Swiss, type-led, pop, pixel, print | frame shares, overlap, emphasis, quiet zone | camera, optics, materials, contact shadows; print keeps halftone as surface |
+| Graffiti | the wall: its size, its light, drips that run down | the piece follows flat rules |
+| Collage, maximalism | emphasis, more than ever | light and scale between cut-outs |
+| Eras (retro, Y2K, cyberpunk, Art Deco…) | the family they are rendered in: Y2K chrome as soft 3D, a 70s poster as print | the era's conventions |
+| Surreal | every law the idea is not about | the law(s) it breaks |
 
-## The physics check
+**Surreal:** name the law(s) the idea breaks, usually one, and exempt them from the
+check; keep the rest strictly real. **Floating** only by a direction's licence (soft 3D,
+Y2K, glass morphism), with a soft shadow marking the ground.
 
-Run this over the sheet before the readback, and again over the first render.
+## Physics check
 
-- [ ] Exactly one hero; it wins brightest and sharpest (or the two strongest available).
-- [ ] Every object has a real size, and its frame share follows from size ÷ frame width.
-- [ ] Every object rests, is held, hangs, or is in flight for a stated reason; contact
-  shadows at every touch.
-- [ ] All shadows agree with the listed sources in direction and length; sky and time
-  of day agree with sun height.
-- [ ] Number of light sources stated; nothing lit that no source reaches.
-- [ ] Catchlights and highlights sit on the side of the key source.
-- [ ] Horizon height matches camera height; objects on one floor share it.
-- [ ] Depth of field matches lens, aperture and distance; sharp and soft objects listed.
-- [ ] Liquids level, cloth and hair hang, wind one way, steam rises.
-- [ ] Reflections where glossy surfaces must have them, with the right geometry.
-- [ ] One instant, one shutter: frozen and blurred parts agree.
-- [ ] Hands have a job and a real grip; finger count natural.
-- [ ] Quiet zones are filled by a named physical surface, not "empty space".
+Run it over the sheet, and over a render in this order: scale → contact → light
+direction → emphasis → materials. Tags: **Ph** photographic, 3D render, miniature ·
+**Il** illustrated · **S** soft 3D group · **Iso** isometric, technical · **F** flat ·
+**Cut** cutout. Surreal takes its family's lines minus its named law(s).
+
+**Scale**
+- [ ] all: counts as stated; one hero or group; no duplicates.
+- [ ] all: real sizes (assumed and stated if unknown); frame share = size ÷ frame width.
+- [ ] Ph Il S Iso Cut: every "appears as big as" claim recomputed as size ÷ distance.
+- [ ] Ph: horizon at camera height; headroom and crops checked at each plane.
+- [ ] all: legibility floor: what must read spans ≥ ~1/8 of the frame height.
+
+**Contact**
+- [ ] Ph Il S Iso: everything rests, is held, hangs or flies for a reason, or floats by
+  licence with a shadow marking the ground.
+- [ ] Ph S Iso: a contact shadow at every touch (Cut: added at composite).
+- [ ] all: objects touch, never merge.
+- [ ] Ph Il S: hands have a job, a real grip, natural fingers.
+
+**Light direction**
+- [ ] Ph Il S Iso Cut: light count stated; every shadow and highlight agrees with it;
+  catchlights sit on the key side.
+- [ ] Ph: shadow length matches sun height; sky matches the time of day.
+
+**Emphasis**
+- [ ] all: the hero wins by the rule; other faces and text held down by two levers.
+- [ ] all: nothing lighter than the hero sits in the beam.
+- [ ] all: the quiet zone is a named surface (F: a flat colour field).
+- [ ] all: the hero and first read survive every crop the placement uses.
+
+**Materials**
+- [ ] Ph S: each material answers the light as stated; reflections are geometric.
+- [ ] Ph Il S: liquids level, cloth hangs, wind one way; one instant, one shutter.
+- [ ] Ph: sharp and soft match lens, aperture and distance.
+
+## Why renders look fake
+
+Classify first, then fix the class that changes the read most.
+
+| Class | Tells | What to write |
+|---|---|---|
+| Physics | floats, wrong scale, shadows disagree, wrong reflection, bent verticals, interpenetration | re-stage: contact, one scale relation, one light and its shadow side |
+| Surface | waxy or poreless skin, plastic, pristine, no wear | "a few crumbs, a flour smudge on the apron, the lid slightly askew"; "visible pores" |
+| Grade | HDR glow, bloom, over-sharpening, uniform sharpness, no grain | "soft highlight roll-off, no HDR look, fine grain, one plane sharp" |
+| Composition | centred, symmetric, evenly spaced, nothing cropped | "off-centre, objects overlap, one cropped by the edge" |
+| Artifacts | duplicates, wrong counts, garbled or mirrored text, labels not wrapping | ≤ 3 named items or "a loose pile"; composite real labels |
+
+## Diagnose a render
+
+1. Ask for the image and its prompt in one batch.
+2. Infer the direction and shot as `[inferred]`; the Direction line reads "as your
+   current images".
+3. Check: scale → contact → light direction → emphasis → materials, plus the triage.
+4. Decide: one problem with the composition right → **one edit**
+   ([mw-image-prompt iterate.md](../../mw-image-prompt/references/iterate.md)); scale,
+   camera or hero wrong, or 3+ problems → **re-stage and regenerate**.
+5. Output only the changed lines.
+
+## When words aren't enough
+
+When scale or contact must hold, or after one failed render, give the model a structure
+reference: a grey-box blockout (rectangles at the computed frame shares, the horizon, a
+hatched text zone, an arrow for the key light); a phone photo of a stand-in setup; a
+sketch; pose or depth control where supported; Ideogram bounding boxes; masks. Attach it
+with the role "composition and placement only — ignore its colours, shapes and style".
+
+## Placing a supplied product
+
+A real product, label, screen or pack is placed from the user's photo by edit or
+composite, never redrawn. Read the photo and stage the scene to match it:
+- **Camera elevation** from the ellipse of a round top or base: minor ÷ major ≈
+  sin(elevation); 0.5 is about 30°, 0.17 about 10°, a circle is overhead.
+- **Key side** from the highlights and the shadow side.
+- **Lens feel** from how edges converge: strongly is close and wide; parallel is far.
+- The scene draws the contact shadow and the reflections; the product keeps its pixels.
+
+## Screens and devices
+
+A screen with content faces the camera within ~15°. Render it as a flat, uniform plate
+colour for replacement. Its glow is a light, soft and cool on the face and hands. Real UI
+is composited from screenshots, never generated.
+
+## Where models still break
+
+- **Counts above ~4:** "a few", or group them ("a row of jars").
+- **Attribute binding:** each attribute in the same clause as its object.
+- **Small faces** under ~1/10 of the frame height get mangled: turn or silhouette them.
+- **Left/right flips:** say "on the left side of the image".
+- **Duplicate heroes:** name the hero once, as one.
+- **Text** comes out garbled or mirrored: keep it out, or composite it.
+
+## Prompt budget
+
+A prompt carries a few clauses, not the sheet. Keep, in this order:
+1. hero + frame share + placement;
+2. what it rests on + contact;
+3. light count, side, height, shadow direction;
+4. what is brightest and sharpest;
+5. the one scale relation most likely to break;
+6. what is soft and how soft;
+7. the hero's material response;
+8. the instant.
+
+| Family | Physics clauses | Staging words |
+|---|---|---|
+| Midjourney, Ideogram, Recraft | 3–4 | ≤ ~50 |
+| FLUX-class | ≤ 5, front-loaded | ≤ ~80 |
+| Nano Banana, GPT-Image, Seedream, Qwen | ≤ 8 | ≤ ~150; labelled sections at L3 |
+
+Everything else stays on the sheet, to check the render against. A miss is fixed with an
+edit pass, never by adding clauses. Bind each attribute inside the same clause as its
+object.
 
 ## Writing physics into a prompt
 
-Models do not simulate; they match descriptions of results. So the sheet's numbers
-become what the camera would *see*:
+Models match descriptions of results; they do not simulate. Within the budget, write
+what the camera would *see*, not centimetres: sizes as relations and frame shares,
+distance as overlap and blur, light as side, height and shadow, contact once per object
+that matters, materials by their response, emphasis as the brightest and sharpest point,
+one instant. The worked example in Midjourney (4 clauses, 47 words):
 
-- **Sizes as relations and frame shares**, not centimeters: "the loaf spans about a fifth
-  of the frame width; the baker's hands are almost as wide as it".
-- **Distance as overlap and blur**: "the baker stands just behind the loaf, slightly out
-  of focus".
-- **Light as direction, elevation and shadow**: "low morning sun from camera-left, the
-  loaf's shadow stretching toward camera-right about four times its height".
-- **Contact named once per object that matters**: "the loaf sits on the board, a thin
-  dark shadow where it touches".
-- **Materials by their visible response**: "the crust matte with small glossy blisters;
-  the steel scraper shows one bright line of the window".
-- **Emphasis as the brightest and sharpest**: "the brightest and sharpest point in the
-  image is the scored ridge of the crust where the sun catches it".
-- **One instant**: "flour mid-fall from the fingertips, fine dust hanging in the sunbeam".
-
-Keep the sheet's numbers in the readback: they are what the next image of a series
-must match, and what a failed render is checked against.
+> a round sourdough loaf on a dark walnut board in the lower left, a baker's hands scoring it, face turned away and cropped at the brow; low morning sun from the left casting long shadows to the right; the floured scored ridge is the brightest, sharpest point
 
 ## Worked example
 
-Analog film · warm consumer color; shot A (candid mid-action, waist-up, 35mm feel);
-1600×900 hero with the headline top-right over the right 40%.
+A real bakery's homepage hero, 16:9, headline over the right 40%. Analog film · warm
+consumer colour. Shot A: candid mid-action over the counter, the baker cropped at the
+brow, 35mm feel, loaf in the lower-left third.
 
 ```
-Scene         a baker dusting flour over a fresh boule on an oak counter, 7am, sun through the bakery window
-World scale   counter top 90 cm; the loaf (Ø 22 cm) is the scale anchor
-Camera        1.35 m high, 1.1 m from the loaf, tilted down ~10°, 35mm feel, 16:9
-              → frame at the loaf ≈ 1.13 m × 0.64 m; at f/2.8 sharp depth ≈ 17 cm
-Objects       hero     sourdough boule, Ø 22 × 11 cm, on a floured board, left third, lower third
-                       matte crust with small glossy blisters · ≈ a fifth of frame width · sharp
-              support  baker's hands, 19 cm, 20–25 cm above the loaf, fingers tapping flour loose
-                       ≈ a sixth of frame width · sharp, slight blur on the tapping fingertips
-              support  baker, 1.72 m, leaning over the counter 35 cm behind the loaf; eyes in the
-                       upper quarter, looking down at the loaf; linen apron · soft (outside the 17 cm)
-              context  bench scraper (steel), folded linen cloth, glass jar of flour — at the left
-                       edge, the jar half cropped
-              set      oak counter running full width; white tiled wall 1.2 m behind the counter
-Light         one source: low sun through a window off-frame camera-left, ~15° elevation, ~3500K, hard
-              → parallel shadows toward camera-right; the loaf's shadow ≈ 40 cm (11 cm × 3.7)
-              the wall is outside the beam: lit only by bounce, ≈ 2 stops darker than the loaf
-              oak counter bounces warm light into the undersides of the hands
-Physics       contact shadow and a ring of flour around the loaf's base; flour falling in a
-              loose 15 cm cone, visible as a bright haze only inside the sunbeam; apron hangs
-              straight with one fold where it is tied; the scraper shows one bright line of the window
-Emphasis      1st  the scored ear of the crust, rim-lit by the sun, flour glowing above it (money detail)
-              2nd  the hands, sharp, mid-value
-              3rd  the baker's face — soft, turned down, gaze leading to the loaf
-              held down: the face (focus + gaze), the window (off frame), the white tiles (in shadow)
-Quiet zones   right 40%, upper part: the tiled wall in shadow, low contrast; the loaf's 40 cm
-              shadow reaches into the right 40% but only on the counter, below the headline zone
+Scene        a baker scoring a round loaf, early morning, sun through the east window
+Use          homepage hero, 16:9, 1600 px; headline over the right 40%; own mobile crop
+World scale  oak counter 0.90 m high; the loaf, Ø22 × 11 cm
+Camera       1.35 m high, 1.1 m back from the loaf (≈ 1.15 m along the lens axis),
+             tilted down ~10°, 35mm feel, f/2.8 → frame at the loaf ≈ 1.18 × 0.66 m;
+             angle to the loaf ~19°, so it sits ~77% down (lower third);
+             horizon ~20% from the top, behind the wall
+Objects      hero     loaf on a dark oiled walnut board, lower left · 19% of width ·
+                      sharp; matte crust, flour dusted on the scored ridge only
+             support  the baker's hands, one drawing a blade along the ridge · sharp
+             support  baker, 1.72 m, 35 cm beyond the loaf, leaning in, three-quarter
+                      away, looking down at it; head ≈ half the loaf's width; frame top
+                      at their plane ≈ 1.51 m → cropped at the brow
+             context  proving baskets on a shelf · soft
+             set      oak counter; a steel scraper on the board, pointing right;
+                      lime-plastered wall ≈ 2.4 m back; the flour jar out of the beam
+Cast         generic baker, 40s, sturdy, olive skin, dark hair under a cap, oat linen
+             apron, flour on the forearms; exposure set for their skin
+Light        one: low early sun, ~15° up, camera-left, ≈ 4000K, hard; balanced for
+             daylight, so warm gold; side-lit and grazing, not rim-lit
+             → shadows to camera-right, ≈ 3.7× height: the loaf's ≈ 40 cm
+             wall out of the beam, bounce only: ≈ 4 stops below the lit crust, a dark
+             warm mid-grey with detail on soft film; shadow share ≈ half the frame
+Physics      contact shadows under loaf and board; a few crumbs; a flour smudge on
+             the apron
+Focus        sharp zone ≈ 18 cm; face blur ≈ 0.3% of width (≈ 4 px): a touch soft
+Quiet zone   right 40%, upper part: the plaster wall in shadow, one value
+Assumed      a 22 cm loaf; a generic baker, not their staff
 ```
 
-What the physics changed: the frame-share check put the loaf at a fifth of the width
-instead of the poster-sized hero a model would draw; the depth-of-field number made the
-face fall soft on its own, handing the first read to the crust; the sun's 15° elevation
-fixed the shadow length and showed it crossing into the text side — low on the counter,
-so it stays; and knowing the sun does not fall off told us the wall goes dark only
-because it is out of the beam, which is what the prompt says.
+**Emphasis.** 1st, the scored ridge: brightest (the lightest material in the beam; the
+board is dark), sharpest, local contrast, the hands' lines leading to it. 2nd, the hands.
+3rd, the face, held down by turn and crop, not focus; it will still be glanced at. Text:
+hero → headline; the scraper's diagonal and the long shadow lead right to the text zone.
+
+**Crops.** Mobile gets its own crop centred on the loaf; the centre 9:16 slice keeps only
+the middle 32% of the width and would cut the loaf.
+
+**Honesty.** The hero is atmosphere with a generic baker, not presented as their staff.
+Product and team pages use their own photos; this sheet doubles as the shot list.
+
+**The check passes.** Scale: 22 ÷ 118 = 19%; head 0.15/1.45 ÷ 0.22/1.1 ≈ 0.52; the loaf
+is 17% of the frame height, above the floor. Contact: loaf on board on counter. Light:
+one sun, shadows to camera-right, 15° → 3.7×. Emphasis: the ridge is brightest because
+the board is dark and the jar is out of the beam; the face has two levers. Crops: mobile
+has its own. Materials: matte crust and plaster, satin board.
