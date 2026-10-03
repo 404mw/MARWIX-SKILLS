@@ -5,10 +5,14 @@
   {"query": "what should the image for my newsletter be? something about cutting cloud costs", "should_trigger": true},
   {"query": "here's what gemini gave me, the face looks off and the lighting is too warm, how do I fix it", "should_trigger": true},
   {"query": "plan a 6-slide carousel for instagram explaining our pricing tiers", "should_trigger": true},
+  {"query": "write a Y2K Midjourney prompt for a sneaker", "should_trigger": true},
+  {"query": "this Gemini render's shadows go two ways, fix the prompt", "should_trigger": true},
   {"query": "write an SVG rocket icon for the navbar", "should_trigger": false},
   {"query": "add a CSS gradient background to the pricing section", "should_trigger": false},
   {"query": "make a bar chart of monthly signups from this csv", "should_trigger": false},
   {"query": "draw a mermaid diagram of our auth flow", "should_trigger": false},
   {"query": "compress these PNGs to webp for the site", "should_trigger": false},
-  {"query": "generate the image now with fal using the prompt above", "should_trigger": false}
+  {"query": "generate the image now with fal using the prompt above", "should_trigger": false},
+  {"query": "I don't know what style my bakery images should have", "should_trigger": false},
+  {"query": "every image we make looks generic — help us pick a look for the brand before we write any prompts", "should_trigger": false}
 ]

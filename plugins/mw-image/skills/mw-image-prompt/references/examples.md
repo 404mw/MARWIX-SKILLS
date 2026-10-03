@@ -44,8 +44,9 @@ No repository, no brand docs: a web chat. Step 1 finds nothing and moves on sile
 > 1. **What should the image show?** I recommend (a).
 >    (a) *The diff:* a thick stapled 3-day onboarding checklist beside a kitchen timer
 >    set to 20:00. (b) *The receipt:* a real screenshot of your new onboarding screen,
->    staged on a laptop. (c) *A metaphor:* a long winding road beside a one-step
->    staircase — weaker, since it doesn't use your actual number.
+>    composited onto a laptop — the screen is placed, never generated. (c) *A
+>    metaphor:* a long winding road beside a one-step staircase — weaker, since it
+>    doesn't use your actual number.
 > 2. **Where will you generate it?** I recommend whatever you already pay for.
 >    (a) ChatGPT (b) Gemini (c) Midjourney (d) an API or another tool
 > 3. **Is there a look to match** — a past post, your site, brand colors? If not: warm,
@@ -141,13 +142,15 @@ direct instruction is the text hard stop, which OpenAI's guidance sanctions for 
 - [ ] alt text: "A thick stapled onboarding checklist beside a kitchen timer set to
       20 minutes, under the headline '3 days → 20 min'."
 
-**Anchor block to reuse** — tuned on **GPT-Image-2.5**; valid only on that family:
+**Anchor block to reuse** — tuned on **GPT-Image-2.5**; valid only on that family.
+It keeps the light's quality and leaves its side and the camera to each image, so a
+later three-quarter shot does not inherit "from camera-left, seen from above":
 
 ```
 Photorealistic photograph, real product-photography look, not an illustration or 3D
-render. A pale wood desk seen from directly above, lit by one soft window light from
-camera-left that casts gentle shadows to the right. Warm off-white and pale wood tones
-throughout; the only saturated color is #3B5BDB, used for the headline alone.
+render. One soft window light, daylight-balanced, with gentle open shadows and low
+contrast; only a small share of the frame in shadow. Warm off-white and pale wood
+tones throughout; the only saturated color is #3B5BDB, used for the headline alone.
 ```
 
 ## The same asset, encoded for Midjourney V8.2

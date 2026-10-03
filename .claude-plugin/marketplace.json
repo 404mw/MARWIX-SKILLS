@@ -6,7 +6,7 @@
     "email": "hello@marwix.dev"
   },
   "description": "Claude skills that follow your project's rules where it has some, show every decision they make, and stop rather than guess.",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "metadata": {
     "pluginRoot": "./plugins"
   },
@@ -16,7 +16,7 @@
       "source": "./plugins/mw-image",
       "displayName": "MW Image Skills",
       "description": "Skills for AI image work: choosing the look and the shot with the user, planning a rough idea into a locked brief, the brief into a prompt for the model they use, and the prompt into an approved render.",
-      "version": "2.1.0",
+      "version": "2.3.0",
       "author": {
         "name": "MARWIX",
         "email": "hello@marwix.dev"

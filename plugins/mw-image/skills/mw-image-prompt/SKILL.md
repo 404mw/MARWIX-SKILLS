@@ -30,8 +30,15 @@ override. These are not — no doc, brief or instruction relaxes them.
 - **Minors.** An identifiable real child is generated only from references their parent
   or guardian supplied, for a benign use the guardian asked for.
 - **Honest evidence.** A screenshot, receipt, log, chart, test result or testimonial
-  presented as real must be real. Generated imagery may illustrate; it never fabricates
-  evidence, and never invents the user's material.
+  presented as real must be real. So must a real business's own products, premises,
+  staff and events shown as theirs — an about page, a team photo, "our shop", a menu:
+  recommend their own photos (a chosen direction becomes the shot list and light plan),
+  or keep the generated image generic and illustrative, with no claim. Generated
+  imagery may illustrate; it never fabricates evidence, and never invents the user's
+  material.
+- **Real products are placed, never redrawn.** A real product, label, screen or
+  packaging comes from the user's photo, by edit or composite; the prompt builds the
+  set, light and contact around it.
 - **Spend.** Recommend a cost tier; the user decides any final-tier spend.
 
 ## Procedure
@@ -57,9 +64,18 @@ raised as a question, never silently resolved.
 
 **A chosen direction outranks the docs on look.** When the user picked a direction with
 `mw-image-direction` — in this conversation, or saved to `docs/art-direction.md` — it
-rules style, palette, lighting, texture, camera, pose and composition. The docs then
-keep only hard technical limits (sizes, formats, layer and naming scheme, text-safe
-zones) and content bans.
+rules style, palette, lighting, texture, camera, pose and composition — and, when it
+staged the shot, the scene itself: objects and their real sizes, light geometry,
+contact, materials and the emphasis order. Its `[direction]` lines count as confirmed.
+Take the staging into the prompt by its budget (`mw-image-direction` staging.md,
+"Prompt budget"; caps per family in brief.md): the priority order, the family's clause
+and word caps, each attribute bound inside the same clause as its object. Write it as
+visible results (relations, frame shares, shadow directions, what is brightest and
+sharpest), never as bare centimeters. Everything else stays on the scene sheet, to
+check the render against. The style block names light by quality only; the side,
+height and shadows come from each image's staging. The docs then keep only hard
+technical limits (sizes, formats, layer and naming scheme, text-safe zones), content
+bans and brand identity (mandated colors, typefaces, logo use).
 
 ### 2. Reason about the ask
 
@@ -99,10 +115,14 @@ Reply once, with three parts:
    should the subject be?"
 
 Always ask — even with a strong recommendation — about the decisions that change the
-whole job: mode, destiny (whole-frame / cutout / layered / text overlay), where the
-user will generate (which tool or model they have), how a real person's likeness may
-be used, and final-tier spend. Never drip questions one at a time; a second batch only
-when the answers opened something new.
+whole job, unless the user's words, the docs or a `[direction]` line already settled
+them: mode, destiny (whole-frame / cutout / layered / text overlay), where the user
+will generate (which tool or model they have), how a real person's likeness may be
+used, and final-tier spend. A `[direction]`
+line counts as confirmed — destiny, the generator ("model-neutral" when the user
+didn't know: the safe defaults in engines.md), the image list and the text zone
+included — so the batch asks only what is still open. Never drip questions one at a
+time; a second batch only when the answers opened something new.
 
 **No look to follow.** When no direction was chosen, the docs describe no style, and the
 user has no look in mind, suggest `mw-image-direction` in the batch if it is installed —
@@ -111,7 +131,9 @@ contrasting directions and two or three shots." Switch only on a yes. Without it
 a no, offer two or three concrete directions as `[proposed]` options (brief.md).
 
 **Fast lane.** When no work-changing line is `[proposed]`, or the user says to go
-ahead, show the brief and continue straight to prompts in the same reply.
+ahead, show the brief and continue straight to prompts in the same reply. A confirmed
+direction readback usually leaves nothing open: then there is no batch, only the
+brief and the prompts.
 
 Format and the vague-ask playbook: [references/brief.md](references/brief.md). A
 worked batch and deliverable: [references/examples.md](references/examples.md).
@@ -133,8 +155,10 @@ Load what the job needs:
 
 ### 5. After generation — iterate
 
-When the user comes back with a result, diagnose it before touching the prompt, then
-write one edit: [references/iterate.md](references/iterate.md).
+When the user comes back with a result, diagnose it before touching the prompt —
+against the scene sheet when a direction staged it — then write one edit, or
+regenerate when the scale, camera or hero is wrong:
+[references/iterate.md](references/iterate.md).
 
 ## Shared craft (every model)
 
@@ -156,7 +180,10 @@ Each rule has one home; the link is where its detail lives.
   it. Reasoning models use intent.
 - **The style anchor block.** Series consistency comes from one fixed style block
   pasted verbatim into every prompt; paraphrase is drift. It holds only within the
-  model family it was tuned on — stamp it with that family.
+  model family it was tuned on — stamp it with that family. It names light by quality
+  (hard or soft, color under a stated white balance, contrast, shadow share), never by
+  a side or height relative to the camera: those change per shot and live in each
+  image's own prompt.
 - **Lighting by measurement when the model may change.** Name what the exposure is set
   for and how much of the frame sits in shadow; mood words do not survive a family
   switch. [engines.md](references/engines.md#lighting-transfers-as-a-measurement-not-a-mood)
@@ -189,7 +216,9 @@ Open with the **confirmed brief**, every line tagged. Then, per asset:
 4. **Settings outside the prompt** — ratio or size, quality tier, count, each
    reference with its role — only the ones that surface actually has.
 5. **Constraints**, as phrased for that family.
-6. **One or two labeled variations** — composition or camera only, never style.
+6. **One or two labeled variations** — composition or camera only, never style. With
+   a staging block, vary the placement inside the frame or the instant; a camera
+   variation re-derives the staging lines it moves (frame shares, focus, shadow side).
 7. **The mode's checklist**, instantiated.
 
 Close with any doc ambiguity you interpreted, flagged for review, and the anchor block

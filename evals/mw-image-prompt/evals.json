@@ -139,6 +139,94 @@
         "The docs' high-key look is not used and not blended in",
         "Lighting is written as a measurement (shadow share or exposure reference) rather than mood words alone"
       ]
+    },
+    {
+      "id": 11,
+      "name": "direction-handoff-not-reasked",
+      "prompt": "Confirmed — here's the direction from mw-image-direction:\n[direction] Look: Analog film, warm consumer color\n[direction] Images: one homepage hero, 1600x900\n[direction] Destiny: whole frame, live HTML headline over it\n[direction] Text zone: right 40%, plaster wall in shadow, one value\n[direction] Generator: Nano Banana (Gemini)\n[direction] Shot A: candid over the counter; loaf lower-left on a dark walnut board, baker's hands dusting flour over it, face turned away and cropped; one low morning sun from camera-left, long shadows to the right; the floured ridge brightest and sharpest\n[direction] Style block: (pasted verbatim)\nWrite the prompt.",
+      "expected_output": "Treats every [direction] line as settled, shows the brief with those tags, asks nothing about destiny, generator, image list or text zone, and writes the Nano Banana prompt in the same reply.",
+      "files": [],
+      "expectations": [
+        "It does not ask about destiny, the generator, the image list or the text zone",
+        "The brief carries those lines tagged [direction]",
+        "The prompt is written in the same reply, or after at most one question about something no [direction] line settles",
+        "The prompt is encoded for Nano Banana: full sentences, exclusions phrased as positive states",
+        "The right 40% is described as a quiet plaster wall in shadow for the headline, with no in-image text",
+        "The staging lines appear as visible results (placement, contact, light side and shadow direction, brightest and sharpest point) within the family's budget (at most 8 physics clauses)",
+        "The style block is used word for word, not paraphrased"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "midjourney-respects-staging-budget",
+      "prompt": "Direction is confirmed, generator is Midjourney. The scene sheet for the hero: round sourdough loaf 22 cm, about a fifth of the frame width, lower-left third; dark oiled walnut board on an oak counter; contact shadow under the loaf; one low morning sun from camera-left about 15° up, shadows to the right about 3.7× the height; the floured scored ridge is brightest and sharpest; baker's face turned away and cropped at the brow; f/2.8, the face only a touch soft; plaster wall 2.4 m back, about 4 stops darker; proving baskets soft on a shelf; flour only on the crust ridge; scraper mid-stroke. 16:9, headline over the right 40%. Write the prompt.",
+      "expected_output": "A Midjourney prompt whose staging stays within 4 physics clauses and about 50 words, chosen in the prompt-budget order, with the rest left on the sheet; a parameter line beside it.",
+      "files": [],
+      "expectations": [
+        "The prompt contains at most 4 physics clauses (placement, contact, light and shadows, emphasis), and the staging text is about 50 words or fewer",
+        "The clauses follow the priority order: hero with share and placement, then what it rests on and its contact, then light side and shadow direction, then brightest and sharpest",
+        "The prompt contains no centimetres, metres, f-numbers, stops or degrees",
+        "It says the remaining sheet lines are kept for checking the render, not added to the prompt",
+        "The prompt ends with a parameter string that includes --ar 16:9, and exclusions use --no with bare nouns",
+        "The right 40% is described as quiet space for the headline, with no in-image text"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "fake-render-one-float-one-edit",
+      "prompt": "Here's the Gemini render of our ceramic mug on the desk (attached) with the prompt I used. Everything is right — placement, light, colours — except the mug floats a little above the desk. Fix it.",
+      "expected_output": "One edit that adds the missing contact, with a full preserve list; no regeneration.",
+      "files": [],
+      "expectations": [
+        "It writes one edit instruction, not a new prompt from scratch",
+        "The edit adds contact in visible terms: the mug's base resting flat on the desk with a soft contact shadow where it touches, on the side away from the light",
+        "The edit changes only that one thing",
+        "The edit restates a full preserve list (composition, camera, lighting, palette, the mug itself)",
+        "It explains how to apply the edit in Gemini (same conversation, image attached)"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "fake-render-scale-camera-regenerate",
+      "prompt": "This Midjourney render looks fake (attached, with my prompt). The coffee cup is as big as the laptop beside it, the camera looks straight down although I wanted the desk seen from a low angle, and the shadows go two ways.",
+      "expected_output": "Classifies it as a scale and camera failure and regenerates from re-derived staging instead of chaining edits.",
+      "files": [],
+      "expectations": [
+        "It does not write a chain of edit passes; it regenerates",
+        "It names the wrong scale, the wrong camera and the disagreeing shadows as the problems",
+        "It re-derives the staging before rewriting the prompt (or routes to mw-image-direction's render diagnosis when it is installed): the cup's size relative to the laptop, the camera height and angle, and one light with shadows falling one way",
+        "The new prompt states the scale relation as a visible result (for example the cup about a third of the laptop's width) rather than in centimetres",
+        "The new prompt keeps the Midjourney staging budget (at most 4 physics clauses)"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "variation-on-staged-image",
+      "prompt": "Here's the Midjourney prompt we just wrote for the bakery hero (16:9, headline over the right 40%), staged with mw-image-direction: \"a round sourdough loaf on a dark walnut board in the lower left, a baker's hands dusting flour over it, face turned away and cropped at the brow; low morning sun from the left casting long shadows to the right; the floured scored ridge is the brightest, sharpest point\" plus the style block and parameters. Give me one or two variations as a fallback, and make one of them from a higher angle.",
+      "expected_output": "Variations change placement or the instant within the same staging; the higher-angle variation re-derives its staging lines. Style, light logic and palette stay fixed.",
+      "files": [],
+      "expectations": [
+        "Each variation is labelled as a variation",
+        "Style block, palette and light logic are unchanged across the variations",
+        "A variation that keeps the camera changes only placement or the instant (for example the scraper mid-stroke vs. lifting away)",
+        "The higher-angle variation re-derives its staging lines: the loaf's frame share and placement, where the light falls in frame, the shadow direction and the quiet zone for the headline",
+        "No variation that moves the camera copies the original staging clauses unchanged",
+        "Each variation keeps the Midjourney staging budget (at most 4 physics clauses)"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "seamless-tile-midjourney-v8",
+      "prompt": "A seamless repeating terrazzo texture for our website background. I'll use Midjourney. Write it.",
+      "expected_output": "A Midjourney tile prompt using --tile on V8.2, with no focal subject.",
+      "files": [],
+      "expectations": [
+        "The parameter string includes --tile",
+        "The version is V8.2 (or the current V8), and --tile is not pinned to V7",
+        "It does not use --q",
+        "If it mentions editing, it notes --tile does not work with the Edit model",
+        "The prompt describes an even, all-over pattern with no focal subject, border or vignette"
+      ]
     }
   ]
 }

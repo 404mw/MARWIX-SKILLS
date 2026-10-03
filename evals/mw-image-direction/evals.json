@@ -5,11 +5,15 @@
       "id": 1,
       "name": "no-idea-full-interview",
       "prompt": "I need images for my bakery's new website but I honestly have no idea what they should look like",
-      "expected_output": "One batch of plain-language questions with recommendations and options; no shortlist or prompt yet unless the context already answers them.",
+      "expected_output": "One batch of plain-language questions with recommendations and options — including what the images should show, which images go where, real photos and the generator — and no shortlist or prompt yet unless the context already answers them.",
       "files": [],
       "expectations": [
         "All questions arrive in a single reply",
         "It asks who sees the images or where they appear only if the ask leaves it open, and does not re-ask that it is a bakery website",
+        "It asks what the images should show and offers about three concrete scene ideas drawn from what a bakery makes; it does not silently invent the subject",
+        "It asks which images are needed and where each goes, offering a default set (for example a homepage hero, product tiles and an about image)",
+        "It asks whether real photos of the products, the shop or the team already exist",
+        "It asks which generator the user will use and says the question can be skipped",
         "It asks for the feeling in about three words and offers ready-made word sets to react to",
         "It asks what the images must never look like",
         "It asks whether the look should be photographic, drawn, 3D or flat graphic, with a recommendation",
@@ -86,6 +90,7 @@
         "Light is stated with direction and a color temperature or shadow share",
         "The subject placement keeps the right 40% clear for the headline",
         "A style block in full sentences is included, with exclusions phrased as positive states",
+        "The style block names light by quality, temperature against a stated white balance, contrast and shadow share, with no camera-relative direction (no 'camera-left', no elevation)",
         "It offers once to save the look to docs/art-direction.md and writes nothing without a yes"
       ]
     },
@@ -101,6 +106,215 @@
         "At least one image uses an unusual height (overhead, ground-level or high-angle)",
         "No image has the subject looking into the lens unless that is stated as deliberate",
         "Composition for each image names where the subject sits in the frame"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "staging-two-layer-readback",
+      "prompt": "Analog film, warm consumer color, shot A (candid mid-action) is locked. It's a 1600x900 hero for our bakery site, headline top-right. Now plan the actual scene so it doesn't look fake — people should notice the bread first.",
+      "files": [],
+      "expected_output": "A plain readback of at most about 8 everyday lines for shot A, with the numbers kept on a separate scene sheet for the hand-off: every object with a role and a real size, the camera placed physically with the frame shares that follow, light reasoned into shadow direction and length, contact and materials, and an emphasis order in which the bread wins.",
+      "expectations": [
+        "What the user is asked to confirm is a plain readback of at most about 8 lines, in everyday words: what it looks like, what is in the picture, where the camera is, where the light comes from and where shadows fall, what is seen first, second and third, what is kept quiet, and what was assumed",
+        "The plain readback carries no metres, focal lengths, f-numbers, stops or Kelvin; the only number allowed is the size assumed for the hero",
+        "The numbers go on a separate scene sheet (in the hand-off, in docs/art-direction.md, or shown on request), not into the block the user is asked to correct",
+        "On the scene sheet, every object in frame is listed with a role and a real-world size, including the surface it stands on and the background surface, and context items are few (zero, one or three)",
+        "Exactly one hero is named, and it is the bread",
+        "On the scene sheet, camera height, distance along the lens axis and lens feel are stated; the hero's frame share is consistent with its size and that distance, and the tilt agrees with where the hero sits in the frame",
+        "The light is set in world terms (for example a window or the sun's side and height) and the shadow direction, and length or edge hardness, follow from it",
+        "Contact with the supporting surface is stated (a contact shadow or what the object rests on)",
+        "The brightest point is something that can really be brightest: the hero is the lightest material in the beam, or light-coloured set pieces are kept out of the beam",
+        "Emphasis is given as an order (first, second, third read) with a specific detail on the hero; the baker's face is held down by at least two of crop, turn, focus and value, and it says the face will still be glanced at",
+        "If the face is held down by focus, the stated blur is enough to read as clearly soft (about 1% of the frame width or more); otherwise it relies on crop and turn",
+        "The headline zone top-right is a plain, low-contrast surface of one value with no repeating pattern (no tiles or grout grid)",
+        "Because it is a real bakery, the baker is kept generic and not presented as their staff, or real photos are recommended for staff and products",
+        "Nothing is described 'in the style of' a named artist or photographer",
+        "It does not ask the user for distances, camera height, angles or aperture; it decides them and keeps them on the sheet"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "fake-looking-goes-to-diagnosis",
+      "prompt": "My generated product shots of our perfume bottle look fake. The bottle kind of floats, the reflections look weird, and the background steals attention. The look itself is fine.",
+      "files": [],
+      "expected_output": "Routes to 'Diagnose a render': asks for the render and the prompt that produced it in one batch (or uses them if given), infers the direction from the current images, classifies the problems, and applies the edit-or-re-stage rule instead of running the style interview.",
+      "expectations": [
+        "It does not shortlist new directions or run the style interview",
+        "It asks for the render and the prompt that produced it in one batch, or uses them if they are already in the conversation",
+        "The direction is taken from the current images (marked as inferred, or 'as your current images'), not re-chosen",
+        "It classifies the reported problems: floating and reflections as physics, the background stealing attention as emphasis or composition",
+        "It names missing contact (a contact shadow or the surface the bottle rests on) as the likely cause of floating",
+        "It reasons about glass physically: refraction of what is behind the bottle, and highlights or reflections placed on the side of the stated light source",
+        "It says how the background will be held down (focus, value, saturation or distance) so the bottle or a named detail of it wins",
+        "It applies the rule: one problem with the composition right gets one edit through mw-image-prompt's iterate path; with three problems reported, or scale, camera or hero wrong, it proposes re-staging and regenerating, or defers that choice until it has seen the render. It never stacks several fixes into one edit pass",
+        "It treats the bottle as the user's real product: placed from their photo by edit or composite, never redrawn, and it asks whether the current renders used a real photo",
+        "It asks for the bottle's real size or states an assumed size (for example 50 ml ≈ 9–12 cm tall)",
+        "Any changes are given as the changed lines only, not a full readback with direction and palette lines",
+        "It does not ask the user for distances, camera height or angles"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "flat-vector-hero-reduced-staging",
+      "prompt": "Flat vector illustration for our SaaS homepage hero, 16:9. The headline and the sign-up button sit on the left. We make a scheduling tool for small clinics. Plan the look and what's in the picture.",
+      "files": [],
+      "expected_output": "Stages at the flat depth only: an inventory with frame shares, overlap and emphasis, a quiet zone on the left named as a flat colour field, and a contrast target for the headline; no camera, optics or contact shadows.",
+      "expectations": [
+        "It sets the staging depth for a flat style and says so, or follows it without comment",
+        "No metres, centimetres, focal lengths, f-numbers, depth of field or camera height appear anywhere in the reply",
+        "No contact shadows, cast shadows or bounce light are required, unless the chosen style draws them",
+        "Sizes are given as frame shares (a linear share of the frame width, or of height for standing figures), not real-world sizes",
+        "At most one context item is named; there are no filler plants, blobs or floating decorations",
+        "The quiet zone on the left is named as a flat colour field, with its colour",
+        "A contrast target is stated for the headline over the quiet zone (for example at least 4.5:1, or 3:1 for large text)",
+        "There is one hero, and the read order between the hero and the headline is decided, with a line or gaze routing between them",
+        "If the picture shows the product's interface, it says real screenshots are composited rather than generated",
+        "The plain readback is at most about 8 lines"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "perfume-series-4x5-world-sheet",
+      "prompt": "Five Instagram posts (4:5) for the launch of our perfume, a 50 ml glass bottle — I have product photos of it. We picked Dark luxury still life. Make them feel premium and plan all five.",
+      "files": [],
+      "expected_output": "One shared world sheet and one line per image for a narrative set built on a product rotation, with the real bottle placed from the user's photo, a style block without camera-relative light, and a bounded reply.",
+      "expectations": [
+        "It gives one shared world sheet (world scale, light logic, materials, palette) and one line per image (shot · hero · first read), not five full sheets",
+        "The user-facing readback stays short: the shared lines plus one line per image, about 15 lines in all",
+        "Wherever a frame size or frame share is computed, it uses the 24 mm short side for the 4:5 width (distance × 24 ÷ focal length), not 36 mm",
+        "The five shots follow a product rotation (for example three-quarter packshot, in hand, material or ingredient macro, in context, overhead), not a people rotation such as candid mid-action",
+        "The set is treated as a narrative set: shots rotate while the light logic (quality, temperature, contrast, shadow share) stays the same, not one camera-fixed rig",
+        "The style block names light by quality, temperature against a stated white balance, contrast and shadow share, with no camera-relative direction (no 'camera-left', no elevation)",
+        "The real bottle and its label come from the user's photo by edit or composite and are never redrawn or generated; staging plans the set, light and contact around it",
+        "The bottle's size is stated (about 9–12 cm tall for 50 ml) and kept consistent across the five",
+        "The hero and the first read survive the 3:4 profile-grid crop",
+        "Nothing is described 'in the style of' a named photographer or brand"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "brand-hex-kept-as-palette-roles",
+      "prompt": "Our docs/brand.md says: primary #1F3A5F (navy), accent #F2A541 (amber), background #F7F3EC (cream); never use gradients. We want a playful hand-drawn look for our blog headers. Help us pick the look.",
+      "files": [],
+      "expected_output": "Builds the direction inside the brand: the three hex colours each take a role in the palette, the no-gradient rule holds, and a conflict with a candidate direction is raised once.",
+      "expectations": [
+        "All three brand hex colours appear in the palette, each with a role (for example navy as line or ink, amber as accent, cream as ground)",
+        "No direction replaces the brand colours with its own default palette",
+        "The 'never use gradients' rule is kept in every direction offered and in any style block",
+        "If a candidate direction cannot live inside the brand palette, it says so once and asks; it does not silently blend or override",
+        "It does not re-ask for the brand colours",
+        "The palette is given as data: colours with approximate hex and their roles"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "real-bakery-about-page-real-photos",
+      "prompt": "We're a real family bakery. Plan the images for our About page: 'our team' and the shop itself.",
+      "files": [],
+      "expected_output": "Recommends real photos of the team and the shop, and turns the direction into their shot list and light plan; any generated image stays generic and makes no claim.",
+      "expectations": [
+        "It recommends real photos for the team and the shop, because the page presents them as real",
+        "The direction becomes a practical shot list and light plan for that shoot (where the camera goes, which window or time of day, who stands where), in plain words",
+        "It does not plan generated images of their staff or premises presented as real",
+        "If it offers any generated image, it is kept generic or illustrative (atmosphere, background, concept) and makes no claim to show their team or shop",
+        "The team photo is planned as one group read as one unit with a lead member, or as separate portraits",
+        "It does not ask the user for distances, camera height or aperture"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "render-attached-diagnose-first",
+      "prompt": "This render looks fake and I can't say why. (Render attached: a model holding our perfume bottle.) Here's the prompt I used in Gemini: \"Elegant woman holding a luxury perfume bottle, soft studio light, beige background, 4:5.\" The bottle seems to hover above her palm and her skin looks waxy.",
+      "files": [],
+      "expected_output": "Diagnoses the attached render against its prompt without an interview: classifies the problems (physics and surface), then proposes one edit or a re-stage by the rule, giving only the changed lines.",
+      "expectations": [
+        "It uses the render and the prompt given, and asks only for whatever is missing",
+        "It does not run the interview batch or shortlist directions; the direction is taken as the current images (inferred)",
+        "It classifies the problems: the hovering bottle as physics (contact) and the waxy skin as surface",
+        "For the bottle it names the contact fix in visible terms (fingers wrapped around the bottle, the weight pressing into the palm, a shadow where it touches)",
+        "For the skin it names a surface fix (visible pores, fine texture, natural sheen) rather than a staging change",
+        "It applies the rule: with the composition right, it proposes one edit for this pass (the class that changes the read most, first) and queues the other; it proposes re-staging and regenerating only if it finds scale, camera or hero wrong, or three or more problems",
+        "Its output is the changed lines only, not a full readback with direction and palette lines",
+        "It notes the bottle should be placed from a photo of their real product rather than redrawn",
+        "It does not ask the user for distances, camera height or angles"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "surreal-concept-names-broken-law",
+      "prompt": "Header image for an article about burnout. I want something surreal.",
+      "files": [],
+      "expected_output": "Settles the idea before staging — asks what it shows or offers three concrete metaphors — then names the law the idea breaks, exempts it from the check, and keeps every other law strict.",
+      "expectations": [
+        "Before any staging, it settles the idea: it asks what the image should show or offers about three concrete visual metaphors to choose from",
+        "It does not stage an invented metaphor without the user's choice, and flags an obvious cliché if it offers one",
+        "For the chosen or proposed idea, it names the physical law or laws the idea breaks (usually one, such as scale or gravity)",
+        "The scale or physics check exempts the named law (for example an intended giant object is not flagged as a scale error)",
+        "Every other law stays strict: contact, one consistent light direction and shadows are still stated",
+        "The staging depth follows the family the surreal image is painted or photographed in"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "you-choose-fast-lane",
+      "prompt": "I need images for my coffee roastery's website. I don't want to answer questions — you choose, just go.",
+      "files": [],
+      "expected_output": "No interview batch: picks the direction and the shot itself, marks each choice [proposed], and goes straight to the plain readback, ending with a confirm-or-change line.",
+      "expectations": [
+        "There is no interview batch of questions",
+        "It picks a direction and a shot itself",
+        "Each choice it made is marked [proposed]",
+        "It goes straight to the plain readback, at most about 8 lines per image, in everyday words",
+        "It proposes the image set (which images and where each goes) as [proposed] rather than asking",
+        "It states what it assumed",
+        "It ends with a single confirm-or-change line before prompts, not a list of questions",
+        "No metres, focal lengths, f-numbers or Kelvin appear in the plain readback"
+      ]
+    },
+    {
+      "id": 17,
+      "name": "cutout-layer-asset-no-set",
+      "prompt": "I need our sneaker as a cutout PNG for a parallax layer on the homepage; it'll float over a dark gradient. Direction is Studio product, CGI render feel. Plan it.",
+      "files": [],
+      "expected_output": "Stages at the cutout depth: inventory, size and light on the subject only, matched to the composite; no set, no cast shadow, no bounce; contact shadows left to composite time; the real sneaker placed from a photo.",
+      "expectations": [
+        "No set, floor, background surface or room is planned",
+        "No cast shadow and no bounce light from a set are planned",
+        "It says any contact or drop shadow is added at composite time",
+        "Light is planned on the subject only, with its key side and temperature matched to the composite it will sit in",
+        "The sneaker's size is stated (about 23–31 cm long) and its share of the layer is given",
+        "Because it is their real product, it recommends cutting it out from, or editing from, a photo of the real sneaker rather than generating it from words",
+        "The plain readback is at most about 8 lines"
+      ]
+    },
+    {
+      "id": 18,
+      "name": "midjourney-staging-budget",
+      "prompt": "We locked Analog film, warm consumer color, shot A for the bakery hero: a round loaf lower-left on a dark walnut board, the baker's hands dusting flour over it, face turned away and cropped, low morning sun through the east window, plaster wall on the right for the headline. I'll generate in Midjourney. Give me the staging part for the prompt.",
+      "files": [],
+      "expected_output": "Compresses the staging into at most four physics clauses and about 50 words, in the prompt-budget priority order, and keeps everything else on the sheet to check the render against.",
+      "expectations": [
+        "The staging text for the prompt has at most 4 physics clauses",
+        "The staging text is about 50 words or fewer",
+        "It follows the priority order: hero with frame share and placement first, then what it rests on and its contact, then light side and shadow direction, then what is brightest and sharpest",
+        "Each attribute sits in the same clause as its object",
+        "The staging text has no centimetres, metres, f-numbers or Kelvin; physics is written as visible results",
+        "Light is written from the camera's view for this shot (for example 'from the left'), not only as 'the east window'",
+        "It says the remaining sheet lines are kept to check the render against, and that a miss is fixed with an edit pass rather than more clauses"
+      ]
+    },
+    {
+      "id": 19,
+      "name": "single-image-readback-length",
+      "prompt": "Bakery homepage hero, 16:9, headline over the right 40%. Go with Analog film, warm consumer color, shot A (candid over the counter). Show me what it will look like before we write any prompts.",
+      "files": [],
+      "expected_output": "A plain readback of at most about 8 lines in everyday words, with the numbers held back on the scene sheet unless asked.",
+      "expectations": [
+        "The readback shown to the user is at most about 8 lines",
+        "It covers what it looks like, what is in it, where the camera is, where the light comes from and where shadows fall, the read order, what is kept quiet and what was assumed",
+        "It shows no metres, centimetres, focal lengths, f-numbers, stops or Kelvin; the only number allowed is the size assumed for the hero",
+        "The scene sheet with the numbers is not shown unless asked; it may say the numbers are available",
+        "It asks for a confirm or a change before prompts"
       ]
     }
   ]

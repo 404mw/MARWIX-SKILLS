@@ -39,14 +39,20 @@ emphases:
    choose each scene's framing on purpose rather than repeating one by habit. An unstated camera falls back to the
    engine's habit — or, in image-to-image, gets copied from the reference photo
    (references carry identity only: [identity.md](identity.md)).
-3. **Lighting** — source, direction, temperature, falloff. For projects with a
-   lighting rule (single source, restricted color), spell it out redundantly: name
-   the one light, then explicitly state the absence of others.
-4. **Palette discipline** — name the allowed colors *and* the constraint form:
+3. **Staging (from `[direction]`)** — when a direction staged the shot: scale and
+   contact, light (sources, side, height, shadows), emphasis (what is brightest and
+   sharpest), in the prompt budget's order and within the family's cap (brief.md).
+   Bind each attribute inside the clause of its object. The rest of the scene sheet
+   stays out of the prompt; it is what the render is checked against.
+4. **Lighting** — source, direction, temperature, falloff; with staging, the side,
+   height and shadows come from step 3 and the style block adds only the light's
+   quality. For projects with a lighting rule (single source, restricted color), spell
+   it out redundantly: name the one light, then explicitly state the absence of others.
+5. **Palette discipline** — name the allowed colors *and* the constraint form:
    "near-monochrome X; the only saturated color is Y, used only for Z" beats a bare
    color list. Generators leak color unless told what *not* to color.
-5. **Texture and atmosphere** — grain, fog, surface qualities.
-6. **Technical spec** — aspect ratio / generation size per the asset contract
+6. **Texture and atmosphere** — grain, fog, surface qualities.
+7. **Technical spec** — aspect ratio / generation size per the asset contract
    (typically oversized when layers will be cropped out of it).
 
 ## Negative constraints
@@ -98,6 +104,10 @@ the frame:
 - **Light the subject, not the air.** The named light may touch the subject (rim,
   key, wrap) with contained falloff; it never appears as a visible source, ambient
   glow, or lit background behind the subject.
+- **Staging for a cutout plans light on the subject only** — key side and temperature
+  matched to the composite it will join; no set, no cast shadow, no bounce
+  (`mw-image-direction` staging.md, cutout row of the depth table). Contact shadows
+  are added at composite time, never generated into the cutout.
 - **Lock a flat background with a fixed clause — cutout assets only.** When the
   background will be stripped, it must strip in one pass, so it is locked, not
   described loosely. Paste this clause (with the tone filled in) into every cutout
@@ -123,6 +133,9 @@ Provide 1–2 variations per primary prompt so there's a fallback without a new 
 
 - Vary **composition or camera only** (angle, distance, arrangement). Never vary
   style, lighting rule, or palette — those variations create drift, not options.
+- **With a staging block**, vary the hero's placement inside the frame or the instant.
+  A camera variation re-derives the staging lines the camera moves — frame shares,
+  focus, shadow side — instead of reusing the primary's.
 - Label variations as such so nobody grades them as competing styles.
 
 ## Consistency guard
@@ -187,4 +200,5 @@ a negative channel, the positive state that excludes it everywhere else
 | Unsplittable composition | Planes interlock, no clean silhouettes | Re-prompt for depth separation or generate layers separately |
 | Accidental focal face | A face where none was asked | Exclude ("an empty street", "unpeopled"); regenerate |
 | Inherited reference geometry | Output copies the reference photo's camera: low selfie angle, wide-angle distortion, its crop | References carry identity only ([identity.md](identity.md)); state camera height, angle, distance, and framing explicitly in the prompt |
+| Redrawn product | A real product, label, screen or packaging regenerated from words: wrong proportions, garbled label | Place it from the user's photo by edit or composite, never redrawn; match the camera and light read off that photo (`mw-image-direction` staging.md, "Placing a supplied product") |
 | Baked atmosphere on a cutout asset | Glow orb, haze, or halo that dies at the matte edge after background removal | Cutout rules above: no atmosphere, subject-contained light, flat separable background |

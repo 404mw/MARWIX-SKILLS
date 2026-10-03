@@ -5,18 +5,19 @@
 Claude can't make images. No agent arrives with taste. And an agent asked why a query is
 slow will answer without ever looking at the plan.
 
-These skills add the missing half. I have been using them on my own work for months —
-hardened for release rather than written for it. They work your way instead of the
-model's: each one follows your project's own docs where there are some, shows you every
-decision it made and where it came from, and stops to ask rather than filling a blank
-with something plausible. Built for and tested on Claude — Claude Code and Claude's
-web, desktop and mobile apps. Free, MIT, no paid version held back.
+These skills add the missing half. Most of them I used on my own work for months before
+release — hardened for release rather than written for it; `mw-image-direction` is the
+newest. They work your way instead of the model's: each one follows your project's own
+docs where there are some, shows you every decision it made and where it came from, and
+stops to ask rather than filling a blank with something plausible. Built for and tested
+on Claude — Claude Code and Claude's web, desktop and mobile apps. Free, MIT, no paid
+version held back.
 
 ## Skills
 
 | Skill | Plugin | What it's for |
 |---|---|---|
-| [`mw-image-direction`](plugins/mw-image/README.md#mw-image-direction) | `mw-image` | **Gives your agent taste, on request.** When you don't know what an image should look like, it asks a few plain questions and shortlists three contrasting directions from a library of 46 — photography, flat graphic, 3D, illustration, mixed media, eras — then two or three shots instead of the same centered eye-level one. Decides the look; never generates. |
+| [`mw-image-direction`](plugins/mw-image/README.md#mw-image-direction) | `mw-image` | **Gives your agent taste, on request.** When you don't know what an image should look like, it asks one batch of plain questions, including what the images should show and which ones you need, and shortlists three contrasting directions from a library of 48 — photography, flat graphic, 3D, illustration, mixed media, eras — each with a shot that isn't the same centered eye-level one. It stages the shot as deeply as the style needs (real sizes, camera, light and shadows for a photo; frame shares and a quiet zone for flat vector) and reads it back in about eight plain lines, keeping the numbers for the prompt. It also diagnoses renders that look fake. Decides the look; never generates. |
 | [`mw-image-prompt`](plugins/mw-image/README.md#mw-image-prompt) | `mw-image` | **Plans the image with you.** Reasons about a rough idea like "something for the launch post", asks one batch of questions with its own suggestions, locks a brief — subject, style, camera, palette, banned elements — then writes the prompt for the model you use: ChatGPT, Gemini, Midjourney, FLUX and more. Writes prompts; never generates. |
 | [`mw-image-gen`](plugins/mw-image/README.md#mw-image-gen) | `mw-image` | **Gives your agent the ability to generate images.** Runs a prompt against fal.ai or OpenAI, saves each result with the settings that made it, converts approved masters to web formats. Decides nothing creative. |
 | [`mw-query-plan`](plugins/mw-query/README.md#mw-query-plan) | `mw-query` | **Makes your agent prove a query is slow before telling you how to fix it.** Diagnoses Postgres queries from the actual EXPLAIN plan — indexes, N+1, joins, keyset pagination — and marks the finding *provisional* when it hasn't got one. Postgres only; adapters for Prisma and Medusa. |
@@ -165,9 +166,11 @@ that one is installed alone. Straight to a section:
 
 ### `mw-image` — [full write-up](plugins/mw-image/README.md)
 
-- [**`mw-image-direction`**](plugins/mw-image/README.md#mw-image-direction) — the interview, the 46
-  directions, the shot options that replace the one default camera, and why a chosen
-  look outranks your docs on everything but technical limits.
+- [**`mw-image-direction`**](plugins/mw-image/README.md#mw-image-direction) — the interview, the 48
+  directions, the shot options that replace the one default camera, staging as deep as
+  the style needs, the plain readback, render diagnosis, the prompt budget it hands
+  over, and why a chosen look outranks your docs on everything but technical limits,
+  content bans and brand identity.
 - [**`mw-image-prompt`**](plugins/mw-image/README.md#mw-image-prompt) — how it plans with you from a rough
   idea, the models it writes for, and why it brings no style of its own.
 - [**`mw-image-gen`**](plugins/mw-image/README.md#mw-image-gen) — the cost gate, the JSON sidecar written

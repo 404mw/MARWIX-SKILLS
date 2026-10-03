@@ -25,7 +25,7 @@ direction. Which model to use, its limits and its cost: [roster.md](roster.md).
 
 | Family | Models | What defines it |
 |---|---|---|
-| **Diffusion / flux-class** | FLUX.2, FLUX.1, Qwen Image | phrase weighting works; a negative-prompt field where the model exposes one (Qwen does; several FLUX endpoints do not — check) |
+| **Diffusion / flux-class** | FLUX.2, FLUX.1, Qwen Image | word order is the weight — FLUX.2 ignores `(word:1.5)` weighting, which works only on SD-family checkpoints; a negative-prompt field where the model exposes one (Qwen does; several FLUX endpoints do not — check) |
 | **Reasoning** | Nano Banana 2, Nano Banana Pro | plans the composition before rendering; full sentences; no negative channel |
 | **GPT-Image** | GPT-Image-2.5 Flare, Sunburst | format-agnostic; roles assignable to references; no negative field, but stated exclusions are sanctioned |
 | **Midjourney** | V8.2, V7, Niji | natural-language description plus a parameter string; a real `--no` channel; its own reference syntax |
@@ -36,12 +36,15 @@ direction. Which model to use, its limits and its cost: [roster.md](roster.md).
 
 | | Diffusion / flux-class | Nano Banana 2 / Pro | GPT-Image-2.5 | Midjourney V8.2 |
 |---|---|---|---|---|
-| **Format** | keyword-and-phrase weighting still works | **full sentences; keyword soup degrades results** | **format-agnostic** — paragraphs, labeled sections, tags, JSON-like structures. For complex briefs OpenAI recommends labeled sections: *scene, subject, details, constraints* | descriptive sentences, subject first; **~50–150 tokens** beats 300+; parameters last |
+| **Format** | short descriptive phrases, most important first; word order is the weight (BFL: 30–80 words is ideal for FLUX.2). `(word:1.5)` syntax is for SD-family checkpoints only | **full sentences; keyword soup degrades results** | **format-agnostic** — paragraphs, labeled sections, tags, JSON-like structures. For complex briefs OpenAI recommends labeled sections: *scene, subject, details, constraints* | descriptive sentences, subject first; **~50–150 tokens** beats 300+; parameters last |
 | **Exclusions** | the negative field, where there is one — state the negation | positive restatement only | direct exclusions supported (*"state exclusions such as unwanted text"*), but positive restatement works better for invented objects | `--no a, b` — bare nouns, no "no" inside the prompt text |
 | **Reference roles** | style/structure conditioning | identity anchors; name each reference | roles beyond identity: *"identify each input by number and purpose: subject, style, clothing, or background"*, then say how they combine | `--sref` = style only; image URLs at the start = content, weighted by `--iw`; the Edit model = up to four subject references |
 | **Lighting** | responds to adjectives and film-stock shorthand | responds to described intent | **mood words alone are unreliable** — OpenAI: for wide, cinematic, low-light, rainy or neon scenes, *"specify scale, atmosphere, and color instead of relying on mood words alone"* | responds to adjectives strongly — pair them with a measurement when the look must hold |
-| **Camera** | lens/aperture shorthand reads as style | composition planned before render | camera specs are *"cues for appearance, not a guarantee of exact physical simulation"* — state the resulting framing too | lens shorthand reads as style; state framing in words |
+| **Camera** | lens/aperture shorthand reads as style | composition planned before render; camera and film names work as shorthand (Google's guide recommends them) — add the attributes too, so the look survives a model switch | camera specs are *"cues for appearance, not a guarantee of exact physical simulation"* — state the resulting framing too | lens shorthand reads as style; state framing in words |
 | **Photorealism** | implied by style tokens | implied by description | **ask for it explicitly** — *"request 'photorealistic' or 'real photograph' when that is the goal"* | `--raw` plus a photograph described with camera and lens |
+| **Staging budget** (brief.md) | FLUX: ≤ 5 physics clauses, ≤ ~80 words, front-loaded; Qwen: ≤ 8, ≤ ~150 | ≤ 8 clauses, ≤ ~150 words; labeled sections at L3 | ≤ 8 clauses, ≤ ~150 words; labeled sections at L3 | 3–4 clauses, ≤ ~50 words |
+
+Ideogram and Recraft take Midjourney's staging cap; Seedream takes Nano Banana's.
 
 ## Ordering
 
@@ -50,7 +53,13 @@ run front-loaded in one flowing block:
 
 > style/medium → subject (+ expression) → the one action → setting → composition
 > (camera height and angle, subject distance or lens feel, framing, focal point,
-> reserved negative space) → exact text in quotes → constraints → ratio and resolution
+> reserved negative space) → scale and contact → light (sources, side, height,
+> shadows) → emphasis (what is brightest and sharpest) → exact text in quotes →
+> constraints → ratio and resolution
+
+Scale and contact, light and emphasis come from the direction's staging when there is
+one, cut to the family's staging budget (brief.md; the source is `mw-image-direction`
+staging.md, "Prompt budget"). Without staging they are still stated, briefly.
 
 Midjourney then appends its parameter string. GPT-Image-2.5 takes the same pieces but
 does not need that order: for anything complex, labeled sections — **scene, subject,
@@ -62,10 +71,10 @@ brief's decision set, unchanged; only the packaging moves.
 **The failure this section exists to prevent.** A night scene tuned on Nano Banana 2 —
 dark, cold, warm light contained to one shelter — was carried word-for-word to
 GPT-Image-2.5 and came back nearly gold: every source blown out, the cold gone, the
-whole frame warm. Both Flare and Sunburst did it, so it is a family trait, not a
-variant's quirk. The words describing light had not changed; only the family had.
-Recovering it took three passes in opposite directions, the first overshooting into a
-frame too dark to read a face in.
+whole frame warm. Both Flare and Sunburst did it, so it looks like a family trait
+rather than a variant's quirk (observed, small sample, 2026). The words describing
+light had not changed; only the family had. Recovering it took three passes in
+opposite directions, the first overshooting into a frame too dark to read a face in.
 
 What finally transferred was not an adjective but a measurement: *"the exposure is set
 a little above the night sky, so about half the picture sits in soft shadow"*, with the
@@ -80,8 +89,8 @@ cost of switching if it was not.
 - **`halation`, `glowing` and `neon` bring bloom** on every family; on a brief that
   wants restraint they undo it. "A clean bright line with a defined edge" holds.
 - **In-scene content escapes its frame.** Art on a screen, poster or sign inside the
-  scene spills past its edges and floats on whatever is beside it — observed across
-  three passes and two providers. Name the surface and say the content stops at its
+  scene spills past its edges and floats on whatever is beside it (observed, small
+  sample, 2026: three passes, two providers). Name the surface and say the content stops at its
   border.
 - **Quality padding is noise everywhere.** "8k, masterpiece, trending" degrades
   reasoning models and Midjourney alike.
@@ -108,7 +117,7 @@ and getting it backwards summons the thing you excluded.**
 for text. For *objects the model invented on its own*, positive restatement is what
 removes them: a real sportswear logo kept appearing on shoes nobody had described, and
 "plain unbranded white sneakers" cleared it where naming the brand to exclude it would
-have put the brand back in context. Default to the positive state; reach for a direct
+have put the brand back in context (observed, small sample, 2026). Default to the positive state; reach for a direct
 exclusion only when no positive phrasing exists, and keep it short and last.
 
 For a model with no negative channel, write the world you want rather than the one you
@@ -208,8 +217,9 @@ Facts as of V8.2, the default since 2026-07-24 (V8.0 retired the same day).
   | `--hd` | off | native 2048px; inpaint or outpaint on an HD image drops it to SD |
   | `--seed` | — | near-identical on V8, not exact |
   | `--v` | 8.2 | pin it, so a default change cannot change a series |
+  | `--tile` | off | seamless repeating patterns; works on V8.1 and V8.2 (and V7), not with the Edit model |
 
-  `--q` and `--tile` are not supported on V8.2; `--tile` still works on V7.
+  `--q` is not supported on V8.2.
 - **References.** Image URLs at the start of the prompt are content references,
   weighted by `--iw`. `--sref` carries style only. Since 2026-08-27 the **Edit model**
   takes up to four references and written edit instructions, plus inpainting and
@@ -289,6 +299,10 @@ framing passes. Budget them, or do not switch mid-series.
 - [Blake Crosley — Midjourney 8.2 guide](https://blakecrosley.com/guides/midjourney)
   (V8.1/V8.2 dates, Edit model, parameter ranges, read 2026-10-02)
 - [gradually.ai — Midjourney parameters](https://www.gradually.ai/en/midjourney-parameters/)
+- [AlphaSignal — Midjourney V8 seamless tiles, 2026-09-24](https://alphasignal.ai/news/midjourney-s-v8-drops-seamless-tiles-smarter-edits-and-live-style-previews)
+  (`--tile` on V8.1/V8.2)
+- [Black Forest Labs — FLUX.2 prompting guide](https://docs.bfl.ml/guides/prompting_guide_flux2)
+  (word order, prompt length)
 - [fal — Prompting GPT Image 2](https://fal.ai/learn/tools/prompting-gpt-image-2)
 - [fal — FLUX.2 klein user guide](https://fal.ai/learn/devs/flux-2-klein-user-guide)
 - [Segmind — GPT Image 2.5 Flare and Sunburst, tested](https://blog.segmind.com/gpt-image-2-5-api-the-ultimate-guide-to-flare-and-sunburst/)
