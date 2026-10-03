@@ -102,6 +102,41 @@
         "No image has the subject looking into the lens unless that is stated as deliberate",
         "Composition for each image names where the subject sits in the frame"
       ]
+    },
+    {
+      "id": 8,
+      "name": "staging-physics-sheet",
+      "prompt": "Analog film, warm consumer color, shot A (candid mid-action) is locked. It's a 1600x900 hero for our bakery site, headline top-right. Now plan the actual scene so it doesn't look fake — people should notice the bread first.",
+      "files": [],
+      "expected_output": "A scene sheet for shot A: every object with a role and a real size, the camera placed physically with the frame shares that follow, light reasoned into shadow direction and length, contact and materials, and a ranked emphasis plan in which the bread wins.",
+      "expectations": [
+        "Every object in frame is listed, including the surface it stands on and the background surface",
+        "Exactly one hero is named, and it is the bread",
+        "Each object has a real-world size (cm or m)",
+        "Camera height, distance to the hero and lens feel are stated, and the hero's frame share is consistent with its size and that distance",
+        "Each light source is given a direction and an elevation or height, and the shadow direction (and length or edge hardness) follows from it",
+        "Contact with the supporting surface is stated (a contact shadow or what the object rests on)",
+        "Which objects are sharp and which are soft is stated, consistent with the stated distances",
+        "Emphasis is given as an order (first, second, third read) with a specific detail on the hero, and at least one competitor (a face, a window, a bright surface) is named with how it is held down",
+        "The headline zone top-right is filled by a named physical surface kept low in contrast",
+        "Nothing is described 'in the style of' a named artist or photographer"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "fake-looking-goes-to-staging",
+      "prompt": "My generated product shots of our perfume bottle look fake. The bottle kind of floats, the reflections look weird, and the background steals attention. The look itself is fine.",
+      "files": [],
+      "expected_output": "Treats staging, not style, as the problem: reasons out support and contact, glass physics and reflections, light geometry and emphasis, and asks only for what it cannot know, such as the bottle's real size.",
+      "expectations": [
+        "It does not shortlist new directions or run the style interview",
+        "It names the missing contact (a contact shadow or the surface the bottle rests on) as the cause of floating",
+        "It reasons about glass physically: refraction of what is behind the bottle, and highlights or reflections placed on the side of the stated light source",
+        "It states the light sources with their directions instead of a mood word",
+        "It gives an emphasis plan in which the bottle or a named detail of it wins, and says how the background is held down (focus, value, saturation or distance)",
+        "It asks for the bottle's real dimensions or states an assumed size",
+        "Physics is written for the prompt as visible results (relations, frame shares, shadow directions), not only as centimeters"
+      ]
     }
   ]
 }

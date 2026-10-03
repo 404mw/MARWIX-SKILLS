@@ -123,7 +123,9 @@ Depth gives an image room and makes production splits possible.
 - **Separation.** Keep a gap of value or color between planes: lighter background behind
   a dark subject, fog or shadow between planes. Models merge planes that are close in
   tone.
-- **Scale cues.** A person, door or tree of known size makes the space readable.
+- **Scale cues.** A person, door or tree of known size makes the space readable. Real
+  sizes, how far each plane sits from the camera and what that does to its size and
+  sharpness: [staging.md](staging.md).
 - **Atmospheric depth.** Farther planes lighter, cooler and lower contrast — unless the
   direction is flat (graphic, Swiss, pixel), where depth comes from overlap only.
 - **For parallax and cutouts.** The direction decides what sits in each plane; the

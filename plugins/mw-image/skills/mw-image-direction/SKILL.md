@@ -1,6 +1,6 @@
 ---
 name: mw-image-direction
-description: Decide how an image or a series should look — the art direction — with the user: style, palette, light, texture, camera angle, pose, framing, grid, subject placement and layers. Use when the user has no idea what an image should look like, asks for a style, a look, a vibe, a mood or art direction, names one ("make it Y2K", "something cyberpunk", "editorial"), wants to pick a look for a brand or a series, or says every image comes out the same — same pose, same angle, same centered subject. It interviews in plain words, shortlists three contrasting directions from a library of 46 directions and their variants, offers two or three shot options instead of one default, and reads the locked look back so a prompt can be written from it. Decides the look; does not write the final prompt or generate. Not for logos, UI layouts, SVG or CSS.
+description: Decide how an image or a series should look — the art direction — with the user: style, palette, light, camera angle, pose, framing, placement, layers, and the scene's physical staging: each object's real size and place, what holds it up, where light and shadows fall, what the image emphasizes. Use when the user has no idea what an image should look like, asks for a style, a look, a vibe, a mood or art direction, names one ("make it Y2K", "editorial"), wants a look for a brand or a series, says every image comes out the same — same pose, angle, centered subject — or that images look fake: floating objects, wrong scale, clashing shadows, nothing standing out. It interviews in plain words, shortlists three contrasting directions from a library of 46, offers two or three shots, stages the chosen one as a scene sheet with sizes, light physics and an emphasis order, and reads the look back for prompting. Decides the look; does not write the final prompt or generate. Not for logos, UI layouts, SVG or CSS.
 argument-hint: "[what the image is for, or the look you have in mind]"
 ---
 
@@ -10,7 +10,9 @@ teal-and-orange grade, a glossy surface, a purple-blue gradient. Nobody chose an
 it. This skill makes those choices with the user, from a library of named directions
 and a menu of shots, and writes them down precisely enough to prompt from.
 
-It decides the **look** and the **shot**. Turning that into a prompt for a specific
+It decides the **look**, the **shot**, and the **staging** — what physically stands in
+front of the camera, at what size, lit how, and which part of it the viewer reads
+first. Turning that into a prompt for a specific
 model is the job of `mw-image-prompt`; rendering it is the job of `mw-image-gen`.
 Either may be installed or not. This skill works alone.
 
@@ -43,7 +45,7 @@ so in one line ("your docs describe a dark editorial look — this direction rep
 for the look; I kept their sizes and layer names") and move on. Do not ask permission
 each time and do not blend the old look in.
 
-A file this skill saved earlier (`docs/art-direction.md`, see step 6) is not "other
+A file this skill saved earlier (`docs/art-direction.md`, see step 7) is not "other
 docs": it *is* the direction. Reuse it unless the user asks for a new one.
 
 ## Procedure
@@ -63,6 +65,8 @@ Then pick the entry point:
 | names a direction ("Y2K", "editorial", "clay") | step 3 with that direction; show its variants instead of a shortlist |
 | shows an image they like | name the *properties* that make it work (palette? light? medium? framing?), map them to the nearest directions, then step 3. Describe it in words; never clone it |
 | complains every image looks the same | skip to step 4: the shot is the problem, not the style |
+| complains images look fake, flat, pasted together, or that nothing stands out | skip to step 5: the staging is the problem — scale, contact, light and emphasis |
+| has the look and the shot, and wants the scene planned precisely | step 5 |
 
 ### 2. Interview — one batch, plain words
 
@@ -121,7 +125,42 @@ For a series, assign a recipe per image instead of one for all, so the set does 
 repeat itself. Precise terms for the readback come from
 [references/vocabulary.md](references/vocabulary.md).
 
-### 5. Read back the locked look
+### 5. Stage the scene — physics and emphasis
+
+Load [references/staging.md](references/staging.md). For the chosen shot (each shot, in
+a series), reason the scene out physically before anything is described, and fill a
+**scene sheet**:
+
+1. **Inventory and roles.** Every object in frame — floor and wall included — as hero
+   (exactly one), support (one to three), context (odd numbers) or set. What is not
+   listed, the model invents.
+2. **Real sizes.** Each object's real dimensions, from the user, the docs or the size
+   table; the scale relations between them.
+3. **The camera in the room.** Height, distance to the hero, tilt, lens feel → the
+   frame's width at the hero, each object's frame share (size ÷ frame width), the
+   horizon height, and the depth of field in centimeters, so it is known which objects
+   are sharp.
+4. **Gravity and contact.** What each object rests on or is held by; contact shadows;
+   liquids, cloth, hair, steam and wind behaving as they must.
+5. **Light as physics.** Each source's direction, elevation, size and temperature →
+   shadow direction and length, hard or soft edges, falloff, bounce color, catchlights,
+   reflections.
+6. **Materials.** How each surface answers the light: matte, satin, gloss, metal,
+   glass, translucent.
+7. **The instant.** One moment, one shutter: what is frozen, what blurs.
+8. **Emphasis.** First, second and third read; the money detail on the hero; which
+   attention pulls the hero wins (brightest, sharpest, contrast, saturation, gaze,
+   lines); how every competitor — a face, a window, a second color — is held down.
+
+Then run the physics check at the end of staging.md and fix the sheet, not the prose.
+Stylized directions keep the laws staging.md lists for their family and bend the rest
+on purpose; a surreal image breaks exactly one law and keeps all others strict.
+
+Show the sheet in the readback; ask only about what the user alone knows (a product's
+real dimensions, what the image must make the viewer notice first). Do not ask the user
+to check the arithmetic.
+
+### 6. Read back the locked look
 
 One block the user can correct line by line. Every value concrete and measurable; no
 "moody", no "well lit":
@@ -130,12 +169,23 @@ One block the user can correct line by line. Every value concrete and measurable
 Direction     Analog film · warm consumer color
 Feels         honest · warm · unhurried
 Palette       warm creams, faded teal, rust; skin stays natural; no pure black
-Light         one low sun from camera-left, 3500K; shadows soft, about a third of the frame
+Light         one low sun from camera-left, ~15° up, 3500K; a hard-edged beam, the rest in
+              soft warm bounce; about a third of the frame in shadow
 Texture       fine visible grain; slight halation on highlights only; soft contrast
 Shots         A) candid mid-action, waist-up, 35mm feel, subject in the left third
               B) wide environmental, figure a fifth of frame height, horizon on the low third
               C) tight detail on hands and object, overhead
 Composition   rule-of-thirds; lead room in the direction of gaze; headline zone top-right
+Staging (A)   baker dusting flour over a boule on an oak counter, 7am
+              camera 1.35 m high, 1.1 m from the loaf, down ~10°; frame ≈ 1.13 m wide there;
+                sharp depth ≈ 17 cm
+              hero     boule Ø 22 cm on a floured board, left third · a fifth of frame width · sharp
+              support  hands 20–25 cm above it, sharp · baker leaning 35 cm behind, soft, eyes down
+              context  steel scraper, linen cloth, flour jar — left edge, jar half cropped
+              light    one sun, camera-left, ~15° up, hard → shadows to camera-right, ~4× height;
+                       wall out of the beam, ~2 stops darker; oak bounces warm under the hands
+              physics  contact shadow + flour ring at the base; flour glows only inside the beam
+              emphasis 1) sunlit scored crust (money detail) 2) hands 3) face, held down by focus
 Layers        (layered or parallax assets only) what sits in the foreground, midground, background
 Type          (promotional only) a warm grotesque, lowercase, small
 Kept from docs  1600×900 hero; text sits over the right 40%; no competitor marks
@@ -153,14 +203,20 @@ already said which model they will use, add that family's notes from the directi
 entry (a Midjourney parameter string, a GPT-Image photoreal clause) and stamp the block
 with the family. It is not re-tuned for a family it was not written for.
 
+**The staging block** is per image, never pasted across a series: in a set, each image
+has its own, while the world scale, light rig and materials repeat. Keep its numbers —
+they are what a failed render is checked against.
+
 Confirm, adjust, or swap a line. One more batch at most.
 
-### 6. Hand off, and offer to save
+### 7. Hand off, and offer to save
 
-- **`mw-image-prompt` installed:** continue straight into it. The readback is its style
-  and camera source, tagged `[direction]`; the brief does not re-ask what the direction
-  settled.
-- **Not installed:** the style block plus a shot option is already a usable prompt
+- **`mw-image-prompt` installed:** continue straight into it. The readback is its style,
+  camera and staging source, tagged `[direction]`: subject, composition, lighting
+  geometry and emphasis come from the staging block, and the brief does not re-ask what
+  the direction settled.
+- **Not installed:** the style block plus a shot and its staging, written as visible
+  results (staging.md, "Writing physics into a prompt"), is already a usable prompt
   skeleton. Say so, and that `mw-image-prompt` can encode it per model.
 
 Where files can be written, offer once: *"Save this look to `docs/art-direction.md` so
@@ -169,7 +225,7 @@ new conversation starts empty, and the style block must survive word for word. O
 no, nothing is written. In chat-only apps, suggest the user keep the readback with
 their project notes.
 
-The saved file is the readback block plus the date and the model family the style block
+The saved file is the readback block, staging blocks included, plus the date and the model family the style block
 was tuned on. If the file already exists, show what changes and ask before replacing it.
 
 ## Library at a glance
@@ -194,3 +250,9 @@ direction steers away from. Entries live in:
 
 Every entry uses the same fields: feels, use for, not for, palette, light, medium and
 texture, shots, composition, type, variants, engine notes, slop risks.
+
+Beside the library: [shots.md](references/shots.md) (20 shot recipes),
+[composition.md](references/composition.md) (grids, placement, layers),
+[staging.md](references/staging.md) (real sizes, camera geometry, gravity, light
+physics, materials, motion, emphasis, the physics check) and
+[vocabulary.md](references/vocabulary.md).

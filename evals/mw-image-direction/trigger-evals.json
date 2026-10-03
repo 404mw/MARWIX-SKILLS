@@ -28,6 +28,14 @@
     "should_trigger": true
   },
   {
+    "query": "my product renders look fake — the bottle floats and the shadows go in different directions. how should the scene be set up?",
+    "should_trigger": true
+  },
+  {
+    "query": "in every image the mug comes out as big as the laptop and nothing stands out. plan the scene properly with real sizes",
+    "should_trigger": true
+  },
+  {
     "query": "write me a nano banana prompt for a red mug on a white table, 1:1",
     "should_trigger": false
   },
@@ -53,6 +61,10 @@
   },
   {
     "query": "the face in this gemini image looks wrong, fix the prompt",
+    "should_trigger": false
+  },
+  {
+    "query": "what's the depth of field of my real 85mm lens at f/1.8 at 2 meters?",
     "should_trigger": false
   }
 ]

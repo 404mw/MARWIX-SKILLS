@@ -208,3 +208,7 @@ view. Always state the **resulting frame** in words and numbers:
 - Camera-left / camera-right, never a bare "left".
 
 One shot per prompt. A prompt that lists two framings gets a compromise between them.
+
+Once a shot is picked, [staging.md](staging.md) puts the camera in the room in numbers
+(height, distance, tilt, the frame's real width at the subject, depth of field) and
+fills the space it looks into.

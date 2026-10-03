@@ -57,7 +57,11 @@ raised as a question, never silently resolved.
 
 **A chosen direction outranks the docs on look.** When the user picked a direction with
 `mw-image-direction` — in this conversation, or saved to `docs/art-direction.md` — it
-rules style, palette, lighting, texture, camera, pose and composition. The docs then
+rules style, palette, lighting, texture, camera, pose and composition — and, when it
+staged the shot, the scene itself: objects and their real sizes, light geometry,
+contact, materials and the emphasis order. Write that staging into the prompt as
+visible results (relations, frame shares, shadow directions, what is brightest and
+sharpest), never as bare centimeters. The docs then
 keep only hard technical limits (sizes, formats, layer and naming scheme, text-safe
 zones) and content bans.
 

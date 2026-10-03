@@ -16,7 +16,7 @@ web, desktop and mobile apps. Free, MIT, no paid version held back.
 
 | Skill | Plugin | What it's for |
 |---|---|---|
-| [`mw-image-direction`](plugins/mw-image/README.md#mw-image-direction) | `mw-image` | **Gives your agent taste, on request.** When you don't know what an image should look like, it asks a few plain questions and shortlists three contrasting directions from a library of 46 — photography, flat graphic, 3D, illustration, mixed media, eras — then two or three shots instead of the same centered eye-level one. Decides the look; never generates. |
+| [`mw-image-direction`](plugins/mw-image/README.md#mw-image-direction) | `mw-image` | **Gives your agent taste, on request.** When you don't know what an image should look like, it asks a few plain questions and shortlists three contrasting directions from a library of 46 — photography, flat graphic, 3D, illustration, mixed media, eras — then two or three shots instead of the same centered eye-level one, and stages each shot physically — real object sizes, camera geometry, light and shadows, and what the viewer must notice first. Decides the look; never generates. |
 | [`mw-image-prompt`](plugins/mw-image/README.md#mw-image-prompt) | `mw-image` | **Plans the image with you.** Reasons about a rough idea like "something for the launch post", asks one batch of questions with its own suggestions, locks a brief — subject, style, camera, palette, banned elements — then writes the prompt for the model you use: ChatGPT, Gemini, Midjourney, FLUX and more. Writes prompts; never generates. |
 | [`mw-image-gen`](plugins/mw-image/README.md#mw-image-gen) | `mw-image` | **Gives your agent the ability to generate images.** Runs a prompt against fal.ai or OpenAI, saves each result with the settings that made it, converts approved masters to web formats. Decides nothing creative. |
 | [`mw-query-plan`](plugins/mw-query/README.md#mw-query-plan) | `mw-query` | **Makes your agent prove a query is slow before telling you how to fix it.** Diagnoses Postgres queries from the actual EXPLAIN plan — indexes, N+1, joins, keyset pagination — and marks the finding *provisional* when it hasn't got one. Postgres only; adapters for Prisma and Medusa. |
@@ -166,7 +166,8 @@ that one is installed alone. Straight to a section:
 ### `mw-image` — [full write-up](plugins/mw-image/README.md)
 
 - [**`mw-image-direction`**](plugins/mw-image/README.md#mw-image-direction) — the interview, the 46
-  directions, the shot options that replace the one default camera, and why a chosen
+  directions, the shot options that replace the one default camera, the physical staging
+  of each shot — sizes, light, emphasis — and why a chosen
   look outranks your docs on everything but technical limits.
 - [**`mw-image-prompt`**](plugins/mw-image/README.md#mw-image-prompt) — how it plans with you from a rough
   idea, the models it writes for, and why it brings no style of its own.

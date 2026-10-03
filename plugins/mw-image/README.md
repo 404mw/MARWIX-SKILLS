@@ -49,7 +49,19 @@ options that differ in camera height, distance, pose and placement, instead of o
 default. It places the subject on a grid, keeps it aligned with any text or UI that
 will sit on the image, and splits the scene into layers when the asset needs them.
 
-It reads the look back as one block — palette, light, texture, shots, composition, and a
+Then it stages the shot like a set designer and a gaffer would, because image models
+compose by pattern, not physics — that is why their cups float, their phones are as
+long as a forearm and their shadows point two ways under one sun. It lists every object
+with a role (exactly one hero) and its real size; puts the camera in the room in
+numbers, so each object's share of the frame, the horizon and the depth of field follow
+from the geometry; checks what holds each thing up, where its contact shadow falls,
+how liquids, cloth, steam and wind behave; derives shadow direction and length from the
+light's position, falloff from distance, bounce color and reflections from the
+materials; and decides the order the viewer reads the image in — the one detail that
+must win, and how every competitor (a face, a window, a bright wall) is held down.
+
+It reads the look back as one block — palette, light, texture, shots, composition, the
+staging of each shot, and a
 style paragraph to paste into every prompt of a series — and offers to save it to
 `docs/art-direction.md` so the next session reuses it. A chosen direction rules the look;
 your project docs keep only the technical limits (sizes, formats, layer names, text-safe
