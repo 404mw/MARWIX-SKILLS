@@ -36,6 +36,14 @@
     "should_trigger": true
   },
   {
+    "query": "flat vector illustration for our SaaS hero, plan the look",
+    "should_trigger": true
+  },
+  {
+    "query": "5 Instagram posts for our perfume, make them feel premium",
+    "should_trigger": true
+  },
+  {
     "query": "write me a nano banana prompt for a red mug on a white table, 1:1",
     "should_trigger": false
   },
@@ -65,6 +73,34 @@
   },
   {
     "query": "what's the depth of field of my real 85mm lens at f/1.8 at 2 meters?",
+    "should_trigger": false
+  },
+  {
+    "query": "my Blender render looks fake, objects float — which settings should I change?",
+    "should_trigger": false
+  },
+  {
+    "query": "plan the lighting for tomorrow's real product shoot",
+    "should_trigger": false
+  },
+  {
+    "query": "shot list for my short film",
+    "should_trigger": false
+  },
+  {
+    "query": "what style should my living room be? we're staging the house to sell it",
+    "should_trigger": false
+  },
+  {
+    "query": "build a brand style guide with fonts and colors",
+    "should_trigger": false
+  },
+  {
+    "query": "write a Y2K Midjourney prompt for a sneaker",
+    "should_trigger": false
+  },
+  {
+    "query": "this Gemini render's shadows go two ways, fix the prompt",
     "should_trigger": false
   }
 ]

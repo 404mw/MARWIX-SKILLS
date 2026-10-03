@@ -5,8 +5,9 @@ nobody's taste.**
 
 Claude can't make images, and no agent arrives with taste. These three skills add
 both — one decides the look with you, one plans the image and writes the prompt, one
-generates it. Each works alone; together they are the pipeline. Used on my own work for
-months before release.
+generates it. Each works alone; together they are the pipeline. `mw-image-prompt` and
+`mw-image-gen` were used on my own work for months before release; `mw-image-direction`
+is new.
 
 Install, requirements, the key warning and the Claude.ai bundles:
 [repository README](../../README.md).
@@ -35,41 +36,57 @@ Left alone, every image model makes the same choices: the subject centered at ey
 level, facing the lens, softly lit, graded teal and orange or washed in a purple-blue
 gradient. Nobody picked any of it. This skill picks on purpose.
 
-If you have no idea what the image should look like, it asks a few plain questions — who
-sees it, three words for the feeling, what it must never look like — and shortlists
-three contrasting directions from a library of 46, each with its variants: photography
-from cinematic and documentary to direct flash and dark luxury; flat graphic styles
-from Swiss to pixel art; glass morphism and aurora; clay, soft 3D and isometric;
-watercolor, anime and technical drawing; collage, graffiti and maximalism; and eras
-from 50s atomic to Y2K and cyberpunk. Name a style and it skips straight to its
-variants.
+If you have no idea what the image should look like, it asks one batch of plain
+questions — what the images should show, which images you need and where each goes,
+who sees them, three words for the feeling, what they must never look like, which
+generator you use (skippable) and whether you have real photos — and shortlists three
+contrasting directions from a library of 48, each with its variants: photography
+from cinematic and documentary to direct flash, dark luxury and phone candid; flat
+graphic styles from Swiss to pixel art; product UI showcases; glass morphism and
+aurora; clay, soft 3D and isometric; watercolor, anime and technical drawing; collage,
+graffiti and maximalism; and eras from 50s atomic to Y2K and cyberpunk. Name a style
+and it skips straight to its variants. Say "you choose" and it skips the questions:
+it picks the direction and the shot itself, marks each pick as proposed, and shows you
+the result.
 
-Then it decides the shot, which is where most generated images go stale: two or three
-options that differ in camera height, distance, pose and placement, instead of one
-default. It places the subject on a grid, keeps it aligned with any text or UI that
-will sit on the image, and splits the scene into layers when the asset needs them.
+Each shortlisted direction carries its recommended shot, so one pick settles both. The
+shot is where most generated images go stale, so it is never the one default: options
+differ in camera height, distance, pose and placement. It places the subject on a grid,
+keeps it aligned with any text or UI that will sit on the image, and splits the scene
+into layers when the asset needs them.
 
 Then it stages the shot like a set designer and a gaffer would, because image models
 compose by pattern, not physics — that is why their cups float, their phones are as
-long as a forearm and their shadows point two ways under one sun. It lists every object
-with a role (exactly one hero) and its real size; puts the camera in the room in
-numbers, so each object's share of the frame, the horizon and the depth of field follow
-from the geometry; checks what holds each thing up, where its contact shadow falls,
-how liquids, cloth, steam and wind behave; derives shadow direction and length from the
-light's position, falloff from distance, bounce color and reflections from the
-materials; and decides the order the viewer reads the image in — the one detail that
-must win, and how every competitor (a face, a window, a bright wall) is held down.
+long as a forearm and their shadows point two ways under one sun. How deep it goes
+depends on the style. A photographic, 3D or miniature scene gets the full treatment:
+every object with a role and a real size, the camera in the room so each object's share
+of the frame follows from the geometry, what holds each thing up, where light and
+shadows fall, and what the viewer reads first. A painted or drawn scene keeps sizes,
+contact and one light. A flat vector hero gets only frame shares, emphasis and a quiet
+zone — a flat color field is a fine place for a headline — and no invented camera.
 
-It reads the look back as one block — palette, light, texture, shots, composition, the
-staging of each shot, and a
-style paragraph to paste into every prompt of a series — and offers to save it to
-`docs/art-direction.md` so the next session reuses it. A chosen direction rules the look;
-your project docs keep only the technical limits (sizes, formats, layer names, text-safe
-zones) and content bans. Directions are described by their attributes, never as
-"in the style of" a named artist.
+You see a **plain readback**: about eight lines per image in everyday words — what it
+looks like, what is in it, where the camera is, where the light comes from, what you see
+first, what is kept quiet and what it assumed. The numbers stay on a **scene sheet**
+that goes to the prompt and to `docs/art-direction.md`; you see it only if you ask. A
+series gets one shared sheet and one line per image. It offers once to save the look so
+the next session reuses it.
+
+When a render already looks fake, it asks for the image and the prompt that made it,
+sorts the problem — physics, surface, grade, composition or artifacts — and gives either
+one edit or a re-staged shot, never the whole interview again.
+
+A chosen direction rules the look, but your project docs keep their technical limits
+(sizes, formats, layer names, text-safe zones), content bans and brand identity: your
+brand colors take a role in the palette rather than being replaced. A real product is
+placed from your photo, never redrawn. For a real business's own team, shop or
+products, it recommends real photos and turns the direction into the shot list.
+Directions are described by their attributes, never as "in the style of" a named artist.
 
 It decides the look. It doesn't write the final prompt or generate; with
-`mw-image-prompt` installed it hands straight over.
+`mw-image-prompt` installed it hands straight over, and the prompt takes the settled
+lines as given and keeps the staging within each model's budget — three or four
+physics clauses for Midjourney, more for models that read long prompts.
 
 ## `mw-image-prompt`
 
@@ -91,12 +108,15 @@ same and the encoding changes. A model it doesn't know gets safe defaults, flagg
 calibration pass.
 
 It brings **no style of its own**, deliberately. If you chose a direction with
-`mw-image-direction`, it follows that; if your project documents a brand kit or art
+`mw-image-direction`, it follows that and doesn't ask again what the direction already
+settled; if your project documents a brand kit or art
 direction, it reads that and follows it; if neither, you are the source — it suggests
 `mw-image-direction` and asks before switching, or offers directions rather than
 improvising a house look. It never falls back on one fixed camera: without a chosen
 shot it proposes two or three framings. When a result comes back, it
-diagnoses the result first, then writes one edit with the full preserve list.
+diagnoses the result first, then writes one edit with the full preserve list — or, when
+the scale or the camera is wrong, regenerates from re-staged lines instead of piling up
+edits.
 
 It plans and writes prompts. It never generates, and it works the same in Claude Code
 and on Claude's web, desktop and mobile apps.
