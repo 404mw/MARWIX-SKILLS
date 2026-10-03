@@ -10,6 +10,7 @@ rules when there are some.
 ## Contents
 
 - The decision set
+- Taking staging from a direction — the prompt budget
 - Constraints — the exclusion list
 - The batch — understanding, suggestions, questions
 - Vague-ask playbook
@@ -27,21 +28,52 @@ are nobody's taste.
 
 | Decision | What it locks | If nobody said |
 |---|---|---|
-| Purpose & placement | the image's one job, where it lives, who sees it at what size | infer from conversation context; this row drives every other row |
+| Purpose & placement | the image's one job, where it lives, who sees it at what size | the direction's image list if any; else infer from conversation context; this row drives every other row |
 | Mode | production vs promotional (SKILL.md table) | ask only if genuinely both |
-| Destiny | whole-frame / cutout / layered / editor-composite | whole-frame — but if any signal points at cutout or text overlay, ask: this row flips the background and atmosphere rules |
-| Subject + the one action | the focal point | a staging block from `mw-image-direction` if any (hero, supports, sizes, emphasis order); else the concrete noun in the ask; one subject, never a collage. If the ask names a message instead of a thing → concept.md |
+| Destiny | whole-frame / cutout / layered / editor-composite | the direction's destiny and text zone if any; else whole-frame — but if any signal points at cutout or text overlay, ask: this row flips the background and atmosphere rules |
+| Subject + the one action | the focal point | a staging block from `mw-image-direction` if any, taken by the prompt budget below: hero, frame share and placement, what it rests on and its contact, the one scale relation most likely to break — the rest stays on the sheet; else the concrete noun in the ask; one subject, never a collage. If the ask names a message instead of a thing → concept.md |
 | Style source | which direction, doc, kit or user description rules the look | a direction chosen with `mw-image-direction` if any — it outranks documented looks; else documented rules; otherwise ask whether there is a look to match, suggest `mw-image-direction` if installed (switch only on a yes), or offer two or three concrete directions as `[proposed]` options. Never applied without confirmation |
 | Camera | height, angle, distance/lens feel, framing, subject placement | the chosen direction's shot if any; otherwise propose two or three contrasting framings that differ in height, distance or placement, and let the user pick. No silent default — an unchosen eye-level, centered, straight-on shot is the reason generated images all look alike |
-| Lighting | source count, direction, temperature | the staging block's light if any (sources, elevation, shadow direction and length); else one motivated key with a stated direction; never "well lit" |
+| Lighting | source count, direction, temperature | the staging block's light if any — count, side, height, shadow direction — within the prompt budget; the style block adds quality only (hard or soft, color under a stated white balance, contrast, shadow share); else one motivated key with a stated direction; never "well lit" |
 | Palette & grade | colors allowed, colors banned | the documented art-direction or brand palette if any. Design-system tokens count only for assets shipping inside the interface, and only for graphic/background color — never for skin, faces or photographic material. Otherwise restrained, one accent maximum |
 | In-image text | exact words in quotes, or none | none for production; ≤4 words for promotional |
-| Where it's generated | model and surface — a web app, an API, a tool the user already has | ask what they have access to; recommend from roster.md routing within that. This row decides the prompt's encoding |
+| Where it's generated | model and surface — a web app, an API, a tool the user already has | the direction's generator line if any ("model-neutral" → the safe defaults, engines.md); else ask what they have access to; recommend from roster.md routing within that. This row decides the prompt's encoding |
 | Ratio & size | generation settings | the placement's platform ratio; checked against the model's limits (roster.md resolution gate) |
-| References & roles | what each attached image may control | identity.md for people; a style or logo reference gets exactly one named role |
+| References & roles | what each attached image may control | identity.md for people; a style or logo reference gets exactly one named role; a real product, label, screen or packaging is placed from the user's photo by edit or composite, never redrawn |
 | Lock level | prompt depth: L1 sketch / L2 standard / L3 full lock | L2; L1 for throwaway exploration; L3 for the cases listed under Lock levels |
 | Budget | tiers to draft, iterate and finalize at; whether a final-tier render is wanted | the cost ladder (engines.md); final tier only for small text or a face, and only on the user's yes |
 | Verification | which checklist gates shipping | the mode's checklist, instantiated |
+
+## Taking staging from a direction — the prompt budget
+
+A staged shot holds far more than a model follows: past a few clauses, sizes, counts
+and attribute binding degrade. The budget lives in `mw-image-direction` staging.md,
+"Prompt budget"; it is mirrored here so the encoding respects it. Take staging lines
+in this order, and stop at the family's cap:
+
+1. hero + frame share + placement
+2. what it rests on + contact
+3. light count, side, height, shadow direction
+4. what is brightest and sharpest
+5. the one scale relation most likely to break
+6. what is soft and how soft
+7. the hero's material response
+8. the instant
+
+| Family | Physics clauses | Staging words |
+|---|---|---|
+| Midjourney, Ideogram, Recraft | 3–4 | ≤ ~50 |
+| FLUX-class | ≤ 5, front-loaded | ≤ ~80 |
+| Nano Banana, GPT-Image, Seedream, Qwen | ≤ 8 | ≤ ~150; labeled sections at L3 |
+
+- **Bind each attribute inside the same clause as its object:** "a round loaf on a dark
+  walnut board, a thin dark shadow where it touches", not the board's color three
+  clauses later.
+- **Everything else stays on the sheet**, to check the render against (iterate.md).
+- **A miss is fixed with an edit pass, never by adding clauses.**
+- **The style block carries light quality only.** Side, height and shadow direction
+  come from each image's staging, so a reverse angle or an overhead shot cannot
+  inherit the wrong side.
 
 ## Constraints — the exclusion list
 
@@ -107,19 +139,22 @@ or three concrete options, so the user reacts instead of inventing:
 
 Rules for the batch:
 
-- **A decision the user's words or the docs already answer is settled.** Re-asking it
-  reads as not having done the work.
-- **The decisions that change the whole job always get a question**, even with a strong
-  recommendation: mode, destiny, where it's generated, how a real person's likeness may
-  be used, final-tier spend.
+- **A decision the user's words, the docs or a `[direction]` line already answer is
+  settled.** Re-asking it reads as not having done the work. A `[direction]` line
+  counts as confirmed — destiny, the generator ("model-neutral" if the user didn't
+  know), the image list and the text zone included.
+- **The decisions that change the whole job always get a question** when still open,
+  even with a strong recommendation: mode, destiny, where it's generated, how a real
+  person's likeness may be used, final-tier spend.
 - **Suggestions are concrete.** "Moody" is not an option; "one desk lamp, camera-left,
   the rest of the room in shadow" is.
 - **Batch everything; never drip one question at a time.** A second batch only when the
   answers opened something genuinely new.
 - **Fast lane.** If no work-changing line is `[proposed]`, or the user says go, show the
-  brief and continue to prompts in the same reply. Full delegation ("just make
-  something") still gets its brief shown — the user edits lines instead of being
-  interviewed.
+  brief and continue to prompts in the same reply. After a confirmed direction
+  readback this is the usual case: no batch, straight to prompts. Full delegation
+  ("just make something") still gets its brief shown — the user edits lines instead
+  of being interviewed.
 
 A complete worked batch and the deliverable that follows it: examples.md.
 
@@ -138,6 +173,7 @@ hidden decisions, resolve what you can, and turn the rest into questions with op
 | "I can picture it but can't describe it" | the user has a feeling, not a frame | suggest `mw-image-direction` if installed; otherwise offer three distinct directions — different subject, camera or light — and let them pick or blend |
 | "something like this" + attached image | *which property* they liked | name the property (composition? palette? mood? subject?); borrow that one property — never clone the image, its style wholesale, or anyone's identity |
 | "use my photo" | identity work | identity.md: reference roles, clean-reference builder, likeness question |
+| "our shop / our team / our bread" | a real business shown as real | recommend their own photos — the brief becomes the shot list and light plan; or keep the image generic and illustrative, with no claim (SKILL.md, *Honest evidence*). A real product is placed from their photo, never redrawn |
 | "just make something" | full delegation | resolve every row from docs and defaults; the brief *is* the consultation |
 
 ## Lock levels

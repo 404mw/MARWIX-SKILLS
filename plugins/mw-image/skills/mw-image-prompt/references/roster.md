@@ -40,7 +40,7 @@ Families are defined in [engines.md](engines.md); the family decides the encodin
 |---|---|---|---|---|---|
 | FLUX.2 klein 4B | diffusion | APIs | drafts, gray-box comps, simple graphics | — | ~$0.005/MP |
 | FLUX.1 schnell | diffusion | APIs | throwaway composition drafts | no negative field | ~$0.003/MP |
-| FLUX.2 pro | diffusion | APIs | **default for text-free photoreal / atmospheric production art**; up to 9 references | clamps output near 4.1 MP (observed) | ~$0.03 first MP, then $0.015/MP |
+| FLUX.2 pro | diffusion | APIs | **default for text-free photoreal / atmospheric production art**; up to 9 references | clamps output near 4.1 MP (observed, small sample, 2026) | ~$0.03 first MP, then $0.015/MP |
 | FLUX.2 flex | diffusion | APIs | step and guidance control; the flux line's typography variant; up to 10 references | — | ~$0.05/MP, input and output |
 | Nano Banana 2 (`gemini-3.1-flash-image`) | reasoning | Gemini app, Google AI Studio / Vertex, hosted APIs | composition planning, character consistency, up to 14 references, search-grounded data, localization | ratios `21:9` … `9:16`; 0.5K–4K; 4K may letterbox 16:9 with seam bands ~12% from the edges | ~$0.08 an image at 1K |
 | Nano Banana Pro (`gemini-3-pro-image`) | reasoning | Gemini app, Google AI Studio / Vertex, hosted APIs | top-end final render, native 4K, legible multilingual text | — | ~$0.15 at 1K–2K, $0.30 at 4K |
@@ -73,12 +73,12 @@ it forced.
 |---|---|---|
 | Composition drafts, gray-box comps | **FLUX.2 klein 4B** (schnell if cheaper is fine) | intact fundamentals at the bottom of the price range |
 | Photoreal / atmospheric final layers — the default | **FLUX.2 pro** | production-grade without tuning |
-| Deep low-key / near-black fields (dark fog, void layers) | **Nano Banana 2** | flux-class lifts near-black scenes toward gray even through darkening edits (observed 2026-07-10, 2 assets × 2 attempts); NB2 holds ink-level darkness |
+| Deep low-key / near-black fields (dark fog, void layers) | **Nano Banana 2** | flux-class lifted near-black scenes toward gray even through darkening edits, where NB2 held ink-level darkness (observed, small sample, 2026: 2 assets × 2 attempts) |
 | Complex composition, or a recurring character in-scene | **Nano Banana 2** | plans composition, holds character consistency |
 | Top-end final render (large format, or contains a face) | **Nano Banana Pro** | native 4K, one render only per the cost ladder |
 | Photoreal final where prompt adherence matters more than tuning | **Seedream 5.0 Pro** | rated level with FLUX.2 pro on photorealism; stops at 2048×2048 |
 | A look nobody has pinned down yet; stylized key art | **Midjourney V8.2** | widest aesthetic range; `--sref` locks a found look into a series |
-| Seamless tiling textures | **Midjourney V7** with `--tile` | `--tile` is not supported on V8.2 |
+| Seamless tiling textures | **Midjourney V8.2** with `--tile` | `--tile` works on V8.1 and V8.2; not with the Edit model |
 
 **Promotional imagery:**
 
@@ -130,5 +130,6 @@ fal, a hosted API that lists most of this roster in one place:
 
 - [OpenAI — Image generation guide](https://developers.openai.com/api/docs/guides/image-generation) — GPT-Image-2.5 sizes and tiers, read 2026-10-02
 - [Axios — ChatGPT Images 2.5, 2026-09-08](https://www.axios.com/2026/09/08/exclusive-hands-on-with-chatgpts-new-image-editor) — rollout to every ChatGPT tier
+- [AlphaSignal — Midjourney V8 seamless tiles, 2026-09-24](https://alphasignal.ai/news/midjourney-s-v8-drops-seamless-tiles-smarter-edits-and-live-style-previews) — `--tile` on V8.1/V8.2
 - [Blake Crosley — Midjourney 8.2 guide](https://blakecrosley.com/guides/midjourney) — Midjourney limits and GPU cost, read 2026-10-02
 - [fal — best image-to-image APIs, 2026](https://fal.ai/learn/tools/best-image-to-image-apis-2026) — per-model reference-image ceilings

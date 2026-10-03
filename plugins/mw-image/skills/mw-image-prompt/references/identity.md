@@ -33,6 +33,10 @@ itself. "Use the reference's framing" is how selfie geometry ends up in a final.
   not defaults: on any model, an unnamed reference is an identity reference, and a role
   the prompt does not state is a role the model invents. Per-family mechanics:
   engines.md.
+- **A product beside the person is placed, never redrawn.** A real product, label or
+  screen attached with a portrait gets its own named role — "Image 3, the product:
+  place it as-is; do not redraw or restyle it" — and the prompt matches the camera and
+  light to that photo.
 
 ## The reference you may not use, and the people you may not fake
 
@@ -46,6 +50,11 @@ here more than anywhere. Two ways they get broken by accident:
 - **The likeness question skipped because the user is the subject.** Ask anyway when
   the photo shows anyone else, and when the use is public: a founder's portrait on a
   launch cover is a different permission from a private avatar.
+- **Generated staff passed off as real.** A team page, an about portrait or "our
+  baker" shows real people as the business's own. Recommend photos of the real staff
+  (a chosen direction becomes the shot list and light plan); otherwise the generated
+  person stays generic and illustrative, and nothing presents them as staff (SKILL.md,
+  *Honest evidence*).
 
 ## The clean-reference builder
 

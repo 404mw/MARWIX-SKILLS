@@ -15,6 +15,7 @@ SKILL.md; edits in iterate.md; models and cost in roster.md and engines.md.
 - The scroll-stop doctrine
 - Aspect ratios — generate for the placement
 - Recipes by role
+- Real products
 - The recurring-character pipeline
 - The library and the scoreboard
 - Pre-post verification — the image audit
@@ -75,8 +76,8 @@ platform's own current guidance before locking a master format.
 |---|---|---|
 | X in-feed image | 16:9 or 1:1 | 16:9 fills the timeline card |
 | LinkedIn post image | 1.91:1 or 1:1 | 1:1 takes more vertical feed space — usually wins |
-| IG feed / carousel | 4:5 | Maximum feed real estate; a good reusable master format |
-| Reel / TikTok cover | 9:16 | Keep subject in the center 4:5 — profile grid crops it |
+| IG feed / carousel | 4:5 or 3:4 (1080×1440) | Maximum feed real estate; the profile grid crops every post to 3:4, so keep subject and text inside the center 3:4 |
+| Reel / Story / TikTok cover | 9:16 | Meta: keep text and key elements out of the top 14%, the bottom 35% and 6% each side. TikTok's zones differ — check its current guidance. On the IG profile grid the cover shows as its center 3:4 |
 
 Generate the master at the ratio the brand docs name (or 4:5 if they don't), crop
 outward for others. State the ratio inside the prompt *and* in the tool's settings.
@@ -88,7 +89,15 @@ outward for others. State the ratio inside the prompt *and* in the tool's settin
 Formula: **[brand style block] + one character or prop + one absurd-but-specific
 situation + curiosity gap + ≤4 words of exact quoted text + the brand accent used as
 a signature (sparingly, per the brand docs).** Reserve named negative space for the
-headline and steer the character's gaze at it.
+headline and steer the character's gaze at it. The quiet zone under the headline is
+one value with low detail, dark or light enough that the type keeps at least 4.5:1
+contrast for body text and 3:1 for large text (WCAG) against its busiest point.
+
+When a direction staged the shot, its **staging (from `[direction]`)** sits after the
+subject and the situation: scale and contact, light (sources, side, height, shadows),
+then what is brightest and sharpest — in the prompt budget's order, within the
+family's cap (brief.md). The rest of the scene sheet stays out of the prompt and
+checks the render.
 
 ### Concept illustrations
 
@@ -111,9 +120,9 @@ Consistency across slides is the whole problem: ten slides that drift read as am
    second pass for the headline. "Same style as before" across separate generations is
    a coin flip per slide.
 3. **Body text lives in the editor (Figma/Canva), not the model.** Generate slides
-   with headline + illustration + *reserved empty zones*; fonts stay pixel-identical
-   and a text fix costs nothing. Model-rendered text is for the cover headline and
-   short labels only.
+   with headline + illustration + *reserved empty zones*, quiet enough for the 4.5:1
+   contrast above; fonts stay pixel-identical and a text fix costs nothing.
+   Model-rendered text is for the cover headline and short labels only.
 4. **Data infographics use search-grounded generation** where available to get real
    numbers into the draft — then verify every figure against the source before
    posting. A wrong number in a shared infographic is a viral correction waiting.
@@ -137,6 +146,24 @@ Every post about a technology carries that technology's logo. In order of reliab
 Riding rules: logos accurate and respectful — commentary is fine, never distort a mark
 into mockery; never compose an implied partnership or endorsement; keep an assets
 folder of official files pulled from each vendor's brand page.
+
+## Real products
+
+A real product, its label, a screen or the packaging comes from the user's photo —
+placed by edit or composite, never redrawn from words. A redrawn bottle is a different
+bottle, and a garbled label is a fake one.
+
+- **Reference placement** for rendered scenes: "place the bottle from Image 2 as-is,
+  correct proportions; do not redraw, restyle or alter its label." Then build the set,
+  light and contact around it.
+- **Composite in the editor** for flat layouts and screens: generate the scene with a
+  plain plate where the product or screen goes, and drop the real image in.
+- **Match the photo.** Camera height, light side and lens feel come from the supplied
+  photo, not the other way round (`mw-image-direction` staging.md, "Placing a supplied
+  product").
+- **A real business shown as real** — "our shop", "our team", "our bakes": recommend
+  their own photos, or keep the generated image generic and illustrative, with no
+  claim (SKILL.md, *Honest evidence*).
 
 ## The recurring-character pipeline
 
@@ -208,7 +235,11 @@ at thumbnail size:
    feed? Glowy gradients, generic palettes, over-detailed everything. If it doesn't
    look like *the brand kit*, it doesn't post.
 7. **The honesty check:** does the post fully pay off what the image promises?
-8. **Crop safety:** subject and text inside the platform's safe zones.
+   Anything shown as the business's own product, shop or staff comes from a real
+   photo, or the image makes no such claim.
+8. **Crop safety:** subject and text inside the platform's safe zones (9:16 on Meta:
+   clear of the top 14%, bottom 35% and 6% each side) and inside the 3:4 grid crop;
+   text over the image at ≥ 4.5:1 contrast (3:1 for large type).
 9. **The accent:** the brand's signature accent present, at the frequency the brand
    docs prescribe (typically once or twice — everywhere is noise, once is a signature).
 10. **The dark-mode check:** thumbnail against both a light and a dark feed. If the
