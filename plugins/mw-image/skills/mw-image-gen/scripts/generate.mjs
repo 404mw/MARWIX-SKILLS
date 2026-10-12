@@ -89,6 +89,10 @@ let width = null, height = null;
 if (isNB) {
   if (opts.size) fail('nano-banana endpoints take --aspect and --resolution, not --size (see endpoints.md)');
   if (!opts.aspect || !opts.resolution) fail('nano-banana endpoints require --aspect W:H and --resolution 0.5K|1K|2K|4K');
+  // Nano Banana 2.1 dropped the 512px rung that Nano Banana 2 had.
+  if (model.includes('nano-banana-2.1') && !['1K', '2K', '4K'].includes(opts.resolution)) {
+    fail(`nano-banana-2.1 takes --resolution 1K|2K|4K (no 0.5K), got: ${opts.resolution}`);
+  }
 } else {
   if (!opts.size) fail('--size WxH is required and has no default: take it from the prompt deliverable');
   const m = opts.size.match(/^(\d+)x(\d+)$/i);

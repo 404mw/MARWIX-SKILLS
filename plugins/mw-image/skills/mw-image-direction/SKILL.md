@@ -128,9 +128,9 @@ Recommend one, then offer the sketch round.
 
 **Sketch round (optional).** The same subject in all three directions, each in that
 direction's first-favoured shot, so the user chooses by looking. Before anything runs,
-name the model and size and state the cost: on an API at 1K, about $0.08 an image on
-Nano Banana 2 and $0.15 on Nano Banana Pro, so three to six sketches cost about
-$0.25–0.90; on a chat plan, that many generations from the quota. Prices move: check
+name the model and size and state the cost: on an API at 1K, about $0.04 an image on
+Nano Banana 2.1 and $0.15 on Nano Banana Pro, so three to six sketches cost about
+$0.12–0.90; on a chat plan, that many generations from the quota. Prices move: check
 `mw-image-prompt/references/roster.md`. On a yes, hand the prompts, model and size to
 `mw-image-gen` if the session can run it; otherwise give three copyable prompts. Never
 run it unasked.

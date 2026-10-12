@@ -1,7 +1,7 @@
 # mw-image-gen — endpoint facts (fal and OpenAI)
 
 > **Prices re-read 2026-09-09; the GPT-Image rows and the OpenAI-direct section
-> re-verified 2026-09-20.** When in doubt, the provider's own model page wins — check
+> re-verified 2026-09-20; the Nano Banana 2.1 rows added 2026-10-12.** When in doubt, the provider's own model page wins — check
 > it before relying on any price below.
 >
 > **Every row above the OpenAI-direct section describes fal's hosted copy.** The same
@@ -26,7 +26,9 @@ when in doubt, the fal model page wins.
 | `fal-ai/flux-2-pro` | $0.03 first MP, then $0.015/MP (rounded up) | `image_size` {w,h} | **no `num_images`** (script loops anyway); no seed variance controls beyond `seed`; **clamps output to ~4.1 MP** (observed 2026-07-10: 3072x1920 request returned 2352x1760, aspect not preserved) — request ≤4.1 MP sizes, e.g. 2560x1600 for 16:10 |
 | `fal-ai/flux-2-pro/edit` | $0.03 first MP, then $0.015/MP | `image_size` {w,h} | edit; `image_urls` (array) required, up to 9 refs |
 | `fal-ai/flux-2-flex`, `fal-ai/flux-2-flex/edit` | $0.05/MP on input **and** output | `image_size` {w,h} | step and guidance control; the typography-strongest flux variant; edit takes up to 10 refs |
-| `fal-ai/nano-banana-2` | $0.08/img at 1K; 0.5K ×0.75, 2K ×1.5, 4K ×2; `enable_web_search` +$0.015, high thinking +$0.002 | `aspect_ratio` + `resolution` enum `0.5K\|1K\|2K\|4K` | **no pixel `image_size`**; extras: `enable_web_search`, `thinking_level`, `system_prompt`; ratios `auto,21:9,16:9,3:2,4:3,5:4,1:1,4:5,3:4,2:3,9:16` |
+| `google/nano-banana-2.1` | **per token, not per image** (read 2026-10-12): $1.764/M input, $8.823/M text and thinking output, $35.294/M image output — about $0.040 at 1K · $0.059 at 2K · $0.134 at 4K for a short prompt at `medium` thinking; no surcharge for resolution, web search or thinking | `aspect_ratio` + `resolution` enum `1K\|2K\|4K` — **no `0.5K`** | **supersedes `fal-ai/nano-banana-2`**; note the `google/` prefix. No pixel `image_size`; extras: `enable_web_search`, `thinking_level` `minimal\|medium\|high` (default `medium`), `system_prompt`, `seed`; ratios `auto,21:9,16:9,3:2,4:3,5:4,1:1,4:5,3:4,2:3,9:16,4:1,1:4,8:1,1:8`. Schema read from fal's OpenAPI 2026-10-12; not probed live |
+| `google/nano-banana-2.1/edit` | same rates; about $0.044 at 1K · $0.063 at 2K · $0.138 at 4K with two 1K inputs — each input image adds roughly $0.002 | `aspect_ratio` + `resolution` `1K\|2K\|4K` | edit; `image_urls` (array, up to 14 refs; required unless `video_url` or `pdf_url` is set); `video_url` and `pdf_url` up to 15 MB each, no `audio_url` |
+| `fal-ai/nano-banana-2` | $0.08/img at 1K; 0.5K ×0.75, 2K ×1.5, 4K ×2; `enable_web_search` +$0.015, high thinking +$0.002 | `aspect_ratio` + `resolution` enum `0.5K\|1K\|2K\|4K` | **superseded by `google/nano-banana-2.1`**, still live on 2026-10-12 — the only id with a `0.5K` rung. **no pixel `image_size`**; extras: `enable_web_search`, `thinking_level`, `system_prompt`; ratios `auto,21:9,16:9,3:2,4:3,5:4,1:1,4:5,3:4,2:3,9:16` |
 | `fal-ai/nano-banana-2/edit` | same as above | `aspect_ratio` + `resolution` | edit; `image_urls` (array, up to 14 refs); also accepts `pdf_url`/`video_url`/`audio_url` refs |
 | `fal-ai/nano-banana-pro` | $0.15/img (1K/2K), $0.30/img (4K) | `aspect_ratio` + `resolution` (4K native) | final-render tier, text-to-image only |
 | `fal-ai/nano-banana-pro/edit` | $0.15/img (1K/2K), $0.30/img (4K) | `aspect_ratio` + `resolution`; `image_urls` (array, required, up to ~14 refs) | edit/identity-lock at final-render tier |
@@ -94,6 +96,8 @@ dollar figure cannot be re-checked once the numbers move.
 Family rules the generate script applies automatically:
 
 - id contains `nano-banana` → `--aspect W:H --resolution 0.5K|1K|2K|4K`, never `--size`.
+  On `nano-banana-2.1` the script rejects `0.5K` before the call. Its `thinking_level`
+  is not exposed as a flag, so every run uses fal's default, `medium`.
 - id contains `gpt-image` → no seed is sent; `--quality` maps to the quality tier
   (`auto|low|medium|high` on gpt-image-2, plus `xhigh|max` on gpt-image-2.5). The
   published size window is validated locally before the call, so an out-of-range
@@ -145,7 +149,10 @@ cache there instead — the host contract wins over the default path.
 
 ## Billing model (verified 2026-07, not re-checked 2026-09)
 
-Billed per output image or per megapixel of output. Queue wait time is free; failed
+Billed per output image or per megapixel of output — except `google/nano-banana-2.1`,
+which fal bills per token (read 2026-10-12): its cost statement is an estimate from the
+representative figures in its row, stated as one, and fal's response carries no usage
+block to measure it against afterwards. Queue wait time is free; failed
 requests are not billed. There is no batch discount: N images cost N × the unit
 price, so batching is a workflow choice, not a savings. Sync `fal.run` is fine at
 interactive scale; the queue API (`queue.fal.run` + webhooks) exists for volume

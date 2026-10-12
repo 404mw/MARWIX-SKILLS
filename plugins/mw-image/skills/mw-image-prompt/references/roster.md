@@ -1,13 +1,15 @@
 # mw-image-prompt — Model roster, routing and cost
 
 > **These facts date fast.** Capabilities and limits were read between 2026-09-09 and
-> 2026-10-02 off each model's own page or its maker's docs; Midjourney's were read from
+> 2026-10-02 off each model's own page or its maker's docs (Nano Banana 2.1, released
+> 2026-10-06, on 2026-10-12); Midjourney's were read from
 > third-party guides, since its own docs refuse automated reads — confirm anything
 > load-bearing in the app. When a model changes, update this file; the doctrine in
 > SKILL.md and engines.md does not change with it.
 >
 > **Prices are indicative API rates, for comparing models against each other — never a
-> quote.** They were read on 2026-09-09 and decay from that date. Web apps bill by
+> quote.** They were read on 2026-09-09 (Nano Banana 2.1 on 2026-10-12) and decay from
+> that date. Web apps bill by
 > subscription or plan quota, not per image. If the user wants real numbers, send them
 > to the provider's pricing page, or offer a live lookup where web access exists — and
 > say how many lookups it will take before running them.
@@ -27,7 +29,7 @@ model is usually the one they already pay for, encoded well.
 | Surface | Models | Set outside the prompt | Goes into the prompt instead |
 |---|---|---|---|
 | **ChatGPT** — web, desktop, mobile; every plan, Free included, since 2026-09-08 ("ChatGPT Images 2.5") | GPT-Image-2.5 | attached images; select-area edits | ratio, size intent, quality intent, exclusions — there is no quality, seed or negative field |
-| **Gemini app** — web, mobile | Nano Banana 2, Nano Banana Pro | attached images | ratio and resolution intent, exclusions |
+| **Gemini app** — web, mobile | Nano Banana 2.1 (rolling out since 2026-10-06 in place of Nano Banana 2 — the app does not say which one answered), Nano Banana Pro | attached images | ratio and resolution intent, exclusions |
 | **Midjourney** — web app, Discord | V8.2 (default), V7, Niji | parameters in the prompt (`--ar`, `--raw`, `--s`, `--hd`, `--no`, `--sref`…), web toggles | — parameters *are* the settings. No public API |
 | **Model makers' own apps** — ideogram.ai, recraft.ai and similar | Ideogram 4, Recraft V4 | whatever the app exposes: ratio, style, often a negative field | anything it doesn't expose |
 | **APIs** — OpenAI, Google AI Studio / Vertex, Black Forest Labs, and hosted model APIs such as fal or Replicate | every model below except Midjourney | size, quality tier, count, seed, negative prompt and mask where the model has them | the rest |
@@ -42,7 +44,8 @@ Families are defined in [engines.md](engines.md); the family decides the encodin
 | FLUX.1 schnell | diffusion | APIs | throwaway composition drafts | no negative field | ~$0.003/MP |
 | FLUX.2 pro | diffusion | APIs | **default for text-free photoreal / atmospheric production art**; up to 9 references | clamps output near 4.1 MP (observed, small sample, 2026) | ~$0.03 first MP, then $0.015/MP |
 | FLUX.2 flex | diffusion | APIs | step and guidance control; the flux line's typography variant; up to 10 references | — | ~$0.05/MP, input and output |
-| Nano Banana 2 (`gemini-3.1-flash-image`) | reasoning | Gemini app, Google AI Studio / Vertex, hosted APIs | composition planning, character consistency, up to 14 references, search-grounded data, localization | ratios `21:9` … `9:16`; 0.5K–4K; 4K may letterbox 16:9 with seam bands ~12% from the edges | ~$0.08 an image at 1K |
+| Nano Banana 2.1 (`gemini-nano-banana-2.1`) | reasoning | Gemini app, Google AI Studio / Vertex, hosted APIs | **the Nano Banana default since 2026-10-06**: composition planning, character consistency across edit turns, up to 14 references, web- and image-search-grounded data, localization, extreme ratios | ratios `8:1` … `1:8` (adds `4:1`, `1:4`, `8:1`, `1:8`); 1K–4K, **no 0.5K**; no seed on Google's API (fal's endpoint exposes one); small text can blur at 1K | token-billed: ~$0.034 at 1K · $0.05 at 2K · $0.11 at 4K from Google, ~$0.04 · $0.06 · $0.13 on fal |
+| Nano Banana 2 (`gemini-3.1-flash-image`) | reasoning | Google AI Studio / Vertex, hosted APIs | superseded by 2.1 — Google recommends 2.1 for all new projects; keep it only to finish a series tuned on it, or for a 0.5K draft | ratios `21:9` … `9:16`; 0.5K–4K; 4K may letterbox 16:9 with seam bands ~12% from the edges; no shutdown date announced on 2026-10-12 — confirm it is live | ~$0.08 an image at 1K |
 | Nano Banana Pro (`gemini-3-pro-image`) | reasoning | Gemini app, Google AI Studio / Vertex, hosted APIs | top-end final render, native 4K, legible multilingual text | — | ~$0.15 at 1K–2K, $0.30 at 4K |
 | GPT-Image-2.5 Flare | GPT-Image | ChatGPT, OpenAI API, hosted APIs | speed-first: dense text and precise layout at everyday cost | aspect ≤3:1; max edge 3840; multiples of 16; 0.66–8.29 MP; above 2560×1440 experimental | ~$0.004 `low` → ~$0.036 `high` at 1024×768 |
 | GPT-Image-2.5 Sunburst | GPT-Image | OpenAI API, hosted APIs (which mode ChatGPT uses per request is not documented) | precision: fine detail, closest reference adherence, slower | as Flare | same table as Flare |
@@ -63,7 +66,9 @@ layered asset, a negative field the brief depends on) — and say why, and what 
 **Then the resolution gate.** Lock the target size (from the asset contract or the
 platform ratio) before weighing quality: a model that cannot hit it is out however good
 it is. GPT-Image-2.5 refuses past 3:1, so a 21:9 banner is out; Seedream 5.0 Pro stops
-at 2048×2048; Midjourney HD stops at 4:1. Megapixel-priced models get their cost
+at 2048×2048; Midjourney HD stops at 4:1. Past 4:1 — an 8:1 strip banner, a 1:8
+skyscraper — Nano Banana 2.1 is the one API-reachable roster model with a native ratio
+(Midjourney reaches it only without `--hd`). Megapixel-priced models get their cost
 estimated from the exact dimensions, and the deliverable records the size and the model
 it forced.
 
@@ -73,8 +78,9 @@ it forced.
 |---|---|---|
 | Composition drafts, gray-box comps | **FLUX.2 klein 4B** (schnell if cheaper is fine) | intact fundamentals at the bottom of the price range |
 | Photoreal / atmospheric final layers — the default | **FLUX.2 pro** | production-grade without tuning |
-| Deep low-key / near-black fields (dark fog, void layers) | **Nano Banana 2** | flux-class lifted near-black scenes toward gray even through darkening edits, where NB2 held ink-level darkness (observed, small sample, 2026: 2 assets × 2 attempts) |
-| Complex composition, or a recurring character in-scene | **Nano Banana 2** | plans composition, holds character consistency |
+| Deep low-key / near-black fields (dark fog, void layers) | **Nano Banana 2.1** | flux-class lifted near-black scenes toward gray even through darkening edits, where Nano Banana 2 held ink-level darkness (observed on 2, small sample, 2026: 2 assets × 2 attempts — not yet re-tested on 2.1; the first dark render is a calibration pass) |
+| Complex composition, or a recurring character in-scene | **Nano Banana 2.1** | plans composition, holds character consistency |
+| Extreme ratios past 4:1 (strip banners, skyscrapers) | **Nano Banana 2.1** | native `8:1`, `1:8`, `4:1`, `1:4` |
 | Top-end final render (large format, or contains a face) | **Nano Banana Pro** | native 4K, one render only per the cost ladder |
 | Photoreal final where prompt adherence matters more than tuning | **Seedream 5.0 Pro** | rated level with FLUX.2 pro on photorealism; stops at 2048×2048 |
 | A look nobody has pinned down yet; stylized key art | **Midjourney V8.2** | widest aesthetic range; `--sref` locks a found look into a series |
@@ -84,10 +90,10 @@ it forced.
 
 | Job | Model | Why |
 |---|---|---|
-| Single-subject covers, character scenes | **Nano Banana 2** | fast, strong on single-scene briefs and character consistency |
-| Edits, variations, expression swaps | **Nano Banana 2** | editing preserves everything unnamed; describe only the change |
-| Data-grounded infographics (real stats, real dates) | **Nano Banana 2** | pulls live data from search instead of inventing it — still verify every figure |
-| Text localization | **Nano Banana 2** | translates and swaps in-image text natively |
+| Single-subject covers, character scenes | **Nano Banana 2.1** | fast, strong on single-scene briefs and character consistency |
+| Edits, variations, expression swaps | **Nano Banana 2.1** | editing preserves everything unnamed; describe only the change; Google cites steadier characters across edit turns than on 2 |
+| Data-grounded infographics (real stats, real dates) | **Nano Banana 2.1** | pulls live data from web and image search instead of inventing it — still verify every figure; render at 2K, small text can blur at 1K |
+| Text localization | **Nano Banana 2.1** | translates and swaps in-image text natively |
 | Dense text: carousels, multi-label diagrams | **GPT-Image-2.5 Flare** | an independent 14-call test returned four text blocks at three sizes correctly spelled at every tier, down to an 8px line |
 | Multi-element layouts (3+ elements placed precisely) | **GPT-Image-2.5 Flare** | complex layouts, natural lighting, rich textures |
 | Multi-reference composites (character + logo + product) | **GPT-Image-2.5** edit | many references, each assignable a role — subject, style, clothing, background |
@@ -103,7 +109,7 @@ the old "GPT is the expensive one" reflex is worth re-testing per job.
 
 *Use what the user has · production art → flux-class (klein drafts, pro finals), Nano
 Banana when composition, darkness or characters demand it · character scenes, edits,
-grounded data, localization → Nano Banana 2 · dense text plus precise layout,
+grounded data, localization, extreme ratios → Nano Banana 2.1 · dense text plus precise layout,
 multi-reference composites → GPT-Image-2.5 Flare · identity-critical finals →
 GPT-Image-2.5 Sunburst · look exploration and stylized art → Midjourney V8.2 ·
 typography-first → Ideogram 4 / Recraft V4 / Qwen 2.0.*
@@ -118,6 +124,7 @@ fal, a hosted API that lists most of this roster in one place:
 [FLUX.1 schnell](https://fal.ai/models/fal-ai/flux/schnell) ·
 [FLUX.2 pro](https://fal.ai/models/fal-ai/flux-2-pro) ·
 [FLUX.2 flex](https://fal.ai/models/fal-ai/flux-2-flex) ·
+[Nano Banana 2.1](https://fal.ai/models/google/nano-banana-2.1) (read 2026-10-12) ·
 [Nano Banana 2](https://fal.ai/models/fal-ai/nano-banana-2) ·
 [Nano Banana Pro](https://fal.ai/models/fal-ai/nano-banana-pro) ·
 [GPT-Image-2.5 Flare](https://fal.ai/models/openai/gpt-image-2.5/flare/text-to-image) ·
@@ -128,6 +135,9 @@ fal, a hosted API that lists most of this roster in one place:
 [Recraft V4](https://fal.ai/models/fal-ai/recraft/v4/text-to-image) ·
 [Qwen Image 2.0](https://fal.ai/qwen-image-2.0)
 
+- [Google — Gemini API image generation](https://ai.google.dev/gemini-api/docs/image-generation) — Nano Banana 2.1 model id, resolutions, reference count, thinking levels, read 2026-10-12
+- [Google Cloud — Gemini Nano Banana 2.1](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/nano-banana-2-1) — release date, ratios, unsupported `seed`, read 2026-10-12
+- [Google — Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [deprecations](https://ai.google.dev/gemini-api/docs/deprecations) — Nano Banana 2.1 per-image equivalents; Nano Banana 2's replacement and shutdown status, read 2026-10-12
 - [OpenAI — Image generation guide](https://developers.openai.com/api/docs/guides/image-generation) — GPT-Image-2.5 sizes and tiers, read 2026-10-02
 - [Axios — ChatGPT Images 2.5, 2026-09-08](https://www.axios.com/2026/09/08/exclusive-hands-on-with-chatgpts-new-image-editor) — rollout to every ChatGPT tier
 - [AlphaSignal — Midjourney V8 seamless tiles, 2026-09-24](https://alphasignal.ai/news/midjourney-s-v8-drops-seamless-tiles-smarter-edits-and-live-style-previews) — `--tile` on V8.1/V8.2

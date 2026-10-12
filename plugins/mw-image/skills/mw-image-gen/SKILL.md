@@ -25,6 +25,9 @@ differ. [references/endpoints.md](references/endpoints.md) carries both.
    model, size, count, and estimated cost (unit price from [references/endpoints.md](references/endpoints.md);
    for megapixel-priced models compute from the exact locked dimensions). Wait for the
    user's go-ahead. One approval covers one stated batch, not the session.
+   **Nano Banana 2.1 on fal is billed per token too**, with no usage block in the
+   response: quote the representative per-image figure from its row as an estimate,
+   and say that it is one.
    **On `--provider openai` the price is per token, so an exact figure does not exist
    before the call.** State a range and a ceiling instead, from the quality tier's
    observed output-token count, and say plainly that it is a range and why. Always pass
@@ -93,7 +96,8 @@ never ask them to paste a key into the chat.
         --size WxH --count N --out <dir>
    ```
 
-   Nano-banana family: `--aspect W:H --resolution 0.5K|1K|2K|4K` instead of `--size`.
+   Nano-banana family: `--aspect W:H --resolution 0.5K|1K|2K|4K` instead of `--size`
+   (Nano Banana 2.1, `google/nano-banana-2.1`: `1K|2K|4K` only).
    Edits: the `/edit` endpoint id plus `--image <path-or-url>` (input image), prompt
    file contains the edit instruction with its full preserve list.
 

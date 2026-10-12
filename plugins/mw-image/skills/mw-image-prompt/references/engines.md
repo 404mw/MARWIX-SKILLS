@@ -26,7 +26,7 @@ direction. Which model to use, its limits and its cost: [roster.md](roster.md).
 | Family | Models | What defines it |
 |---|---|---|
 | **Diffusion / flux-class** | FLUX.2, FLUX.1, Qwen Image | word order is the weight — FLUX.2 ignores `(word:1.5)` weighting, which works only on SD-family checkpoints; a negative-prompt field where the model exposes one (Qwen does; several FLUX endpoints do not — check) |
-| **Reasoning** | Nano Banana 2, Nano Banana Pro | plans the composition before rendering; full sentences; no negative channel |
+| **Reasoning** | Nano Banana 2.1, Nano Banana 2, Nano Banana Pro | plans the composition before rendering; full sentences; no negative channel |
 | **GPT-Image** | GPT-Image-2.5 Flare, Sunburst | format-agnostic; roles assignable to references; no negative field, but stated exclusions are sanctioned |
 | **Midjourney** | V8.2, V7, Niji | natural-language description plus a parameter string; a real `--no` channel; its own reference syntax |
 | **Typography-first** | Ideogram 4, Recraft V4 | built for text and layout; use the app's negative field if it shows one, otherwise the safe defaults |
@@ -34,7 +34,7 @@ direction. Which model to use, its limits and its cost: [roster.md](roster.md).
 
 ## Prompt construction per family
 
-| | Diffusion / flux-class | Nano Banana 2 / Pro | GPT-Image-2.5 | Midjourney V8.2 |
+| | Diffusion / flux-class | Nano Banana 2.1 / 2 / Pro | GPT-Image-2.5 | Midjourney V8.2 |
 |---|---|---|---|---|
 | **Format** | short descriptive phrases, most important first; word order is the weight (BFL: 30–80 words is ideal for FLUX.2). `(word:1.5)` syntax is for SD-family checkpoints only | **full sentences; keyword soup degrades results** | **format-agnostic** — paragraphs, labeled sections, tags, JSON-like structures. For complex briefs OpenAI recommends labeled sections: *scene, subject, details, constraints* | descriptive sentences, subject first; **~50–150 tokens** beats 300+; parameters last |
 | **Exclusions** | the negative field, where there is one — state the negation | positive restatement only | direct exclusions supported (*"state exclusions such as unwanted text"*), but positive restatement works better for invented objects | `--no a, b` — bare nouns, no "no" inside the prompt text |
@@ -163,6 +163,21 @@ surface cannot set goes into the prompt text:
   even when they are also set elsewhere.
 - For grounded infographics, describe the *organization*, not just the topic: "a
   timeline", "a flowchart with 4 stages", "a comparison table".
+- **Nano Banana 2.1** (`gemini-nano-banana-2.1`, 2026-10-06) takes the same encoding
+  as 2 — Google published no 2.1-specific prompting guidance — so a prompt tuned on 2
+  carries over as written. What changed is around the prompt:
+  - **Resolutions are 1K, 2K and 4K; the 0.5K rung is gone.** Drafts start at 1K.
+  - **Small text can blur at 1K.** Judge and ship text-bearing images at 2K.
+  - **Ratios now reach `4:1`, `1:4`, `8:1` and `1:8`** on top of the `21:9` … `9:16`
+    set. State the ratio in the prompt as before.
+  - **No seed on Google's API** (fal's hosted endpoint exposes one). Repeatability
+    comes from the anchor block and named references.
+  - **Thinking level** (`minimal | medium | high`, default `medium`) is an API setting,
+    not prompt text: `high` for dense layouts and many-reference composites, `minimal`
+    for throwaway drafts. It is billed as output tokens.
+  - Moving a series from 2 to 2.1 is a version change inside one family: the style
+    anchor block stays, but re-check exposure and character likeness on the first
+    render before continuing the series.
 
 ## GPT-Image-2.5 specifics — Flare and Sunburst
 
@@ -258,8 +273,8 @@ Never iterate at final quality or final size:
 1. **Explore at the bottom.** For composition, idea and pose — nothing else is
    judgeable yet.
    - APIs: production drafts on FLUX.2 klein or schnell, several per prompt;
-     promotional on GPT-Image-2.5 Flare at `low` with four variants, or Nano Banana 2
-     at 1K.
+     promotional on GPT-Image-2.5 Flare at `low` with four variants, or Nano Banana 2.1
+     at 1K with `minimal` thinking.
    - Midjourney: standard (SD) renders with `--c` raised; Draft mode where available.
    - Chat apps: every generation spends plan quota — explore with short L1 prompts and
      ask for variations before writing the L2 prompt.
@@ -285,6 +300,10 @@ framing passes. Budget them, or do not switch mid-series.
 
 - [Google DeepMind — Nano Banana prompt guide](https://deepmind.google/models/gemini-image/prompt-guide/)
 - [Google Cloud — Ultimate prompting guide for Nano Banana](https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-nano-banana)
+- [Google — Gemini API image generation](https://ai.google.dev/gemini-api/docs/image-generation)
+  (Nano Banana 2.1: resolutions, thinking levels; read 2026-10-12)
+- [Google Cloud — Gemini Nano Banana 2.1](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/gemini/nano-banana-2-1)
+  (ratios, unsupported `seed`; read 2026-10-12)
 - [Google — Nano Banana Pro prompting tips](https://blog.google/products-and-platforms/products/gemini/prompting-tips-nano-banana-pro/)
 - [OpenAI — Image prompting guide](https://developers.openai.com/api/docs/guides/image-prompting)
   (Flare vs Sunburst, reference roles, `quality=high` for small text)
