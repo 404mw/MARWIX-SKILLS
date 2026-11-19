@@ -1,0 +1,28 @@
+{
+  "name": "rix",
+  "displayName": "Rix",
+  "version": "1.0.0",
+  "description": "A context strip above the prompt: the tokens loaded, a bar that changes colour as the context fills, a toast at each step and a one-click Compact button. Rix, the MARWIX mascot, walks along its top; /rix hides him.",
+  "author": {
+    "name": "MARWIX",
+    "email": "hello@marwix.dev"
+  },
+  "license": "MIT AND LicenseRef-MARWIX-Marks",
+  "keywords": [
+    "context",
+    "context-window",
+    "tokens",
+    "compact",
+    "mod",
+    "mascot"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "showRix": {
+      "type": "boolean",
+      "title": "Show Rix",
+      "description": "Rix walking above the context strip and in the compaction note. Off keeps the strip alone. /rix show or /rix hide changes it too.",
+      "default": true
+    }
+  }
+}

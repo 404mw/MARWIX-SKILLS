@@ -6,7 +6,7 @@
     "email": "hello@marwix.dev"
   },
   "description": "Claude skills that follow your project's rules where it has some, show every decision they make, and stop rather than guess.",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "metadata": {
     "pluginRoot": "./plugins"
   },
@@ -54,6 +54,26 @@
         "indexing",
         "prisma",
         "medusa"
+      ]
+    },
+    {
+      "name": "rix",
+      "source": "./plugins/rix",
+      "displayName": "Rix",
+      "description": "A context strip above the prompt: tokens loaded, a bar that changes colour as the context fills, a toast at each step and a one-click Compact button. Rix, the MARWIX mascot, walks along its top; /rix hides him.",
+      "version": "1.0.0",
+      "author": {
+        "name": "MARWIX",
+        "email": "hello@marwix.dev"
+      },
+      "license": "MIT AND LicenseRef-MARWIX-Marks",
+      "keywords": [
+        "context",
+        "context-window",
+        "tokens",
+        "compact",
+        "mod",
+        "mascot"
       ]
     }
   ]

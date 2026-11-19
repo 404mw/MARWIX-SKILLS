@@ -22,7 +22,16 @@ version held back.
 | [`mw-image-gen`](plugins/mw-image/README.md#mw-image-gen) | `mw-image` | **Gives your agent the ability to generate images.** Runs a prompt against fal.ai or OpenAI, saves each result with the settings that made it, converts approved masters to web formats. Decides nothing creative. |
 | [`mw-query-plan`](plugins/mw-query/README.md#mw-query-plan) | `mw-query` | **Makes your agent prove a query is slow before telling you how to fix it.** Diagnoses Postgres queries from the actual EXPLAIN plan — indexes, N+1, joins, keyset pagination — and marks the finding *provisional* when it hasn't got one. Postgres only; adapters for Prisma and Medusa. |
 
-Install a plugin, get its skills. Neither depends on the other.
+Install a plugin, get its skills. None depends on another.
+
+## Mods
+
+A mod changes Claude Code itself rather than adding a skill to it. It runs in Claude Code
+only (desktop app and terminal), not on Claude.ai or the mobile apps.
+
+| Mod | Plugin | What it's for |
+|---|---|---|
+| [`rix`](plugins/rix/README.md) | `rix` | **Keeps the context window in view.** A strip above the prompt with the tokens loaded, a bar that changes colour at 20, 33, 50, 75 and 90%, a toast at each step, a one-click Compact button, and a row in the chat saying what each compaction freed. Rix, the MARWIX mascot, walks along its top and reacts to the session; `/rix hide` puts him away for good. |
 
 ## Install
 
@@ -32,9 +41,13 @@ Install a plugin, get its skills. Neither depends on the other.
 /plugin marketplace add 404mw/MARWIX-SKILLS
 /plugin install mw-image@mw-skills
 /plugin install mw-query@mw-skills
+/plugin install rix@mw-skills
 ```
 
-Install either, or both. `/plugin marketplace update` picks up changes later.
+Install any of them. `/plugin marketplace update` picks up changes later.
+
+In the desktop app's Code tab, where `/plugin` doesn't run: click **+** next to the prompt
+box, then **Plugins**, **Add marketplace** with `404mw/MARWIX-SKILLS`, then **Add plugin**.
 
 Prefer personal skills to a marketplace? Clone once and link them into
 `~/.claude/skills`:
@@ -215,6 +228,10 @@ accurate forever. The provider's own model page does.
 
 MIT — see [LICENSE](LICENSE). Each plugin carries its own copy, so the terms travel with
 it when installed alone.
+
+One exception: **Rix and the MARWIX name and logo are not MIT.** The `rix` plugin's code is,
+but the character and the marks are all rights reserved. Install and use the plugin freely;
+to copy or fork its code, take Rix out first. See [its LICENSE](plugins/rix/LICENSE).
 
 ## Contributing
 
